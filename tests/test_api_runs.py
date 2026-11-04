@@ -297,3 +297,77 @@ def test_a_collection_crash_is_reported_without_details(caplog: Any) -> None:
     with caplog.at_level(logging.ERROR, logger="linkfall.api"):
         run(go)
     assert any("turn collection failed" in r.getMessage() for r in caplog.records)
+
+
+def test_the_run_summary_carries_the_squad_channel() -> None:
+    async def go() -> None:
+        client = Client(make_app())
+        run_id = await create_run(client)
+        quiet = (await client.get(f"/api/runs/{run_id}/state")).json()["channel"]
+        assert quiet == {
+            "text": "Squad channel quiet.",
+            "signature": quiet["signature"],
+            "enemy_text": False,
+        }
+        await play_turn(client, run_id, 55, choice="manual", action="hold_shield")
+        forged = (await client.get(f"/api/runs/{run_id}/state")).json()["channel"]
+        assert forged["enemy_text"] is True
+        assert "ASHGROVE" in forged["text"]
+        assert forged["signature"] < 0.94
+
+    run(go)
+
+
+def test_the_decision_preview_shows_what_the_policy_would_do_and_changes_nothing() -> None:
+    async def go() -> None:
+        store = EventStore()
+        client = Client(make_app(store=store))
+        run_id = await create_run(client)
+        await play_turn(client, run_id, 55, choice="manual", action="hold_shield")
+        await client.post(f"/api/runs/{run_id}/turns", {"link": 85})
+        await wait_for_phase(client, run_id, "awaiting_pilot")
+        rows = len(store.read_rows(run_id))
+        story = (await client.get(f"/api/runs/{run_id}/decision", query="link=85")).json()
+        assert story["zone"] == "DELEGATED"
+        assert story["verdict"] == "EXECUTE"
+        assert "comms" in story["eligible"]  # the forged order is eligible in story mode
+        assisted = (await client.get(f"/api/runs/{run_id}/decision", query="link=45")).json()
+        assert assisted["zone"] == "ASSISTED"
+        assert "comms" not in assisted["eligible"]
+        assert any(h["agent"] == "comms" for h in assisted["held"])
+        manual = (await client.get(f"/api/runs/{run_id}/decision", query="link=25")).json()
+        assert manual["verdict"] == "MANUAL"
+        assert len(store.read_rows(run_id)) == rows
+
+    run(go)
+
+
+def test_the_decision_preview_refuses_bad_links_and_wrong_moments() -> None:
+    async def go() -> None:
+        client = Client(make_app())
+        run_id = await create_run(client)
+        assert (await client.get(f"/api/runs/{run_id}/decision", query="link=55")).status == 409
+        await client.post(f"/api/runs/{run_id}/turns", {"link": 55})
+        await wait_for_phase(client, run_id, "awaiting_pilot")
+        for bad in ("link=12", "link=abc", ""):
+            assert (await client.get(f"/api/runs/{run_id}/decision", query=bad)).status == 422
+        assert (
+            await client.get("/api/runs/nope-nope-nope/decision", query="link=55")
+        ).status == 404
+
+    run(go)
+
+
+def test_the_preview_leaves_out_dismissed_proposals() -> None:
+    async def go() -> None:
+        client = Client(make_app())
+        run_id = await create_run(client)
+        await play_turn(client, run_id, 55, choice="manual", action="hold_shield")
+        await client.post(f"/api/runs/{run_id}/turns", {"link": 85})
+        await wait_for_phase(client, run_id, "awaiting_pilot")
+        await client.post(f"/api/runs/{run_id}/dismiss", {"agent": "comms"})
+        after = (await client.get(f"/api/runs/{run_id}/decision", query="link=85")).json()
+        assert "comms" not in after["eligible"]
+        assert all(h["agent"] != "comms" for h in after["held"])
+
+    run(go)

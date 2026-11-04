@@ -1,9 +1,14 @@
-// Wires the page together: health, the link knob, starting a run, and the live state.
+// Wires the page together: health, the link knob, starting a run, and the turn loop.
 import { ApiError, createApi } from './api.js';
-import { byId } from './dom.js';
+import { renderCards, renderChannel } from './cards-view.js';
+import { renderDecision } from './decision-view.js';
+import { byId, setText } from './dom.js';
+import { describeError } from './errors.js';
 import { openEvents } from './events.js';
 import { attachKnob } from './knob.js';
 import { createStore } from './store.js';
+import { createTurnController } from './turn-controller.js';
+import { emptyTurn } from './turn-model.js';
 import { buildKnobTicks, renderBanner, renderForm, renderGauges, renderLink, renderMission } from './view.js';
 import { snapLink } from './zones.js';
 
@@ -12,27 +17,18 @@ const api = createApi();
 const store = createStore({
   link: 55, mode: 'story', crew: 'scripted', seed: 4217,
   run: null, health: null, reachable: true, busy: false, error: '',
+  turn: emptyTurn(), decision: null, acting: false, message: '', turnError: '',
+});
+const controller = createTurnController({
+  api,
+  store,
+  announce: (text) => setText(byId('announce'), text),
 });
 let stream = null;
-
-function describe(error) {
-  if (!(error instanceof ApiError)) return 'Something went wrong. Try again.';
-  const fields = error.fields.map((f) => `${f.field}: ${f.problem}`);
-  return fields.length ? `${error.message} (${fields.join('; ')})` : error.message;
-}
+let lastLink = store.get().link;
 
 function randomSeed() {
   return crypto.getRandomValues(new Uint32Array(1))[0];
-}
-
-async function refreshState() {
-  const run = store.get().run;
-  if (!run) return;
-  try {
-    store.set({ run: { ...run, ...(await api.getState(run.run_id)) } });
-  } catch (error) {
-    store.set({ error: describe(error) });
-  }
 }
 
 async function startRun(event) {
@@ -46,34 +42,42 @@ async function startRun(event) {
   try {
     const run = await api.createRun({ seed, mode, scenario: 'cinder-ward', crew });
     stream?.close();
+    controller.reset();
     store.set({ run });
-    stream = openEvents(run.run_id, {
-      onRow: (row) => {
-        if (row.kind === 'engine' || row.kind === 'command') refreshState();
-      },
-      onStatus: () => {},
-    });
+    stream = openEvents(run.run_id, { onRow: controller.onRow, onStatus: () => {} });
+    await controller.startTurn();
   } catch (error) {
-    store.set({ error: describe(error) });
+    store.set({ error: describeError(error) });
   } finally {
     store.set({ busy: false });
   }
 }
 
 function render(state) {
+  const canAct = Boolean(state.run) && !state.run.over && state.turn.ready && !state.acting;
   renderLink(state.link);
   renderMission(state.run);
   renderGauges(state.run?.state ?? null);
   renderBanner(state.health, state.reachable);
   renderForm(state);
+  renderCards(state.turn, state.decision, (option) => controller.act({ choice: 'manual', action: option.action }), canAct);
+  renderChannel(state.run, () => controller.act({ choice: 'manual', action: 'audit_comms' }), canAct);
+  renderDecision(
+    { run: state.run, turn: state.turn, decision: state.decision, acting: state.acting, message: state.message, error: state.turnError },
+    {
+      onLodestar: () => controller.act({ choice: 'lodestar' }),
+      onSign: (item) => controller.act({ choice: 'sign', agent: item.agent }),
+      onDismiss: (item) => controller.dismiss(item.agent),
+    },
+  );
 }
 
 async function loadHealth() {
   try {
     const health = await api.health();
     store.set({ health, reachable: true, crew: health.model === 'up' ? 'model' : 'scripted' });
-  } catch {
-    store.set({ reachable: false });
+  } catch (error) {
+    store.set({ reachable: !(error instanceof ApiError && error.status === 0) });
   }
 }
 
@@ -90,7 +94,13 @@ function init() {
   byId('seed').addEventListener('input', (e) => store.set({ seed: e.target.value === '' ? NaN : Number(e.target.value) }));
   byId('new-seed').addEventListener('click', () => store.set({ seed: randomSeed() }));
   byId('run-form').addEventListener('submit', startRun);
-  store.subscribe(render);
+  store.subscribe((state) => {
+    if (state.link !== lastLink) {
+      lastLink = state.link;
+      controller.onLinkChanged();
+    }
+    render(state);
+  });
   render(store.get());
   loadHealth();
 }

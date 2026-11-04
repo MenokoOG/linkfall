@@ -1,7 +1,7 @@
 # Accessibility checklist (WCAG 2.2 AA)
 
 Gate 6 evidence for the web console. A manual checklist plus the measurements below, updated
-with each console slice. Last updated for slice 1 (shell and knob), 2026-11-04.
+with each console slice. Last updated for slice 2 (crew cards, decision panel, tray), 2026-11-04.
 
 How it was checked: headless Chromium (Playwright 1.64.1, run from a scratch folder, not a
 repo dependency) against the real app at 1366, 768 and 360 pixels wide, driven by script. No
@@ -28,8 +28,22 @@ screen reader was used. The checks marked "not tested" need a person with assist
 | Zoom to 200 percent | not tested | |
 | Screen reader | not tested | |
 
+## Slice 2: crew cards, enemy channel, decision panel, "Needs your word" tray
+
+| Area | Result | Evidence |
+|---|---|---|
+| Keyboard only, end to end | pass | Tab reached "Run: Tactical", Enter committed the turn, the next turn opened; the tray's Dismiss worked from the keyboard |
+| Focus after a live update | pass | The control that had focus is rebuilt on each update. Focus returns to the same control if it still exists, and otherwise moves to the decision panel heading (it was `h-decision` in both runs), never to the top of the page |
+| Streamed answers announced | pass | A polite status region says "systems: cooldown" or "tactical: no proposal" as each answer arrives; whole cards are not live regions, so the page is not chatty |
+| Names | pass | Cards are `article` elements named by their heading. Card buttons carry the agent ("Run Flank as proposed by Tactical"). Provenance badges have `alt` text "internal" or "external" |
+| Status is a word | pass | Eligible, Needs your word, Advice only, No proposal, Dismissed, Not called. The orange tray border and the enemy-channel dot are extra cues, not the only ones |
+| Signature warning | pass | A low score is written out ("Signature 0.70, below the normal 0.94") as well as colored |
+| Model and enemy text | pass | Rendered only as text nodes (static test); a forged `[PRIORITY / ASHGROVE-CMD]` message showed as plain text |
+| Motion | partial | The loading image (`state-loading.svg`) is animated and carries no reduced-motion rule of its own, so the page hides it under `prefers-reduced-motion` and keeps the words "Waiting for the link to sync". Not tested with the OS setting on |
+| Reflow and targets | not re-measured | Slice 1 measurements stand; the new buttons use the same 44 px minimum |
+| Screen reader | not tested | |
+
 ## Still to do in later slices
 
-Crew cards and the decision panel (slice 2): provenance badges need text alternatives, and held
-proposals need clear status words. Event log and replay (slice 3): an `aria-live="polite"` log,
-and a check that streamed updates don't steal focus.
+Event log and replay (slice 3): an `aria-live="polite"` log, and a check that streamed updates
+don't steal focus. Re-measure reflow, target sizes and contrast on the finished page.

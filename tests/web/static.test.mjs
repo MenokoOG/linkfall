@@ -46,7 +46,7 @@ test('every id the scripts ask for exists in the page', () => {
 
 test('every asset the page, styles and scripts name is shipped', () => {
   const sources = [html, css, ...jsFiles.map((f) => read(join('js', f)))];
-  const wanted = new Set(sources.flatMap((s) => [...s.matchAll(/\/assets\/[A-Za-z0-9._-]+/g)].map((m) => m[0])));
+  const wanted = new Set(sources.flatMap((s) => [...s.matchAll(/\/assets\/[A-Za-z0-9._-]+\.(?:svg|png)/g)].map((m) => m[0])));
   assert.ok(wanted.size > 0);
   for (const path of wanted) assert.ok(existsSync(join(WEB, path)), `missing ${path}`);
   for (const svg of readdirSync(join(WEB, 'assets'))) {

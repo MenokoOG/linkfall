@@ -81,6 +81,45 @@
         <div class="forces" id="forces"></div>
       </div>
     </section>
+
+    <section class="col" aria-labelledby="h-crew">
+      <h2 class="col-title" id="h-crew">Crew proposals</h2>
+      <div class="stack" id="cards"></div>
+      <div class="card panel channel" id="channel" data-hostile="false" aria-labelledby="channel-label">
+        <p class="label" id="channel-label">Squad channel</p>
+        <p class="channel-text" id="channel-text"></p>
+        <p class="muted" id="channel-sig"></p>
+        <div class="actions">
+          <button type="button" class="btn btn-small" id="audit-comms" hidden>Audit channel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="col" aria-labelledby="h-decision">
+      <div class="card panel" id="decision-panel">
+        <div class="decision-head">
+          <img src="/assets/avatar-lodestar.svg" alt="" width="44" height="44">
+          <h2 class="label" id="h-decision" tabindex="-1">Lodestar · policy decision</h2>
+        </div>
+        <p class="verdict" id="decision-verdict">No run yet</p>
+        <img class="empty-art" id="decision-empty" src="/assets/state-empty.svg" alt="" width="200" hidden>
+        <p class="decision-text" id="decision-text"></p>
+        <div class="warn-note well" id="decision-warn" hidden>
+          <span id="decision-warn-text"></span>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="lodestar-act" disabled>Let Lodestar act</button>
+        </div>
+        <p class="muted" id="decision-note"></p>
+        <p class="result" id="decision-result" role="status"></p>
+        <p class="error" id="decision-error" role="alert"></p>
+      </div>
+      <div class="card panel tray" id="tray" aria-labelledby="h-tray" hidden>
+        <h2 class="label" id="h-tray">Needs your word</h2>
+        <div id="tray-items"></div>
+      </div>
+    </section>
   </main>
+  <div class="sr" id="announce" role="status" aria-live="polite"></div>
 </body>
 </html>
