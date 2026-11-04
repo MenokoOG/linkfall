@@ -17,10 +17,18 @@ class RowKind(StrEnum):
     DECISION = "decision"  # the policy's decision at commit time
     SELECTOR = "selector"  # Lodestar's pick, or the fallback
     PILOT = "pilot"  # what the pilot asked for
+    TURN = "turn"  # a turn opened, or its proposals are all in
 
 
 CONTEXT_KINDS = frozenset(
-    {RowKind.PROPOSAL, RowKind.NO_PROPOSAL, RowKind.DECISION, RowKind.SELECTOR, RowKind.PILOT}
+    {
+        RowKind.PROPOSAL,
+        RowKind.NO_PROPOSAL,
+        RowKind.DECISION,
+        RowKind.SELECTOR,
+        RowKind.PILOT,
+        RowKind.TURN,
+    }
 )
 
 

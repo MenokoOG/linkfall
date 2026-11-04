@@ -76,6 +76,21 @@ class HttpModelClient:
             call.abort()
             raise
 
+    async def healthy(self, timeout_s: float = 3.0) -> bool:
+        """True when the server answers its /health route with 200. Never raises."""
+        return await asyncio.to_thread(self._probe, timeout_s)
+
+    def _probe(self, timeout_s: float) -> bool:
+        factory = http.client.HTTPSConnection if self._https else http.client.HTTPConnection
+        conn = factory(self._host, self._port, timeout=timeout_s)
+        try:
+            conn.request("GET", f"{self._prefix}/health")
+            return conn.getresponse().status == _OK
+        except (OSError, http.client.HTTPException):
+            return False
+        finally:
+            conn.close()
+
     def _body(self, request: ModelRequest) -> bytes:
         body: dict[str, object] = {
             "messages": [
