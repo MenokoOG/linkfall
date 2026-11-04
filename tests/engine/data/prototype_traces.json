@@ -1,0 +1,525 @@
+{
+ "source": "Captured by running the Engine block of the LINKFALL Demo artifact (version 1793810488-c141) in an empty Node vm, 2026-11-04. Each step is the state after one resolved turn.",
+ "traces": [
+  {
+   "seed": 4217,
+   "link": 55,
+   "mode": "manual",
+   "init": {
+    "turn": 1,
+    "hp": 100,
+    "heat": 40,
+    "power": 80,
+    "ammo": 60,
+    "strain": 10,
+    "shields": true,
+    "A": 8,
+    "X": 0,
+    "compromised": false,
+    "quarantined": false,
+    "truce": false,
+    "over": false,
+    "outcome": null,
+    "sigOk": 0.97,
+    "sigBad": 0.71
+   },
+   "steps": [
+    {
+     "action": "suppress",
+     "after": {
+      "turn": 2,
+      "hp": 92,
+      "heat": 48,
+      "power": 83,
+      "ammo": 45,
+      "strain": 17,
+      "shields": true,
+      "A": 6,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.98,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "audit_comms",
+     "after": {
+      "turn": 3,
+      "hp": 83,
+      "heat": 46,
+      "power": 76,
+      "ammo": 45,
+      "strain": 27,
+      "shields": true,
+      "A": 9,
+      "X": 0,
+      "compromised": false,
+      "quarantined": true,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.96,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "flank",
+     "after": {
+      "turn": 4,
+      "hp": 69,
+      "heat": 49,
+      "power": 69,
+      "ammo": 45,
+      "strain": 34,
+      "shields": true,
+      "A": 6,
+      "X": 7,
+      "compromised": false,
+      "quarantined": true,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.94,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "accept_truce",
+     "after": {
+      "turn": 5,
+      "hp": 56,
+      "heat": 47,
+      "power": 72,
+      "ammo": 45,
+      "strain": 41,
+      "shields": true,
+      "A": 0,
+      "X": 5,
+      "compromised": false,
+      "quarantined": true,
+      "truce": true,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.94,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "hold_shield",
+     "after": {
+      "turn": 5,
+      "hp": 44,
+      "heat": 35,
+      "power": 70,
+      "ammo": 45,
+      "strain": 43,
+      "shields": true,
+      "A": 0,
+      "X": 5,
+      "compromised": false,
+      "quarantined": true,
+      "truce": true,
+      "over": true,
+      "outcome": "SURVIVED",
+      "sigOk": 0.94,
+      "sigBad": 0.7
+     }
+    }
+   ]
+  },
+  {
+   "seed": 99,
+   "link": 20,
+   "mode": "manual",
+   "init": {
+    "turn": 1,
+    "hp": 100,
+    "heat": 40,
+    "power": 80,
+    "ammo": 60,
+    "strain": 10,
+    "shields": true,
+    "A": 8,
+    "X": 0,
+    "compromised": false,
+    "quarantined": false,
+    "truce": false,
+    "over": false,
+    "outcome": null,
+    "sigOk": 0.95,
+    "sigBad": 0.71
+   },
+   "steps": [
+    {
+     "action": "overcharge",
+     "after": {
+      "turn": 2,
+      "hp": 94,
+      "heat": 68,
+      "power": 83,
+      "ammo": 60,
+      "strain": 22,
+      "shields": true,
+      "A": 4,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.97,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "overcharge",
+     "after": {
+      "turn": 3,
+      "hp": 89,
+      "heat": 66,
+      "power": 86,
+      "ammo": 60,
+      "strain": 34,
+      "shields": true,
+      "A": 7,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.98,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "cooldown",
+     "after": {
+      "turn": 4,
+      "hp": 80,
+      "heat": 39,
+      "power": 84,
+      "ammo": 60,
+      "strain": 46,
+      "shields": true,
+      "A": 7,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.95,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "suppress",
+     "after": {
+      "turn": 5,
+      "hp": 56,
+      "heat": 47,
+      "power": 87,
+      "ammo": 45,
+      "strain": 58,
+      "shields": true,
+      "A": 5,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.97,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "flank",
+     "after": {
+      "turn": 5,
+      "hp": 31,
+      "heat": 50,
+      "power": 80,
+      "ammo": 45,
+      "strain": 70,
+      "shields": true,
+      "A": 2,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": true,
+      "outcome": "SURVIVED",
+      "sigOk": 0.97,
+      "sigBad": 0.7
+     }
+    }
+   ]
+  },
+  {
+   "seed": 4217,
+   "link": 85,
+   "mode": "lodestar-story",
+   "init": {
+    "turn": 1,
+    "hp": 100,
+    "heat": 40,
+    "power": 80,
+    "ammo": 60,
+    "strain": 10,
+    "shields": true,
+    "A": 8,
+    "X": 0,
+    "compromised": false,
+    "quarantined": false,
+    "truce": false,
+    "over": false,
+    "outcome": null,
+    "sigOk": 0.97,
+    "sigBad": 0.71
+   },
+   "steps": [
+    {
+     "action": "overcharge",
+     "after": {
+      "turn": 2,
+      "hp": 96,
+      "heat": 68,
+      "power": 83,
+      "ammo": 60,
+      "strain": 16,
+      "shields": true,
+      "A": 3,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.98,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "drop_shields",
+     "after": {
+      "turn": 3,
+      "hp": 87,
+      "heat": 61,
+      "power": 86,
+      "ammo": 60,
+      "strain": 22,
+      "shields": false,
+      "A": 6,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.96,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "hold_shield",
+     "after": {
+      "turn": 4,
+      "hp": 78,
+      "heat": 49,
+      "power": 84,
+      "ammo": 60,
+      "strain": 23,
+      "shields": true,
+      "A": 6,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.94,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "drop_shields",
+     "after": {
+      "turn": 5,
+      "hp": 25,
+      "heat": 42,
+      "power": 87,
+      "ammo": 60,
+      "strain": 29,
+      "shields": false,
+      "A": 6,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.94,
+      "sigBad": 0.7
+     }
+    },
+    {
+     "action": "hold_shield",
+     "after": {
+      "turn": 5,
+      "hp": 0,
+      "heat": 30,
+      "power": 85,
+      "ammo": 60,
+      "strain": 30,
+      "shields": true,
+      "A": 6,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": true,
+      "outcome": "DESTROYED",
+      "sigOk": 0.94,
+      "sigBad": 0.7
+     }
+    }
+   ]
+  },
+  {
+   "seed": 7781,
+   "link": 45,
+   "mode": "lodestar-story",
+   "init": {
+    "turn": 1,
+    "hp": 100,
+    "heat": 40,
+    "power": 80,
+    "ammo": 60,
+    "strain": 10,
+    "shields": true,
+    "A": 8,
+    "X": 0,
+    "compromised": false,
+    "quarantined": false,
+    "truce": false,
+    "over": false,
+    "outcome": null,
+    "sigOk": 0.96,
+    "sigBad": 0.71
+   },
+   "steps": [
+    {
+     "action": "overcharge",
+     "after": {
+      "turn": 2,
+      "hp": 94,
+      "heat": 68,
+      "power": 83,
+      "ammo": 60,
+      "strain": 13,
+      "shields": true,
+      "A": 4,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.95,
+      "sigBad": 0.74
+     }
+    },
+    {
+     "action": "flank",
+     "after": {
+      "turn": 3,
+      "hp": 87,
+      "heat": 71,
+      "power": 76,
+      "ammo": 60,
+      "strain": 16,
+      "shields": true,
+      "A": 4,
+      "X": 0,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.95,
+      "sigBad": 0.74
+     }
+    },
+    {
+     "action": "cooldown",
+     "after": {
+      "turn": 4,
+      "hp": 81,
+      "heat": 44,
+      "power": 74,
+      "ammo": 60,
+      "strain": 19,
+      "shields": true,
+      "A": 4,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.98,
+      "sigBad": 0.74
+     }
+    },
+    {
+     "action": "overcharge",
+     "after": {
+      "turn": 5,
+      "hp": 64,
+      "heat": 72,
+      "power": 77,
+      "ammo": 60,
+      "strain": 22,
+      "shields": true,
+      "A": 0,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": false,
+      "outcome": null,
+      "sigOk": 0.97,
+      "sigBad": 0.74
+     }
+    },
+    {
+     "action": "cooldown",
+     "after": {
+      "turn": 5,
+      "hp": 47,
+      "heat": 45,
+      "power": 75,
+      "ammo": 60,
+      "strain": 25,
+      "shields": true,
+      "A": 0,
+      "X": 7,
+      "compromised": true,
+      "quarantined": false,
+      "truce": false,
+      "over": true,
+      "outcome": "SURVIVED",
+      "sigOk": 0.97,
+      "sigBad": 0.74
+     }
+    }
+   ]
+  }
+ ]
+}
