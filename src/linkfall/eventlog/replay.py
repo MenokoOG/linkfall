@@ -9,14 +9,9 @@ from linkfall.engine.scenario import SCENARIOS, Scenario
 from linkfall.engine.state import State
 from linkfall.engine.step import EngineError, new_game, step
 from linkfall.eventlog.codec import CodecError, payload_to_command, payload_to_event
+from linkfall.eventlog.consistency import check_turn
 from linkfall.eventlog.store import EventStore
-from linkfall.eventlog.types import LogRow, RowKind
-
-
-@dataclass(frozen=True, slots=True)
-class ReplayFailure:
-    row_id: int | None
-    reason: str
+from linkfall.eventlog.types import CONTEXT_KINDS, LogRow, ReplayFailure, RowKind
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,14 +80,25 @@ def replay(
 
     index = len(group)
     turns = 0
+    pending: list[LogRow] = []  # context rows waiting for their command
     while index < len(rows):
         row = rows[index]
+        if row.kind in {k.value for k in CONTEXT_KINDS}:
+            pending.append(row)
+            index += 1
+            continue
         if row.kind != RowKind.COMMAND.value:
             return _failed(row.id, f"unexpected row kind {row.kind!r}", turns)
         try:
             command = payload_to_command(row.payload)
+        except CodecError as exc:
+            return _failed(row.id, str(exc), turns)
+        if (failure := check_turn(header.mode, pending, command, row.id)) is not None:
+            return ReplayResult(failure, None, None, turns)
+        pending = []
+        try:
             state, events = step(state, scenario, command)
-        except (CodecError, EngineError) as exc:
+        except EngineError as exc:
             return _failed(row.id, str(exc), turns)
         group = _engine_rows_after(rows, index + 1)
         if (failure := _compare(events, group, row.id)) is not None:
@@ -100,5 +106,7 @@ def replay(
         all_events.extend(events)
         turns += 1
         index += 1 + len(group)
+    if (failure := check_turn(header.mode, pending, None, None)) is not None:
+        return ReplayResult(failure, None, None, turns)
 
     return ReplayResult(None, state, fingerprint(state, all_events), turns)

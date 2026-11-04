@@ -12,6 +12,8 @@ GOLDEN = sorted((Path(__file__).parent / "golden").glob("*.json"))
 EXPECTED_OUTCOME = {
     "story-forged-order-link85": "DESTROYED",
     "pilot-audit-and-truce-link55": "SURVIVED",
+    "mission-story-link85": "DESTROYED",
+    "mission-hardened-link85": "FIELD CLEARED",
 }
 
 
