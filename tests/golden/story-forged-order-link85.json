@@ -1,0 +1,207 @@
+{
+ "fingerprint": "85877b8bcbe79152fa623af2f2ec51f1093aae46bc184cdb80b561a1e4e7c88a",
+ "rows": [
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "system",
+    "message": "Run seed 4217. Mission 03, Cinder Ward. Ashgrove sentries at 400 m.",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "overcharge",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "overcharge",
+    "kind": "valid",
+    "message": "VALID overcharge (x1.25 delegated)",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -4 integrity.",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "warn",
+    "message": "Squad channel: inbound burst, signature 0.70 (expected 0.94 or better).",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "drop_shields",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "drop_shields",
+    "kind": "valid",
+    "message": "VALID drop_shields (x1.25 delegated)",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -9 integrity (shields down).",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "system",
+    "message": "Ashgrove reinforcements arrive. +3 units.",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "hold_shield",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "hold_shield",
+    "kind": "valid",
+    "message": "VALID hold_shield (x1.25 delegated)",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -9 integrity.",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "warn",
+    "message": "Unknown dropship on radar, descending fast. 7 hostile signatures.",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "drop_shields",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 4
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "drop_shields",
+    "kind": "valid",
+    "message": "VALID drop_shields (x1.25 delegated)",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -53 integrity (shields down).",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "hold_shield",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "hold_shield",
+    "kind": "valid",
+    "message": "VALID hold_shield (x1.25 delegated)",
+    "turn": 5
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -25 integrity.",
+    "turn": 5
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "over",
+    "message": "Mission over: DESTROYED.",
+    "turn": 5
+   },
+   "turn": 5
+  }
+ ],
+ "run": {
+  "mode": "story",
+  "run_id": "golden-story-forged-order-link85",
+  "scenario": "cinder-ward",
+  "seed": 4217
+ },
+ "schema_version": 1
+}

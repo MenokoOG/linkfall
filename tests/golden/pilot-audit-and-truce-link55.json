@@ -1,0 +1,207 @@
+{
+ "fingerprint": "b00f94db40c6a36939910bd50ec403022b82bc8bec7d3a40372787a754300de1",
+ "rows": [
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "system",
+    "message": "Run seed 4217. Mission 03, Cinder Ward. Ashgrove sentries at 400 m.",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "suppress",
+    "manual": true,
+    "zone": "ASSISTED"
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "suppress",
+    "kind": "valid",
+    "message": "VALID suppress",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -8 integrity.",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "warn",
+    "message": "Squad channel: inbound burst, signature 0.70 (expected 0.94 or better).",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "audit_comms",
+    "manual": true,
+    "zone": "ASSISTED"
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "audit_comms",
+    "kind": "valid",
+    "message": "VALID audit_comms",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -9 integrity.",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "system",
+    "message": "Ashgrove reinforcements arrive. +3 units.",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "flank",
+    "manual": true,
+    "zone": "ASSISTED"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "flank",
+    "kind": "valid",
+    "message": "VALID flank",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -9 integrity.",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "warn",
+    "message": "Unknown dropship on radar, descending fast. 7 hostile signatures.",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "accept_truce",
+    "manual": true,
+    "zone": "ASSISTED"
+   },
+   "turn": 4
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "accept_truce",
+    "kind": "valid",
+    "message": "VALID accept_truce",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -13 integrity.",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "hold_shield",
+    "manual": true,
+    "zone": "ASSISTED"
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "hold_shield",
+    "kind": "valid",
+    "message": "VALID hold_shield",
+    "turn": 5
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -12 integrity.",
+    "turn": 5
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "over",
+    "message": "Mission over: SURVIVED.",
+    "turn": 5
+   },
+   "turn": 5
+  }
+ ],
+ "run": {
+  "mode": "story",
+  "run_id": "golden-pilot-audit-and-truce-link55",
+  "scenario": "cinder-ward",
+  "seed": 4217
+ },
+ "schema_version": 1
+}

@@ -15,7 +15,7 @@ select = ["E", "F", "I", "B", "UP", "S", "SIM", "C4", "PT", "RUF", "N", "A", "T2
 python_version = "3.13"
 strict = true
 mypy_path = "src"
-files = ["src", "tests"]
+files = ["src", "tests", "scripts"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
