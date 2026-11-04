@@ -1,6 +1,6 @@
 # 0004: Two containers on an internal network
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 
@@ -20,7 +20,7 @@ Two networks:
 - `backend` has `internal: true` and holds `api` and `model`. The model container has no route to the internet.
 - `edge` is a normal bridge attached to `api` only, so the host can reach the published port.
 
-Hardening for both containers: non-root user, read-only root filesystem, all capabilities dropped. Model weights live in a read-only bind mount (`./models:/models:ro`) and are downloaded by hand. They are never baked into an image.
+Hardening for both containers: non-root user, read-only root filesystem, all capabilities dropped. The one writable path in `api` is a named volume (`linkfall-data:/data`) that holds the SQLite event log; `/tmp` is a tmpfs. The `model` container has no writable path. Model weights live in a read-only bind mount (`./models:/models:ro`) and are downloaded by hand. They are never baked into an image.
 
 Smoke tests: the `model` container must fail to reach the internet, and `api` must answer on `127.0.0.1` only. Both run at scaffold time. The first claim is unverified until then.
 

@@ -1,6 +1,6 @@
 # 0002: Deterministic engine owns state, agents propose
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 
@@ -17,7 +17,7 @@ We will split the system into four parts under `src/linkfall/`.
 - **`engine/`** is a pure Python module. It does no network calls, reads no clock and touches no files. It takes a state, an action and a seeded random generator, and returns a new state plus a list of events.
 - **`agents/`** holds one module per agent. Each agent receives a filtered view of the state and returns one proposal as JSON that matches a JSON Schema.
 - **`validator/`** checks the schema first, then the rule preconditions (for example, overcharge needs heat at or below 60). It rejects with a reason and never repairs a proposal silently.
-- **`eventlog/`** is an append-only SQLite table. Every proposal (accepted or rejected) and every engine event is a row. The current state is a fold over the events.
+- **`eventlog/`** is an append-only SQLite table. Every proposal (accepted or rejected), every selector output, every supervisor decision and every engine event is a row, and proposal rows hold the full proposal. The current state is a fold over the events. Replay reads the logged proposals and selector outputs and never calls a model.
 
 A run is identified by its seed, its scenario id and its event log. Replaying a log with the same seed must give an identical final state, and CI runs that check.
 

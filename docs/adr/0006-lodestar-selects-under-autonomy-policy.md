@@ -1,6 +1,6 @@
 # 0006: Lodestar selects proposals under autonomy policy
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 
@@ -14,9 +14,9 @@ The library's authority rule applies to the game as well: agents propose, humans
 
 We will split Lodestar into a policy and a selector, in `src/linkfall/policy/` and `src/linkfall/agents/lodestar.py`.
 
-- **Policy** is a pure function, `decide(link, mode, proposals) -> Decision`, and holds no state. It computes the zone and the eligible set, and returns one of `LOCKED`, `ASK_PILOT(options)` or `EXECUTE(candidates)`.
+- **Policy** is a pure function, `decide(link, mode, proposals) -> Decision`, and holds no state. It computes the zone and the eligible set, and returns one of `MANUAL`, `ASK_PILOT(options)` or `EXECUTE(candidates)`.
 - **Selector** is the only model call Lodestar makes. It returns `{"pick": <index or null>, "reason": "<140 characters or fewer>"}`. The index must point into the eligible candidates. Anything else triggers the fallback: the first valid candidate in the order Tactical, then Systems.
-- **Zones.** Below 30 the link is locked and Lodestar is not called. From 30 to 59 the zone is assisted, and only `internal` proposals are eligible. From 60 up the zone is delegated. In the demo this zone was called autonomous. We rename it, so the wording matches the guarded wording in the sibling project, which avoids calling agents autonomous.
+- **Zones.** Below 30 the zone is MANUAL and Lodestar is not called. From 30 to 59 the zone is ASSISTED, and only `internal` proposals are eligible. From 60 up the zone is DELEGATED. In the demo this zone was called autonomous. We rename it, so the wording matches the guarded wording in the sibling project, which avoids calling agents autonomous.
 - **Mode** is a run setting recorded in the event log header, so a replay is exact.
   - `story` is the default. In the delegated zone, `external` proposals are eligible. This is a deliberate, labeled weakness, because it is the lesson.
   - `hardened`: `external` proposals are never eligible for `EXECUTE`. They become `ASK_PILOT`.
