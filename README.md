@@ -19,6 +19,20 @@ The setting: two corporate agent armies at war, then an alien arrival forces a t
 
 Open source. No vendor lock-in. One `docker compose up`. Works offline. Runs on a laptop with an i5, 16 GB of RAM and no GPU. All names, grids and codes in the game are fictional.
 
+## Development
+
+Needs Python 3.13. Pinned, hashed dependencies are in `requirements-dev.txt`.
+
+```bash
+python3.13 -m venv .venv
+. .venv/bin/activate
+python -m pip install --require-hashes -r requirements-dev.txt
+ruff check . && ruff format --check . && mypy
+coverage run -m pytest -m "not integration" && coverage report
+```
+
+To change a dependency, edit `requirements.in` or `requirements-dev.in`, then regenerate the hashed files with `uv pip compile --generate-hashes --python-version 3.13 --exclude-newer <date 14 days ago>`.
+
 ## Roadmap
 
 1. M1: core loop and UI.

@@ -1,2 +1,15 @@
 # Design reference package: assets and palette source, kept local. Shipped copies live in src/linkfall/web/.
 docs/linkfall-design-package/
+
+# python and tooling
+.venv/
+__pycache__/
+*.pyc
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+
+# runtime data and model weights (never committed)
+data/
+models/
