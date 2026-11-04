@@ -1,6 +1,6 @@
 # 0005: Typed agent contract with filtered views
 
-Date: 2026-11-04 · Status: Accepted
+Date: 2026-11-04 · Status: Accepted, amended by 0011 (view contents, agent return type)
 
 ## Context
 
