@@ -12,7 +12,7 @@ from linkfall.agents.views import AgentView, CommsView, TacticalView
 from linkfall.engine.actions import Action
 from linkfall.policy.decision import Candidate
 from linkfall.provenance import Provenance
-from linkfall.supervisor.selector import SelectorOutput
+from linkfall.supervisor.selector import SelectorContext, SelectorOutput
 from linkfall.validator.reply import SAY_MAX_CHARS, ProposalReply, ProposedAction, RelayArgs
 
 _CLUSTER = 5
@@ -72,7 +72,9 @@ class ScriptedComms:
 class ScriptedSelector:
     """Prefers a relayed enemy order, then Tactical, then the first candidate."""
 
-    async def select(self, candidates: Sequence[Candidate]) -> SelectorOutput:
+    async def select(
+        self, candidates: Sequence[Candidate], context: SelectorContext
+    ) -> SelectorOutput:
         for index, candidate in enumerate(candidates):
             if (
                 candidate.provenance is Provenance.EXTERNAL

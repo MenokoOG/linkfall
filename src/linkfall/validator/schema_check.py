@@ -10,7 +10,7 @@ _MAX_REASON_CHARS = 200
 _MAX_NAME_CHARS = 40
 
 
-def _describe(exc: ValidationError) -> str:
+def describe(exc: ValidationError) -> str:
     """Short reason from the error list. Never echoes the model's input values."""
     parts: list[str] = []
     for error in exc.errors(include_input=False, include_url=False, include_context=False)[:3]:
@@ -27,4 +27,4 @@ def check_schema(text: str) -> ProposalReply | Rejected:
     try:
         return ProposalReply.model_validate_json(text, strict=True)
     except ValidationError as exc:
-        return Rejected(Stage.SCHEMA, _describe(exc))
+        return Rejected(Stage.SCHEMA, describe(exc))

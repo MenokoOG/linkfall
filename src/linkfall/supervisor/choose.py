@@ -8,7 +8,12 @@ from linkfall.policy.decision import Candidate, Decision
 from linkfall.policy.fallback import fallback_pick
 from linkfall.supervisor.budgets import Budgets
 from linkfall.supervisor.modelclient import ModelError
-from linkfall.supervisor.selector import SELECTOR_REASON_MAX, Selector, SelectorOutput
+from linkfall.supervisor.selector import (
+    SELECTOR_REASON_MAX,
+    Selector,
+    SelectorContext,
+    SelectorOutput,
+)
 
 _NOTHING = "Nothing eligible. Standing by."
 
@@ -33,7 +38,11 @@ def _usable(output: SelectorOutput, count: int) -> str | None:
 
 
 async def choose(
-    selector: Selector, decision: Decision, budgets: Budgets, clock: Callable[[], float]
+    selector: Selector,
+    decision: Decision,
+    context: SelectorContext,
+    budgets: Budgets,
+    clock: Callable[[], float],
 ) -> Selection:
     candidates = decision.eligible
     started = clock()
@@ -42,7 +51,9 @@ async def choose(
     why: str | None = None
     output: SelectorOutput | None = None
     try:
-        output = await asyncio.wait_for(selector.select(candidates), timeout=budgets.timeout_s)
+        output = await asyncio.wait_for(
+            selector.select(candidates, context), timeout=budgets.timeout_s
+        )
     except TimeoutError:
         why = f"selector timeout after {budgets.timeout_s:g}s"
     except ModelError as exc:

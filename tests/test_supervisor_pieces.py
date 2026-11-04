@@ -6,6 +6,7 @@ import pytest
 from linkfall.agent_name import AgentName
 from linkfall.agents.scripted import ScriptedSelector
 from linkfall.engine.actions import Action
+from linkfall.engine.zone_effects import Zone
 from linkfall.policy.decide import decide
 from linkfall.policy.decision import Candidate, Decision
 from linkfall.provenance import Provenance
@@ -14,10 +15,11 @@ from linkfall.supervisor.budgets import Budgets
 from linkfall.supervisor.choose import Selection, choose
 from linkfall.supervisor.fake_client import FakeClient, NoModelClient
 from linkfall.supervisor.modelclient import ModelError, ModelRequest
-from linkfall.supervisor.selector import RulesSelector, SelectorOutput
+from linkfall.supervisor.selector import RulesSelector, SelectorContext, SelectorOutput
 from linkfall.validator.reply import ProposalReply, ProposedAction, RelayArgs
 
 FAST = Budgets(timeout_s=0.05)
+CONTEXT = SelectorContext(1, Zone.ASSISTED, 100, 40, 60, 80, True, 8)
 
 
 def cand(agent: AgentName, action: Action, prov: Provenance = Provenance.INTERNAL) -> Candidate:
@@ -34,7 +36,9 @@ class Fixed:
         self._output = output
         self._delay_s = delay_s
 
-    async def select(self, candidates: Sequence[Candidate]) -> SelectorOutput:
+    async def select(
+        self, candidates: Sequence[Candidate], context: SelectorContext
+    ) -> SelectorOutput:
         await asyncio.sleep(self._delay_s)
         if isinstance(self._output, Exception):
             raise self._output
@@ -46,7 +50,7 @@ def decision(*candidates: Candidate) -> Decision:
 
 
 def pick(selector: Fixed | ScriptedSelector | RulesSelector, *candidates: Candidate) -> Selection:
-    return asyncio.run(choose(selector, decision(*candidates), FAST, lambda: 0.0))
+    return asyncio.run(choose(selector, decision(*candidates), CONTEXT, FAST, lambda: 0.0))
 
 
 def test_a_valid_pick_stands() -> None:
@@ -99,7 +103,7 @@ def test_long_reasons_are_cut_to_140() -> None:
 def test_rules_selector_is_tactical_then_systems() -> None:
     assert pick(RulesSelector(), SYSTEMS, TACTICAL).chosen is TACTICAL
     assert pick(RulesSelector(), SYSTEMS).chosen is SYSTEMS
-    out = asyncio.run(RulesSelector().select([cand(AgentName.COMMS, Action.HOLD_SHIELD)]))
+    out = asyncio.run(RulesSelector().select([cand(AgentName.COMMS, Action.HOLD_SHIELD)], CONTEXT))
     assert out.pick is None
 
 
@@ -111,9 +115,9 @@ def test_scripted_selector_follows_the_prototype() -> None:
         say="x",
     )
     forged = Candidate(AgentName.COMMS, relay, Provenance.EXTERNAL)
-    assert asyncio.run(ScriptedSelector().select([SYSTEMS, forged, TACTICAL])).pick == 1
-    assert asyncio.run(ScriptedSelector().select([SYSTEMS, TACTICAL])).pick == 1
-    assert asyncio.run(ScriptedSelector().select([SYSTEMS])).pick == 0
+    assert asyncio.run(ScriptedSelector().select([SYSTEMS, forged, TACTICAL], CONTEXT)).pick == 1
+    assert asyncio.run(ScriptedSelector().select([SYSTEMS, TACTICAL], CONTEXT)).pick == 1
+    assert asyncio.run(ScriptedSelector().select([SYSTEMS], CONTEXT)).pick == 0
 
 
 def test_fake_client_records_requests_and_can_fail() -> None:

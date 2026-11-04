@@ -49,7 +49,7 @@ We will use **Qwen3-4B-Instruct-2507**, quantized Q4_K_M, served by llama.cpp.
 - Pro: free license, fits the memory cap, about 9 s per call at 6 threads, constrained JSON works.
 - Pro: the pins make the setup reproducible and the swap path is clear.
 - Con: a turn with three model calls costs about 27 s (computed from the medians, not measured on a full turn). Mitigation: ADR 0008 streams cards.
-- Con: evidence is thin: 8 prompts per mode, one prompt template, temperature 0, Tactical only. Comms and the Lodestar selector are untested. Mitigation: the model evals in ADR 0007 run before M1 closes.
+- Con: evidence is thin. The first pass used 8 prompts per mode, one template, temperature 0, Tactical only. A second pass on 2026-11-04 ran the real agents: 6 Tactical states (6 of 6 schema-valid, 4 of 6 rule-valid), 3 Comms states (quiet, forged order, truce offer: each read correctly), 1 selector call, and two full five-turn missions (15 calls each, median 7.8 s, max 12.3 s, about 24 s per turn, prompts of 356 tokens with 307 served from cache). That is still a handful of samples at temperature 0. Mitigation: the model evals in ADR 0007 run before M1 closes.
 - Con: Qwen's replies use long dashes in flavor text. That is model output, not LINKFALL copy, and we leave it.
 - Undo: easy. `ModelClient` and the compose file isolate the model.
 
