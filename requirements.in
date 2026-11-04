@@ -1,0 +1,4 @@
+# Direct runtime dependencies. Newest release at least 14 days old on 2026-11-04.
+fastapi==0.156.4
+uvicorn==0.54.0
+pydantic==2.14.1
