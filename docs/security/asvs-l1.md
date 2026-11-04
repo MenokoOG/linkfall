@@ -10,7 +10,7 @@ Status is **planned** until a step ships the control with a test. Update this fi
 |---|---|---|---|---|
 | v5.0.0-1.2.1 | Output encoding fits the context (HTTP, HTML) | Server sends JSON and static files only; UI sets text with `textContent` | 9, 10 | planned |
 | v5.0.0-1.2.3 | Encode when building JavaScript or JSON content | No server-built script; JSON from a serializer only | 9 | planned |
-| v5.0.0-1.2.4 | Parameterized database queries | Event log uses `?` placeholders, never string-built SQL | 3 | planned |
+| v5.0.0-1.2.4 | Parameterized database queries | Event log uses `?` placeholders, never string-built SQL; test stores SQL metacharacters as data | 3 | **done** (`tests/test_eventlog_store.py`) |
 | v5.0.0-1.3.2 | No `eval()` or dynamic code execution | Lint rule `S` (bandit set) in CI; no `eval` in the web code | 1, 10 | enforced for Python (lint) |
 | v5.0.0-2.1.1 | Documentation defines input validation rules | API input table in the API docs (link 10 to 90 step 5, action enum, mode enum) | 9 | planned |
 | v5.0.0-2.2.1 | Positive validation against allowlists | Pydantic models with enums and ranges | 9 | planned |
@@ -22,7 +22,7 @@ Status is **planned** until a step ships the control with a test. Update this fi
 | v5.0.0-3.5.1 | Cross-origin requests to sensitive functions are validated | Origin header check plus a custom request header on every POST | 9 | planned |
 | v5.0.0-3.5.3 | Sensitive functions use POST, not GET or HEAD | State changes are POST only | 9 | planned |
 | v5.0.0-4.1.1 | Content-Type matches content, with charset | Test over every route | 9 | planned |
-| v5.0.0-11.4.1 | Only approved hash functions | SHA-256 for the replay fingerprint | 2 | planned |
+| v5.0.0-11.4.1 | Only approved hash functions | SHA-256 for the replay fingerprint (`engine/fingerprint.py`) | 2 | **done** |
 | v5.0.0-13.4.1 | No `.git` metadata in the deployed app | `.dockerignore` excludes `.git`; test checks the image | 11 | planned |
 | v5.0.0-14.2.1 | No sensitive data in URLs | Run ids are random and carry no secret; no keys exist | 9 | planned |
 | v5.0.0-15.1.1 | Documented remediation time frames for vulnerable components | Section below | 1 | **done** |

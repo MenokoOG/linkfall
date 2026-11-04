@@ -55,3 +55,6 @@ CINDER_WARD = Scenario(
         4: (Dropship(units=7),),
     },
 )
+
+
+SCENARIOS: Mapping[str, Scenario] = {CINDER_WARD.name: CINDER_WARD}
