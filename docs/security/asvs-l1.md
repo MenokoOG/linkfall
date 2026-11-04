@@ -11,7 +11,7 @@ Status is **planned** until a step ships the control with a test. Update this fi
 | v5.0.0-1.2.1 | Output encoding fits the context (HTTP, HTML) | Server sends JSON and event streams only so far; the UI will set text with `textContent` | 9, 10 | **done** for the API (`tests/test_api_runs.py`); UI in step 10 |
 | v5.0.0-1.2.3 | Encode when building JavaScript or JSON content | No server-built script; JSON from `json.dumps` and FastAPI only (`api/sse.py`, `api/schemas.py`) | 9 | **done** |
 | v5.0.0-1.2.4 | Parameterized database queries | Event log uses `?` placeholders, never string-built SQL; test stores SQL metacharacters as data | 3 | **done** (`tests/test_eventlog_store.py`) |
-| v5.0.0-1.3.2 | No `eval()` or dynamic code execution | Lint rule `S` (bandit set) in CI; no `eval` in the web code | 1, 10 | enforced for Python (lint) |
+| v5.0.0-1.3.2 | No `eval()` or dynamic code execution | Lint rule `S` (bandit set) in CI; the web code is scanned for `eval`, `new Function`, string timers and HTML sinks (`tests/web/static.test.mjs`) | 1, 10 | **done** |
 | v5.0.0-2.1.1 | Documentation defines input validation rules | The input table is the docstring of `api/schemas.py` | 9 | **done** |
 | v5.0.0-2.2.1 | Positive validation against allowlists | Strict pydantic models: enums, ranges, no extra fields, no "1" for 1 (`tests/test_api_security.py`) | 9 | **done** |
 | v5.0.0-2.2.2 | Validation at a trusted service layer | The server validates every field; the policy, supervisor and engine validate again | 9 | **done** |
@@ -20,7 +20,7 @@ Status is **planned** until a step ships the control with a test. Update this fi
 | v5.0.0-3.2.2 | Text shown as text, via safe functions | `textContent` for all model and enemy text | 10 | planned |
 | v5.0.0-3.4.2 | CORS allow-origin is fixed or allowlisted | No CORS headers are sent; Host allowlist (`TrustedHostMiddleware`) blocks DNS rebinding | 9 | **done** |
 | v5.0.0-3.5.1 | Cross-origin requests to sensitive functions are validated | Custom `X-Linkfall-Request: 1` header, Origin must match Host, `Sec-Fetch-Site: cross-site` refused, on every POST | 9 | **done** |
-| v5.0.0-3.5.3 | Sensitive functions use POST, not GET or HEAD | State changes are POST only; GET on those routes returns 405 | 9 | **done** |
+| v5.0.0-3.5.3 | Sensitive functions use POST, not GET or HEAD | State changes are POST only; a GET on those routes returns 404 or 405 and changes nothing | 9 | **done** |
 | v5.0.0-4.1.1 | Content-Type matches content, with charset | JSON and event-stream types checked by tests; static files come with step 10 | 9 | **done** for the API |
 | v5.0.0-11.4.1 | Only approved hash functions | SHA-256 for the replay fingerprint (`engine/fingerprint.py`) | 2 | **done** |
 | v5.0.0-13.4.1 | No `.git` metadata in the deployed app | `.dockerignore` excludes `.git`; test checks the image | 11 | planned |

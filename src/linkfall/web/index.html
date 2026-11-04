@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LINKFALL console</title>
+  <meta name="description" content="Set how far a lead agent may act without you, then watch what a crew of AI agents does with it.">
+  <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/js/main.js"></script>
+</head>
+<body data-zone="ASSISTED">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <a class="skip" href="#main">Skip to the console</a>
+
+  <header class="nav panel">
+    <img src="/assets/logo-wordmark.svg" alt="LINKFALL">
+    <span class="chip" id="run-chip">No run yet</span>
+    <span class="spacer"></span>
+    <span class="muted" id="turn-chip">Turn - of -</span>
+  </header>
+
+  <div class="banner panel" id="banner" role="status" hidden>
+    <span id="banner-text"></span>
+  </div>
+
+  <main id="main">
+    <section class="col" aria-labelledby="h-link">
+      <div class="card panel">
+        <h2 class="label" id="h-link">Pilot link</h2>
+        <div class="knob-wrap">
+          <div class="knob-stage" id="knob-stage">
+            <div class="knob" id="knob" role="slider" tabindex="0" aria-label="Link value"
+                 aria-valuemin="10" aria-valuemax="90" aria-valuenow="55">
+              <div class="knob-dot"></div>
+              <div class="knob-readout" id="knob-readout" aria-hidden="true">55</div>
+            </div>
+          </div>
+        </div>
+        <div class="zone-row">
+          <img id="zone-icon" src="/assets/zone-assisted.svg" alt="" width="36" height="36">
+          <b id="zone-name">Assisted</b>
+        </div>
+        <p class="zone-help" id="zone-help"></p>
+        <label class="sr" for="link-range">Link value, keyboard and screen reader fallback</label>
+        <input type="range" id="link-range" min="10" max="90" step="5" value="55">
+      </div>
+
+      <form class="card panel" id="run-form" aria-labelledby="h-run" novalidate>
+        <h2 class="label" id="h-run">Mission</h2>
+        <fieldset class="field">
+          <legend>Run mode</legend>
+          <div class="seg" role="radiogroup" aria-label="Run mode">
+            <label><input type="radio" name="mode" value="story" checked><span>Story</span></label>
+            <label><input type="radio" name="mode" value="hardened"><span>Hardened</span></label>
+          </div>
+          <p class="muted seg-help" id="mode-help"></p>
+        </fieldset>
+        <fieldset class="field">
+          <legend>Crew</legend>
+          <div class="seg" role="radiogroup" aria-label="Crew">
+            <label><input type="radio" name="crew" value="scripted" checked><span>Scripted</span></label>
+            <label><input type="radio" name="crew" value="model"><span>Model</span></label>
+          </div>
+          <p class="muted seg-help" id="crew-help"></p>
+        </fieldset>
+        <div class="field">
+          <label for="seed">Seed</label>
+          <input type="number" id="seed" name="seed" min="0" max="4294967295" step="1" value="4217" inputmode="numeric">
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="start-run">Start run</button>
+          <button type="button" class="btn" id="new-seed">New seed</button>
+        </div>
+        <p class="error" id="form-error" role="alert"></p>
+      </form>
+
+      <div class="card panel" aria-labelledby="h-state">
+        <h2 class="label" id="h-state">Engine state</h2>
+        <div id="gauges"></div>
+        <div class="forces" id="forces"></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

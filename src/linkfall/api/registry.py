@@ -43,6 +43,8 @@ class ModelUnavailableError(Exception):
 @dataclass
 class ActiveRun:
     run: Run
+    seed: int
+    scenario: str
     lock: asyncio.Lock = field(default_factory=asyncio.Lock)
     phase: Phase = Phase.IDLE
     session: TurnSession | None = None
@@ -93,7 +95,7 @@ class Registry:
             budgets=self._config.budgets,
         )
         run_id = secrets.token_urlsafe(12)
-        active = ActiveRun(Run.start(deps, run_id, seed, mode))
+        active = ActiveRun(Run.start(deps, run_id, seed, mode), seed, scenario)
         self._runs[run_id] = active
         return run_id, active, "model" if use_model else "scripted"
 

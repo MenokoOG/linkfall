@@ -31,6 +31,7 @@ def test_create_returns_the_new_run() -> None:
         assert body["mode"] == "hardened"
         assert body["crew"] == "scripted"
         assert body["phase"] == "idle"
+        assert (body["seed"], body["scenario"], body["max_turns"]) == (4217, "cinder-ward", 5)
         assert body["turn"] == 1
         assert body["state"]["hp"] == 100
         assert "rng_state" not in body["state"]
@@ -266,6 +267,7 @@ def test_a_run_from_an_earlier_process_can_be_read_but_not_played() -> None:
         state = (await restarted.get(f"/api/runs/{run_id}/state")).json()
         assert state["phase"] == "closed"
         assert state["replay_ok"] is True
+        assert (state["seed"], state["scenario"], state["max_turns"]) == (4217, "cinder-ward", 5)
         assert state["turn"] == 2
         assert (await restarted.post(f"/api/runs/{run_id}/turns", {"link": 55})).status == 409
         assert (await restarted.get(f"/api/runs/{run_id}/replay")).json()["ok"] is True

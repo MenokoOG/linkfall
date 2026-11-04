@@ -31,13 +31,21 @@ ruff check . && ruff format --check . && mypy
 coverage run -m pytest -m "not integration" && coverage report
 ```
 
+Web code has its own tests, with no packages to install:
+
+```bash
+node --test tests/web/*.test.mjs
+```
+
 To change a dependency, edit `requirements.in` or `requirements-dev.in`, then regenerate the hashed files with `uv pip compile --generate-hashes --python-version 3.13 --exclude-newer <date 14 days ago>`.
 
 ### Run the API
 
 ```bash
-LINKFALL_DB=data/linkfall.sqlite3 uvicorn linkfall.api.main:app --host 127.0.0.1 --port 8000
+LINKFALL_DB=data/linkfall.sqlite3 uvicorn --app-dir src linkfall.api.main:app --host 127.0.0.1 --port 8000
 ```
+
+Then open http://127.0.0.1:8000/ for the console.
 
 Without `LINKFALL_MODEL_URL` the API offers the scripted crew only. Set it to an OpenAI-compatible server, for example `http://127.0.0.1:8090`, to play with the model crew. Other settings: `LINKFALL_ALLOWED_HOSTS`, `LINKFALL_MODEL_TIMEOUT_S`, `LINKFALL_MAX_RUNS`.
 
