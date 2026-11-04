@@ -7,6 +7,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 ### Added
 - ADRs 0001 to 0006, all Accepted (`docs/adr/`).
 - README, SECURITY policy and Dependabot config for GitHub Actions and pip.
+- Supervisor (`src/linkfall/supervisor/`): `ModelClient` protocol, `FakeClient`, per-call timeouts, proposal collection and validation, Lodestar selector with fallback, pilot choices (Lodestar acts, manual pick, sign, dismiss), and idempotent commits. Scripted stand-ins for the model agents (`agents/scripted.py`). Replay now re-runs the policy over logged proposals and checks the logged decision, selector and signature against the command. Two golden mission logs (story and hardened at link 85).
 - Agent contract (`src/linkfall/agents/`): filtered views, allowlist table, `Agent` protocol, and the Systems and Vitals rules agents. Squad channel messages in `engine/channel.py`. ADR 0011 (Proposed) amends the view contents of ADR 0005.
 - Policy (`src/linkfall/policy/`): `decide(link, mode, candidates)` with the MANUAL, ASSISTED and DELEGATED zones, story and hardened modes, and a pilot signature for every truce. Fallback order for a failed selector.
 - Validator (`src/linkfall/validator/`): strict reply model, schema check, identity, allowlist and rule-precondition stages. Rejects with a reason and never repairs.

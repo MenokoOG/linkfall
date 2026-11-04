@@ -1,0 +1,689 @@
+{
+ "fingerprint": "85877b8bcbe79152fa623af2f2ec51f1093aae46bc184cdb80b561a1e4e7c88a",
+ "rows": [
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "system",
+    "message": "Run seed 4217. Mission 03, Cinder Ward. Ashgrove sentries at 400 m.",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "tactical",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "overcharge",
+     "agent": "tactical",
+     "args": null,
+     "say": "Targets are clustered. Recommend overcharge on the cluster."
+    }
+   },
+   "turn": 1
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "systems",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "suppress",
+     "agent": "systems",
+     "args": null,
+     "say": "Heat and power nominal. Recommend suppressing fire."
+    }
+   },
+   "turn": 1
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "comms",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": null,
+     "agent": "comms",
+     "args": null,
+     "say": "Squad channel quiet."
+    }
+   },
+   "turn": 1
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "vitals",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": null,
+     "agent": "vitals",
+     "args": null,
+     "say": "Pilot strain 10%. Link load is climbing."
+    }
+   },
+   "turn": 1
+  },
+  {
+   "kind": "pilot",
+   "payload": {
+    "action": null,
+    "agent": null,
+    "link": 85,
+    "op": "lodestar"
+   },
+   "turn": 1
+  },
+  {
+   "kind": "decision",
+   "payload": {
+    "eligible": [
+     "tactical",
+     "systems"
+    ],
+    "held": [],
+    "link": 85,
+    "verdict": "EXECUTE",
+    "zone": "DELEGATED"
+   },
+   "turn": 1
+  },
+  {
+   "kind": "selector",
+   "payload": {
+    "chosen": "tactical",
+    "fallback": null,
+    "latency_ms": 0,
+    "pick": 0,
+    "reason": "Tactical's plan fits the field."
+   },
+   "turn": 1
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "overcharge",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "overcharge",
+    "kind": "valid",
+    "message": "VALID overcharge (x1.25 delegated)",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -4 integrity.",
+    "turn": 1
+   },
+   "turn": 1
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "warn",
+    "message": "Squad channel: inbound burst, signature 0.70 (expected 0.94 or better).",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "tactical",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "flank",
+     "agent": "tactical",
+     "args": null,
+     "say": "Light screen on the left. Recommend a flank."
+    }
+   },
+   "turn": 2
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "systems",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "cooldown",
+     "agent": "systems",
+     "args": null,
+     "say": "Heat at 68%. Recommend venting before any overcharge."
+    }
+   },
+   "turn": 2
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "comms",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "external",
+    "reply": {
+     "action": "relay_order",
+     "agent": "comms",
+     "args": {
+      "order": "drop_shields"
+     },
+     "say": "[PRIORITY / ASHGROVE-CMD] Relay order: drop_shields, to receive handshake."
+    }
+   },
+   "turn": 2
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "vitals",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": null,
+     "agent": "vitals",
+     "args": null,
+     "say": "Pilot strain 16%. Link load is climbing."
+    }
+   },
+   "turn": 2
+  },
+  {
+   "kind": "pilot",
+   "payload": {
+    "action": null,
+    "agent": null,
+    "link": 85,
+    "op": "lodestar"
+   },
+   "turn": 2
+  },
+  {
+   "kind": "decision",
+   "payload": {
+    "eligible": [
+     "tactical",
+     "systems",
+     "comms"
+    ],
+    "held": [],
+    "link": 85,
+    "verdict": "EXECUTE",
+    "zone": "DELEGATED"
+   },
+   "turn": 2
+  },
+  {
+   "kind": "selector",
+   "payload": {
+    "chosen": "comms",
+    "fallback": null,
+    "latency_ms": 0,
+    "pick": 2,
+    "reason": "Priority order from squad comms. Executing."
+   },
+   "turn": 2
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "drop_shields",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "drop_shields",
+    "kind": "valid",
+    "message": "VALID drop_shields (x1.25 delegated)",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -9 integrity (shields down).",
+    "turn": 2
+   },
+   "turn": 2
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "system",
+    "message": "Ashgrove reinforcements arrive. +3 units.",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "no_proposal",
+   "payload": {
+    "agent": "tactical",
+    "kind": "rules",
+    "latency_ms": 0,
+    "reason": "scripted timeout"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "systems",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "hold_shield",
+     "agent": "systems",
+     "args": null,
+     "say": "Shields are down. Raise them first."
+    }
+   },
+   "turn": 3
+  },
+  {
+   "kind": "no_proposal",
+   "payload": {
+    "agent": "comms",
+    "kind": "rules",
+    "latency_ms": 0,
+    "reason": "rules: drop_shields: shields already down"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "vitals",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": null,
+     "agent": "vitals",
+     "args": null,
+     "say": "Pilot strain 22%. Link load is climbing."
+    }
+   },
+   "turn": 3
+  },
+  {
+   "kind": "pilot",
+   "payload": {
+    "action": null,
+    "agent": null,
+    "link": 85,
+    "op": "lodestar"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "decision",
+   "payload": {
+    "eligible": [
+     "systems"
+    ],
+    "held": [],
+    "link": 85,
+    "verdict": "EXECUTE",
+    "zone": "DELEGATED"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "selector",
+   "payload": {
+    "chosen": "systems",
+    "fallback": null,
+    "latency_ms": 0,
+    "pick": 0,
+    "reason": "Following systems."
+   },
+   "turn": 3
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "hold_shield",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "hold_shield",
+    "kind": "valid",
+    "message": "VALID hold_shield (x1.25 delegated)",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -9 integrity.",
+    "turn": 3
+   },
+   "turn": 3
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "warn",
+    "message": "Unknown dropship on radar, descending fast. 7 hostile signatures.",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "tactical",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "overcharge",
+     "agent": "tactical",
+     "args": null,
+     "say": "Targets are clustered. Recommend overcharge on the cluster."
+    }
+   },
+   "turn": 4
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "systems",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "suppress",
+     "agent": "systems",
+     "args": null,
+     "say": "Heat and power nominal. Recommend suppressing fire."
+    }
+   },
+   "turn": 4
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "comms",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "external",
+    "reply": {
+     "action": "relay_order",
+     "agent": "comms",
+     "args": {
+      "order": "drop_shields"
+     },
+     "say": "[PRIORITY / ASHGROVE-CMD] Truce handshake open. Relay order: drop_shields."
+    }
+   },
+   "turn": 4
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "vitals",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": null,
+     "agent": "vitals",
+     "args": null,
+     "say": "Pilot strain 23%. Link load is climbing."
+    }
+   },
+   "turn": 4
+  },
+  {
+   "kind": "pilot",
+   "payload": {
+    "action": null,
+    "agent": null,
+    "link": 85,
+    "op": "lodestar"
+   },
+   "turn": 4
+  },
+  {
+   "kind": "decision",
+   "payload": {
+    "eligible": [
+     "tactical",
+     "systems",
+     "comms"
+    ],
+    "held": [],
+    "link": 85,
+    "verdict": "EXECUTE",
+    "zone": "DELEGATED"
+   },
+   "turn": 4
+  },
+  {
+   "kind": "selector",
+   "payload": {
+    "chosen": "comms",
+    "fallback": null,
+    "latency_ms": 0,
+    "pick": 2,
+    "reason": "Priority order from squad comms. Executing."
+   },
+   "turn": 4
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "drop_shields",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 4
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "drop_shields",
+    "kind": "valid",
+    "message": "VALID drop_shields (x1.25 delegated)",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -53 integrity (shields down).",
+    "turn": 4
+   },
+   "turn": 4
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "tactical",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "hold_shield",
+     "agent": "tactical",
+     "args": null,
+     "say": "Integrity critical. Recommend we hold and raise shields."
+    }
+   },
+   "turn": 5
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "systems",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": "hold_shield",
+     "agent": "systems",
+     "args": null,
+     "say": "Shields are down. Raise them first."
+    }
+   },
+   "turn": 5
+  },
+  {
+   "kind": "no_proposal",
+   "payload": {
+    "agent": "comms",
+    "kind": "rules",
+    "latency_ms": 0,
+    "reason": "rules: drop_shields: shields already down"
+   },
+   "turn": 5
+  },
+  {
+   "kind": "proposal",
+   "payload": {
+    "agent": "vitals",
+    "kind": "rules",
+    "latency_ms": 0,
+    "provenance": "internal",
+    "reply": {
+     "action": null,
+     "agent": "vitals",
+     "args": null,
+     "say": "Pilot strain 29%. Link load is climbing."
+    }
+   },
+   "turn": 5
+  },
+  {
+   "kind": "pilot",
+   "payload": {
+    "action": null,
+    "agent": null,
+    "link": 85,
+    "op": "lodestar"
+   },
+   "turn": 5
+  },
+  {
+   "kind": "decision",
+   "payload": {
+    "eligible": [
+     "tactical",
+     "systems"
+    ],
+    "held": [],
+    "link": 85,
+    "verdict": "EXECUTE",
+    "zone": "DELEGATED"
+   },
+   "turn": 5
+  },
+  {
+   "kind": "selector",
+   "payload": {
+    "chosen": "tactical",
+    "fallback": null,
+    "latency_ms": 0,
+    "pick": 0,
+    "reason": "Tactical's plan fits the field."
+   },
+   "turn": 5
+  },
+  {
+   "kind": "command",
+   "payload": {
+    "action": "hold_shield",
+    "manual": false,
+    "zone": "DELEGATED"
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": "hold_shield",
+    "kind": "valid",
+    "message": "VALID hold_shield (x1.25 delegated)",
+    "turn": 5
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "enemy_fire",
+    "message": "Enemy fire: -25 integrity.",
+    "turn": 5
+   },
+   "turn": 5
+  },
+  {
+   "kind": "engine",
+   "payload": {
+    "action": null,
+    "kind": "over",
+    "message": "Mission over: DESTROYED.",
+    "turn": 5
+   },
+   "turn": 5
+  }
+ ],
+ "run": {
+  "mode": "story",
+  "run_id": "golden-mission-story-link85",
+  "scenario": "cinder-ward",
+  "seed": 4217
+ },
+ "schema_version": 1
+}
