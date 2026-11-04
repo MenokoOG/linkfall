@@ -31,7 +31,7 @@ from linkfall.supervisor.budgets import Budgets
 from linkfall.supervisor.choices import LodestarActs, ManualPick, PilotChoice, Sign
 from linkfall.supervisor.choose import choose
 from linkfall.supervisor.collect import collect_one
-from linkfall.supervisor.selector import Selector
+from linkfall.supervisor.selector import Selector, SelectorContext
 from linkfall.supervisor.session import TurnResult, TurnSession
 from linkfall.validator.validate import Allowlist
 
@@ -137,7 +137,8 @@ class Run:
         if decision.verdict is Verdict.MANUAL:
             raise SupervisorError("Lodestar is locked out in the MANUAL zone")
         d = self._deps
-        selection = await choose(d.selector, decision, d.budgets, d.clock)
+        context = SelectorContext.from_state(session.state, decision.zone)
+        selection = await choose(d.selector, decision, context, d.budgets, d.clock)
         action = selection.chosen.reply.engine_action if selection.chosen else None
         chosen_agent = selection.chosen.agent if selection.chosen else None
         rows = [
