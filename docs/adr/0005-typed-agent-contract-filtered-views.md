@@ -1,6 +1,6 @@
 # 0005: Typed agent contract with filtered views
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 
@@ -24,7 +24,7 @@ class Agent(Protocol):
 
 - **`AgentView`** is a frozen pydantic model, built by `views.py` as a projection of the engine state for one agent. Tactical sees enemies, integrity, ammo and the last 3 events. Systems sees heat, power and shields. Comms sees channel text and a signature score the engine generates. Vitals sees strain and the link value. Target size is about 600 tokens or less per view. That target is a hypothesis until measured.
 - **`Proposal`** holds `agent`, `action`, typed `args`, `say` (flavor text, 140 characters or fewer, never read by the engine) and `provenance`. The supervisor sets `provenance` to `internal` or `external`. An agent whose input held enemy text is stamped `external`. A model can't set or change it. The supervisor also records latency and token counts. The model doesn't report them.
-- **Allowlists** live in one table in `contracts.py`. Tactical may propose suppress, flank, overcharge and hold_shield. Systems may propose cooldown, hold_shield and suppress. Comms may propose `accept_truce` and `relay_order`, where `relay_order.order` is an enum of engine actions. Vitals gives advice only. JSON Schema is generated from the pydantic models.
+- **Allowlists** live in one table in `contracts.py`. Tactical may propose suppress, flank, overcharge and hold_shield. Systems may propose cooldown, hold_shield and suppress. Comms may propose `accept_truce` and `relay_order`, where `relay_order.order` is an enum of engine actions. Vitals gives advice only. Pilot actions (`audit_comms`, `dismiss`, signing a held proposal) are not agent proposals. They arrive through the API as enum-validated pilot inputs and are logged as pilot events. JSON Schema is generated from the pydantic models.
 - **Output control.** We request schema-constrained decoding when the model server supports it, and we validate the result either way.
 - **Failure behavior.** Each agent call has a timeout (the value is set after we measure the target machine) and no retry. A timeout, a malformed reply or a disallowed action becomes a "no proposal" event with a reason in the log. The turn goes on without that agent.
 - **Swapping.** Systems and Vitals start as `rules` agents. Moving one to a model is a config change, and the same contract tests run against both.

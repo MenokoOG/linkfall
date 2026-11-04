@@ -1,6 +1,6 @@
 # 0003: Plain Python supervisor, no agent framework
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 
