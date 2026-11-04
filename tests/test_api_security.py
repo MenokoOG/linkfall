@@ -80,7 +80,8 @@ def test_get_routes_cannot_change_anything() -> None:
         client = Client(make_app())
         run_id = await create_run(client)
         for path in (f"/api/runs/{run_id}/turns", f"/api/runs/{run_id}/commit", "/api/runs"):
-            assert (await client.get(path)).status == 405
+            # 405 from the router, or 404 once the static files answer for the path
+            assert (await client.get(path)).status in {404, 405}
 
     run(go)
 

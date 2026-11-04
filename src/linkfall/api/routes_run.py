@@ -17,6 +17,7 @@ from linkfall.api.registry import (
 from linkfall.api.schemas import CreateRun, state_json
 from linkfall.api.security import require_same_origin
 from linkfall.api.sse import stream
+from linkfall.engine.scenario import SCENARIOS
 from linkfall.eventlog.replay import replay
 from linkfall.eventlog.store import EventStore, RunNotFoundError
 
@@ -53,6 +54,9 @@ def active_summary(run_id: str, active: ActiveRun) -> dict[str, object]:
     return {
         "run_id": run_id,
         "mode": active.run.mode.value,
+        "seed": active.seed,
+        "scenario": active.scenario,
+        "max_turns": SCENARIOS[active.scenario].max_turns,
         "phase": active.phase.value,
         "turn": state.turn,
         "over": state.over,
@@ -82,7 +86,7 @@ async def create_run(body: CreateRun, request: Request) -> dict[str, object]:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except RegistryFullError as exc:
         raise HTTPException(status_code=429, detail=str(exc)) from exc
-    return {**active_summary(run_id, active), "scenario": body.scenario, "crew": crew}
+    return {**active_summary(run_id, active), "crew": crew}
 
 
 @router.get("/runs/{run_id}/state")
@@ -93,9 +97,13 @@ async def get_state(request: Request, run_id: str = Depends(known_run)) -> dict[
     store = store_of(request)
     header = store.get_run(run_id)
     result = await asyncio.to_thread(replay, store, run_id)
+    scenario = SCENARIOS.get(header.scenario)
     closed: dict[str, object] = {
         "run_id": run_id,
         "mode": header.mode.value,
+        "seed": header.seed,
+        "scenario": header.scenario,
+        "max_turns": scenario.max_turns if scenario else None,
         "phase": "closed",
         "replay_ok": result.ok,
     }
