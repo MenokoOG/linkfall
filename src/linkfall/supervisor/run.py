@@ -90,6 +90,18 @@ class Run:
         d.store.append_batch(self.run_id, [turn_row(state.turn, "ready", link)])
         return TurnSession(self.run_id, state.turn, state, tuple(outcomes))
 
+    def _live(self, session: TurnSession) -> list[Candidate]:
+        return [
+            Candidate(p.agent, p.reply, p.provenance)
+            for p in session.proposals
+            if p.agent not in session.dismissed
+        ]
+
+    def preview(self, session: TurnSession, link: int) -> Decision:
+        """What the policy would decide at this link. Writes nothing."""
+        self._check_open(session)
+        return decide(link, self.mode, self._live(session))
+
     def dismiss(self, session: TurnSession, agent: AgentName) -> None:
         """Take a proposal off the table for this turn. The turn does not advance."""
         self._check_open(session)
@@ -105,12 +117,7 @@ class Run:
             return session.result
         self._check_open(session)
         d = self._deps
-        live = [
-            Candidate(p.agent, p.reply, p.provenance)
-            for p in session.proposals
-            if p.agent not in session.dismissed
-        ]
-        decision = decide(choice.link, self.mode, live)
+        decision = decide(choice.link, self.mode, self._live(session))
         rows: list[NewRow] = []
         match choice:
             case LodestarActs(link=link):

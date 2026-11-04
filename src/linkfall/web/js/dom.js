@@ -25,3 +25,15 @@ export function h(tag, attributes = {}, ...children) {
   }
   return element;
 }
+
+// Run `draw`, which rebuilds a container's children, and give focus back to the control that had
+// it (found by its data-key) so a live update never throws a keyboard user off the page. If that
+// control is gone, focus moves to `fallbackId` instead of falling to the top of the page.
+export function keepFocus(container, draw, fallbackId) {
+  const key = document.activeElement?.dataset?.key;
+  const had = Boolean(key) && container.contains(document.activeElement);
+  draw();
+  if (!had) return;
+  const same = container.querySelector(`[data-key="${key}"]`);
+  (same ?? (fallbackId ? document.getElementById(fallbackId) : null))?.focus();
+}

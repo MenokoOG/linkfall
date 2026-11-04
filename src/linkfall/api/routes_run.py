@@ -14,12 +14,14 @@ from linkfall.api.registry import (
     Registry,
     RegistryFullError,
 )
-from linkfall.api.schemas import CreateRun, state_json
+from linkfall.api.schemas import CreateRun, channel_json, state_json
 from linkfall.api.security import require_same_origin
 from linkfall.api.sse import stream
 from linkfall.engine.scenario import SCENARIOS
 from linkfall.eventlog.replay import replay
 from linkfall.eventlog.store import EventStore, RunNotFoundError
+from linkfall.eventlog.turnrows import decision_payload
+from linkfall.eventlog.types import JsonValue
 
 router = APIRouter(prefix="/api")
 _RUN_ID = re.compile(r"[A-Za-z0-9_-]{8,40}")
@@ -62,6 +64,7 @@ def active_summary(run_id: str, active: ActiveRun) -> dict[str, object]:
         "over": state.over,
         "outcome": state.outcome.value if state.outcome else None,
         "state": state_json(state),
+        "channel": channel_json(state),
         "error": active.error,
     }
 
@@ -113,8 +116,23 @@ async def get_state(request: Request, run_id: str = Depends(known_run)) -> dict[
             "over": result.state.over,
             "outcome": result.state.outcome.value if result.state.outcome else None,
             "state": state_json(result.state),
+            "channel": channel_json(result.state),
         }
     return closed
+
+
+@router.get("/runs/{run_id}/decision")
+async def preview_decision(
+    request: Request, link: int = Query(...), run_id: str = Depends(known_run)
+) -> dict[str, JsonValue]:
+    """What the policy would decide for the open turn at this link. Changes nothing."""
+    active = registry_of(request).get(run_id)
+    if active is None:
+        raise HTTPException(status_code=409, detail="this run is not active on this server")
+    if active.phase is not Phase.AWAITING_PILOT or active.session is None:
+        raise HTTPException(status_code=409, detail=f"the turn is {active.phase.value}")
+    decision = active.run.preview(active.session, link)  # PolicyError for a bad link is a 422
+    return decision_payload(link, decision)
 
 
 @router.get("/runs/{run_id}/replay")

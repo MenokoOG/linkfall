@@ -20,6 +20,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from linkfall.agent_name import AgentName
 from linkfall.engine.actions import Action
+from linkfall.engine.channel import inbound_message
 from linkfall.engine.scenario import SCENARIOS
 from linkfall.engine.state import State
 from linkfall.policy.zones import PolicyError, validate_link
@@ -96,6 +97,11 @@ class Dismiss(BaseModel):
     model_config = _STRICT
 
     agent: EnumText[AgentName]
+
+
+def channel_json(state: State) -> dict[str, object]:
+    message = inbound_message(state)
+    return {"text": message.text, "signature": message.signature, "enemy_text": message.enemy_text}
 
 
 def state_json(state: State) -> dict[str, object]:

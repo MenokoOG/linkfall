@@ -44,5 +44,10 @@ export function createApi(fetchFn = (...args) => globalThis.fetch(...args)) {
     health: () => call(fetchFn, 'GET', '/api/health'),
     createRun: (body) => call(fetchFn, 'POST', '/api/runs', body),
     getState: (runId) => call(fetchFn, 'GET', `/api/runs/${encodeURIComponent(runId)}/state`),
+    startTurn: (runId, link) => call(fetchFn, 'POST', `/api/runs/${encodeURIComponent(runId)}/turns`, { link }),
+    commit: (runId, body) => call(fetchFn, 'POST', `/api/runs/${encodeURIComponent(runId)}/commit`, body),
+    dismiss: (runId, agent) => call(fetchFn, 'POST', `/api/runs/${encodeURIComponent(runId)}/dismiss`, { agent }),
+    decision: (runId, link) =>
+      call(fetchFn, 'GET', `/api/runs/${encodeURIComponent(runId)}/decision?link=${encodeURIComponent(link)}`),
   };
 }

@@ -106,5 +106,38 @@ input[type=number]{min-height:44px;padding:0 16px;border:0;border-radius:var(--r
 .force b{font-size:24px}
 .force[data-bad="true"] b{color:var(--flare)}
 
+/* crew cards, channel, decision */
+.col-title{font-size:28px;font-weight:700}
+.stack{display:flex;flex-direction:column;gap:var(--s-3)}
+.agent-card{padding:20px 24px;display:flex;flex-direction:column;gap:12px;background:var(--glass)}
+.agent-card[data-status="dismissed"]{opacity:.55}
+.agent-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.agent-head img:first-child{width:44px;height:44px}
+.agent-head h3{font-size:20px}
+.agent-head .spacer{flex:1}
+.chip-sm{font-size:12px;padding:3px 10px;border-radius:var(--r-pill);box-shadow:var(--inset-sm);color:var(--dim)}
+.badge{width:100px;height:26px}
+.status{font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.mono-well{font-family:var(--mono);font-size:13px;padding:8px 12px;border-radius:12px;box-shadow:var(--inset-sm)}
+.say{margin-top:8px;font-size:15px}
+.loading{display:flex;align-items:center;gap:12px;color:var(--dim);font-size:14px}
+.loading img{width:44px;height:44px}
+.btn-small{min-height:44px;padding:0 18px;font-size:14px;align-self:flex-start}
+.channel{padding:20px 24px;border-radius:var(--r-card);box-shadow:var(--inset)}
+.channel[data-hostile="true"] .label::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--flare);box-shadow:0 0 6px var(--flare)}
+.channel[data-low="true"] #channel-sig{color:var(--flare-light);font-weight:700}
+.channel-text{margin-top:10px;font-size:15px}
+.decision-head{display:flex;align-items:center;gap:12px}
+.decision-head img{width:44px;height:44px}
+.empty-art{display:block;margin:0 auto 12px;max-width:100%;height:auto}
+.verdict{font-size:34px;font-weight:700;margin:10px 0}
+.decision-text{font-size:15px;margin-bottom:18px;min-height:3em}
+.warn-note{margin-bottom:18px;padding:14px 18px;font-size:14px}
+.result{margin-top:14px;font-size:14px}
+.tray{border:1px solid var(--flare)}
+.tray .label{color:var(--flare-light)}
+.tray-item{padding:12px 0;border-top:1px solid var(--edge);font-size:15px}
+.tray-item:first-child{border-top:0}
+@media (prefers-reduced-motion:reduce){.loading img{display:none}}
 @media (max-width:480px){.nav{margin:var(--s-2)}main{padding-inline:var(--s-2)}.card{padding:20px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}.aurora i{animation:none}}
