@@ -11,5 +11,5 @@ __pycache__/
 .coverage
 
 # runtime data and model weights (never committed)
-data/
-models/
+/data/
+/models/
