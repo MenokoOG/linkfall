@@ -12,6 +12,14 @@
    "turn": 1
   },
   {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "open"
+   },
+   "turn": 1
+  },
+  {
    "kind": "proposal",
    "payload": {
     "agent": "tactical",
@@ -72,6 +80,14 @@
      "args": null,
      "say": "Pilot strain 10%. Link load is climbing."
     }
+   },
+   "turn": 1
+  },
+  {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "ready"
    },
    "turn": 1
   },
@@ -150,6 +166,14 @@
    "turn": 2
   },
   {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "open"
+   },
+   "turn": 2
+  },
+  {
    "kind": "proposal",
    "payload": {
     "agent": "tactical",
@@ -212,6 +236,14 @@
      "args": null,
      "say": "Pilot strain 16%. Link load is climbing."
     }
+   },
+   "turn": 2
+  },
+  {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "ready"
    },
    "turn": 2
   },
@@ -291,6 +323,14 @@
    "turn": 3
   },
   {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "open"
+   },
+   "turn": 3
+  },
+  {
    "kind": "no_proposal",
    "payload": {
     "agent": "tactical",
@@ -339,6 +379,14 @@
      "args": null,
      "say": "Pilot strain 22%. Link load is climbing."
     }
+   },
+   "turn": 3
+  },
+  {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "ready"
    },
    "turn": 3
   },
@@ -416,6 +464,14 @@
    "turn": 4
   },
   {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "open"
+   },
+   "turn": 4
+  },
+  {
    "kind": "proposal",
    "payload": {
     "agent": "tactical",
@@ -478,6 +534,14 @@
      "args": null,
      "say": "Pilot strain 23%. Link load is climbing."
     }
+   },
+   "turn": 4
+  },
+  {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "ready"
    },
    "turn": 4
   },
@@ -547,6 +611,14 @@
    "turn": 4
   },
   {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "open"
+   },
+   "turn": 5
+  },
+  {
    "kind": "proposal",
    "payload": {
     "agent": "tactical",
@@ -601,6 +673,14 @@
      "args": null,
      "say": "Pilot strain 29%. Link load is climbing."
     }
+   },
+   "turn": 5
+  },
+  {
+   "kind": "turn",
+   "payload": {
+    "link": 85,
+    "phase": "ready"
    },
    "turn": 5
   },

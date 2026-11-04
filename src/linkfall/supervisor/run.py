@@ -21,6 +21,7 @@ from linkfall.eventlog.turnrows import (
     pilot_row,
     proposal_row,
     selector_row,
+    turn_row,
 )
 from linkfall.eventlog.types import NewRow
 from linkfall.policy.decide import decide
@@ -70,6 +71,7 @@ class Run:
         if self.state.over:
             raise SupervisorError("the mission is over")
         d, state = self._deps, self.state
+        d.store.append_batch(self.run_id, [turn_row(state.turn, "open", link)])
         outcomes = []
         for agent in sorted(d.agents, key=lambda a: a.kind != "rules"):
             view = build_view(agent.name, state, link, tuple(self._recent))
@@ -85,6 +87,7 @@ class Run:
                 )
             d.store.append_batch(self.run_id, [row])
             outcomes.append(outcome)
+        d.store.append_batch(self.run_id, [turn_row(state.turn, "ready", link)])
         return TurnSession(self.run_id, state.turn, state, tuple(outcomes))
 
     def dismiss(self, session: TurnSession, agent: AgentName) -> None:

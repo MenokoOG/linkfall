@@ -45,6 +45,11 @@ def no_proposal_row(turn: int, agent: AgentName, kind: str, reason: str, latency
     return NewRow(turn, RowKind.NO_PROPOSAL.value, payload)
 
 
+def turn_row(turn: int, phase: str, link: int) -> NewRow:
+    payload: Payload = {"phase": phase, "link": link}
+    return NewRow(turn, RowKind.TURN.value, payload)
+
+
 def decision_payload(link: int, decision: Decision) -> Payload:
     eligible: list[JsonValue] = [c.agent.value for c in decision.eligible]
     held: list[JsonValue] = [
