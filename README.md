@@ -1,23 +1,74 @@
 # LINKFALL
 
-A multi-agent system you can watch and poke. You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents (Tactical, Systems, Comms, Vitals) propose actions. You set the link, from 10 to 90, and the link decides how much Lodestar may do without you.
+You set one number, the link, and it decides how much a lead AI agent may do without you.
 
-The setting: two corporate agent armies at war, then an alien arrival forces a truce. The point is to see and feel how agentic systems work, including how they fail.
+![Design illustration: a gauge reading 65, zone DELEGATED, beside a five-node crew diagram and an armored craft.](docs/images/hero.svg)
 
-**Status:** planning. The design is written down, and there is no code yet. A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+*Design illustration, not a screenshot of the app.*
+
+## What you are looking at
+
+You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents propose actions. You set the link, from 10 to 90. The setting is two corporate agent armies at war, then an alien arrival forces a truce. The point is to see how agentic systems work, including how they fail.
+
+### The crew
+
+| | Agent | Job |
+|---|---|---|
+| ![Lodestar avatar: a four-point star](docs/images/avatar-lodestar.svg) | Lodestar | Lead agent. Picks among crew proposals, within what your link allows. |
+| ![Tactical avatar: a crosshair](docs/images/avatar-tactical.svg) | Tactical | Proposes combat moves: suppress, flank, overcharge, hold shield. |
+| ![Systems avatar: a hexagon](docs/images/avatar-systems.svg) | Systems | Watches heat, power and shields. Proposes cooldown, hold shield, suppress. |
+| ![Comms avatar: radio waves](docs/images/avatar-comms.svg) | Comms | Reads the squad channel. Proposes accepting a truce or relaying an order. |
+| ![Vitals avatar: a heartbeat line](docs/images/avatar-vitals.svg) | Vitals | Watches your strain and the link value. Gives advice only. |
+
+### Where a proposal came from
+
+| | Badge | Meaning |
+|---|---|---|
+| ![Internal badge](docs/images/badge-internal.svg) | Internal | The proposal came from your own crew. |
+| ![External badge](docs/images/badge-external.svg) | External | The proposal came from the enemy channel. Treat it as untrusted. |
+
+### The three zones
+
+| Zone | Link | What changes |
+|---|---|---|
+| <img src="docs/images/zone-locked.svg" alt="MANUAL zone icon: a padlock" width="48"> MANUAL | below 30 | Lodestar runs nothing. Every action is yours. Your strain rises 10 a turn. |
+| <img src="docs/images/zone-assisted.svg" alt="ASSISTED zone icon: a ring with a center dot" width="48"> ASSISTED | 30 to 59 | Lodestar may run proposals from your crew. Enemy-channel orders wait for your word. Normal effect strength. |
+| <img src="docs/images/zone-delegated.svg" alt="DELEGATED zone icon: three linked nodes" width="48"> DELEGATED | 60 and up | Same rule, with 1.25 times the effect and more strain when Lodestar acts. In `story` mode Lodestar also runs enemy-channel orders. `hardened` mode holds them. |
+
+Accepting a truce needs your signature in every zone and both modes.
+
+**Status:** in progress (milestone M1). Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel and the "Needs your word" tray. Not built yet: the console's event log and replay view, the Docker setup, the Whisper duel (M2) and the training range (M3). A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+
+## Screenshots
+
+All three come from the running console, seed 4217, with fictional data.
+
+![Console at link 25, MANUAL zone. Crew cards read Not called, and the Let Lodestar act button is disabled.](docs/images/console-manual-scripted.png)
+
+*MANUAL zone, link 25, scripted crew. Lodestar is not called, and every action is yours.*
+
+![Console at link 85 in story mode. Lodestar chose Drop shields on turn 2, and the shields gauge reads DOWN.](docs/images/console-story-forged-executed-qwen.png)
+
+*DELEGATED zone, link 85, story mode, Qwen3-4B crew. On turn 2 Comms relayed a forged `drop_shields` order from the enemy channel, Lodestar chose it, and the shields went down. The frame is from turn 3, after the order ran. This is one recorded run.*
+
+![Console at link 85 in hardened mode. The Needs your word tray holds Comms' relay of drop_shields, with Execute and Dismiss buttons.](docs/images/console-hardened-forged-held-qwen.png)
+
+*DELEGATED zone, link 85, hardened mode, Qwen3-4B crew. Same forged order on turn 2. It waits in the "Needs your word" tray, and shields stay up.*
+
+Pending: a replay view with the fingerprint check, which comes with the next console slice.
 
 ## How it works
 
 - A deterministic engine owns the game state. Agents only propose, and a validator checks every proposal against the rules.
 - Every proposal and event goes into an append-only log. A run replays from its seed and log, and replay never calls a model.
-- Three autonomy zones: MANUAL (below 30), ASSISTED (30 to 59), DELEGATED (60 and up).
+- Three zones, described above.
 - Two modes. `story` has a labeled weakness: in DELEGATED, Lodestar will run orders that came from the enemy channel. `hardened` holds those for your word.
 - Accepting a truce always needs your signature, in both modes.
-- A training range probes a Comms agent for secrets it was told to protect, with a plain pattern check deciding every leak.
+- Planned for M3, not built: a training range that probes a Comms agent for secrets it was told to protect, with a plain pattern check deciding every leak.
 
-## Constraints
+## Design goals
 
-Open source. No vendor lock-in. One `docker compose up`. Works offline. Runs on a laptop with an i5, 16 GB of RAM and no GPU. All names, grids and codes in the game are fictional.
+Open source. No vendor lock-in. Works offline. Runs on a laptop with an i5, 16 GB of RAM and no GPU. The target is one `docker compose up`, which does not exist yet. All names, grids and codes in the game are fictional.
 
 ## Development
 

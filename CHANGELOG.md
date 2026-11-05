@@ -5,6 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 ## [Unreleased]
 
 ### Added
+- README graphics (`docs/images/`): the design-package hero (with a `#0A0D26` background added so it reads on a light theme), five crew avatars, two provenance badges, three zone icons, and three console screenshots from the running app (MANUAL with the scripted crew; the forged `drop_shields` order executed in story mode and held in hardened mode, both with the Qwen3-4B crew). The README Status line, training range line and design goals now say what exists today. The replay screenshot is pending the next console slice.
 - ADRs 0001 to 0006, all Accepted (`docs/adr/`).
 - README, SECURITY policy and Dependabot config for GitHub Actions and pip.
 - Web console, slice 2: crew cards with provenance badges and status words, the squad channel card (enemy text marked untrusted, low signature flagged, Audit channel), the Lodestar decision panel with "Let Lodestar act", the deliberate-weakness note, the "Needs your word" tray (Sign, Execute, Dismiss), one-click manual picks, automatic next turn, focus handling and a polite announcer. New API pieces: `GET /api/runs/{id}/decision?link=` (a policy preview that writes nothing) and a `channel` field on the run summary.
