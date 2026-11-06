@@ -32,3 +32,14 @@ jobs:
         run: coverage run -m pytest -m "not integration" && coverage report
       - name: Web unit tests
         run: node --test tests/web/*.test.mjs
+  containers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Compose file is valid
+        run: docker compose config -q
+      - name: Build both images
+        run: docker compose build

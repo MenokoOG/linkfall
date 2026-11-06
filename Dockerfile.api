@@ -1,0 +1,22 @@
+# The api service: engine, supervisor, validator, event log and the static console.
+FROM python@sha256:09a17cad02668ae61ece136b4fd36ac3849e14f670ebedb637ea3e15580525bc
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PYTHONPATH=/app/src \
+    LINKFALL_DB=/data/linkfall.sqlite3
+
+WORKDIR /app
+COPY requirements.txt ./
+RUN python -m pip install --require-hashes -r requirements.txt
+COPY src ./src
+
+RUN useradd --uid 10001 --no-create-home --shell /usr/sbin/nologin linkfall \
+    && mkdir /data && chown linkfall /data
+USER 10001
+
+EXPOSE 8000
+HEALTHCHECK --interval=15s --timeout=3s --start-period=10s --retries=3 \
+    CMD ["python", "-c", "import urllib.request as u; u.urlopen('http://127.0.0.1:8000/api/health', timeout=2)"]
+CMD ["uvicorn", "--app-dir", "src", "linkfall.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
