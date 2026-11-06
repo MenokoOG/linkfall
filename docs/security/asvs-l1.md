@@ -21,9 +21,9 @@ Status is **planned** until a step ships the control with a test. Update this fi
 | v5.0.0-3.4.2 | CORS allow-origin is fixed or allowlisted | No CORS headers are sent; Host allowlist (`TrustedHostMiddleware`) blocks DNS rebinding | 9 | **done** |
 | v5.0.0-3.5.1 | Cross-origin requests to sensitive functions are validated | Custom `X-Linkfall-Request: 1` header, Origin must match Host, `Sec-Fetch-Site: cross-site` refused, on every POST | 9 | **done** |
 | v5.0.0-3.5.3 | Sensitive functions use POST, not GET or HEAD | State changes are POST only; a GET on those routes returns 404 or 405 and changes nothing | 9 | **done** |
-| v5.0.0-4.1.1 | Content-Type matches content, with charset | JSON and event-stream types checked by tests; static files come with step 10 | 9 | **done** for the API |
+| v5.0.0-4.1.1 | Content-Type matches content, with charset | JSON and event-stream types checked by tests; static files checked in `tests/test_web_static.py` | 9, 10 | **done** |
 | v5.0.0-11.4.1 | Only approved hash functions | SHA-256 for the replay fingerprint (`engine/fingerprint.py`) | 2 | **done** |
-| v5.0.0-13.4.1 | No `.git` metadata in the deployed app | `.dockerignore` excludes `.git`; test checks the image | 11 | planned |
+| v5.0.0-13.4.1 | No `.git` metadata in the deployed app | `.dockerignore` excludes `.git`; `scripts/smoke.sh` checks the running image | 11 | **done** |
 | v5.0.0-14.2.1 | No sensitive data in URLs | Run ids are 96 random bits (`secrets.token_urlsafe(12)`), carry no secret; nothing sensitive is sent at all | 9 | **done** |
 | v5.0.0-15.1.1 | Documented remediation time frames for vulnerable components | Section below | 1 | **done** |
 | v5.0.0-15.2.1 | No component past those time frames | Dependabot weekly; advisory check at each pin | 1 | **done** at pin time |
