@@ -51,3 +51,11 @@ test('a network failure is an ApiError with status 0', async () => {
   const api = createApi(async () => { throw new TypeError('network'); });
   await assert.rejects(api.health(), (e) => e instanceof ApiError && e.status === 0);
 });
+
+test('replay is a GET on the run', async () => {
+  const calls = [];
+  const api = createApi(fakeFetch(200, { ok: true, turns: 5, fingerprint: 'f', failure: null }, calls));
+  assert.equal((await api.replay('a b')).turns, 5);
+  assert.equal(calls[0].path, '/api/runs/a%20b/replay');
+  assert.equal(calls[0].init.method, 'GET');
+});

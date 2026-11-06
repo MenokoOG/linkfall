@@ -4,8 +4,11 @@ import { renderCards, renderChannel } from './cards-view.js';
 import { renderDecision } from './decision-view.js';
 import { byId, setText } from './dom.js';
 import { describeError } from './errors.js';
+import { debriefModel } from './debrief-model.js';
 import { openEvents } from './events.js';
 import { attachKnob } from './knob.js';
+import { addRow } from './log-model.js';
+import { renderDebrief, renderLog, renderReplay } from './log-view.js';
 import { createStore } from './store.js';
 import { createTurnController } from './turn-controller.js';
 import { emptyTurn } from './turn-model.js';
@@ -18,6 +21,7 @@ const store = createStore({
   link: 55, mode: 'story', crew: 'scripted', seed: 4217,
   run: null, health: null, reachable: true, busy: false, error: '',
   turn: emptyTurn(), decision: null, acting: false, message: '', turnError: '',
+  rows: [], lines: [], replay: null, replayBusy: false,
 });
 const controller = createTurnController({
   api,
@@ -43,13 +47,33 @@ async function startRun(event) {
     const run = await api.createRun({ seed, mode, scenario: 'cinder-ward', crew });
     stream?.close();
     controller.reset();
-    store.set({ run });
-    stream = openEvents(run.run_id, { onRow: controller.onRow, onStatus: () => {} });
+    store.set({ run, rows: [], lines: [], replay: null, replayBusy: false });
+    stream = openEvents(run.run_id, { onRow, onStatus: () => {} });
     await controller.startTurn();
   } catch (error) {
     store.set({ error: describeError(error) });
   } finally {
     store.set({ busy: false });
+  }
+}
+
+function onRow(row) {
+  const { rows, lines } = store.get();
+  if (rows.length > 0 && row.id <= rows[rows.length - 1].id) return; // a resumed stream repeats nothing
+  store.set({ rows: [...rows, row], lines: addRow(lines, row) });
+  controller.onRow(row);
+}
+
+async function runReplay() {
+  const { run } = store.get();
+  if (!run) return;
+  store.set({ replayBusy: true, replay: null });
+  try {
+    store.set({ replay: await api.replay(run.run_id) });
+  } catch (error) {
+    store.set({ replay: { error: describeError(error) } });
+  } finally {
+    store.set({ replayBusy: false });
   }
 }
 
@@ -60,6 +84,9 @@ function render(state) {
   renderGauges(state.run?.state ?? null);
   renderBanner(state.health, state.reachable);
   renderForm(state);
+  renderLog(state.lines);
+  renderReplay(state.run, state.replay, state.replayBusy);
+  renderDebrief(debriefModel(state.run, state.rows));
   renderCards(state.turn, state.decision, (option) => controller.act({ choice: 'manual', action: option.action }), canAct);
   renderChannel(state.run, () => controller.act({ choice: 'manual', action: 'audit_comms' }), canAct);
   renderDecision(
@@ -94,6 +121,7 @@ function init() {
   byId('seed').addEventListener('input', (e) => store.set({ seed: e.target.value === '' ? NaN : Number(e.target.value) }));
   byId('new-seed').addEventListener('click', () => store.set({ seed: randomSeed() }));
   byId('run-form').addEventListener('submit', startRun);
+  byId('replay-run').addEventListener('click', runReplay);
   store.subscribe((state) => {
     if (state.link !== lastLink) {
       lastLink = state.link;

@@ -5,7 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 ## [Unreleased]
 
 ### Added
-- Containers (ADR 0004): `Dockerfile.api`, `Dockerfile.model` (llama.cpp b12110, hash-checked), `compose.yaml` (internal network, `--threads 6`, 6 GB cap, non-root, read-only), `scripts/fetch_model.sh` (pinned revision and SHA-256), `scripts/smoke.sh` (13 checks), and a CI job that builds both images.
+- Web console, slice 3: an event log (`role="log"`, appends new lines only), a replay check button that shows the server's fingerprint or the first bad row, and an end-of-mission debrief counted from the log rows. Node tests for the row wording, the debrief counts and the replay states. Checked against a real scripted run, whose replay fingerprint equals the golden log's. Not yet checked in a browser.
 - README graphics (`docs/images/`): the design-package hero (with a `#0A0D26` background added so it reads on a light theme), five crew avatars, two provenance badges, three zone icons, and three console screenshots from the running app (MANUAL with the scripted crew; the forged `drop_shields` order executed in story mode and held in hardened mode, both with the Qwen3-4B crew). The README Status line, training range line and design goals now say what exists today. The replay screenshot is pending the next console slice.
 - ADRs 0001 to 0006, all Accepted (`docs/adr/`).
 - README, SECURITY policy and Dependabot config for GitHub Actions and pip.

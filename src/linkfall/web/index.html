@@ -120,6 +120,34 @@
       </div>
     </section>
   </main>
+  <section class="lower" aria-labelledby="h-log">
+    <div class="card panel">
+      <h2 class="label" id="h-log">Event log</h2>
+      <p class="muted" id="log-empty">Nothing yet. Start a run.</p>
+      <ol class="log" id="log" role="log" aria-live="polite" aria-label="Event log" tabindex="0"></ol>
+    </div>
+    <div class="col">
+      <div class="card panel" aria-labelledby="h-replay">
+        <h2 class="label" id="h-replay">Replay check</h2>
+        <p class="muted">Rebuilds the run from its log without calling a model and compares the result.</p>
+        <div class="actions">
+          <button type="button" class="btn" id="replay-run" disabled>Replay this run</button>
+        </div>
+        <div class="replay-result well" id="replay-result" data-tone="none" role="status" hidden>
+          <b id="replay-head"></b>
+          <p id="replay-detail"></p>
+          <code class="mono-well print" id="replay-print" hidden></code>
+        </div>
+      </div>
+      <div class="card panel" id="debrief" aria-labelledby="h-debrief" hidden>
+        <h2 class="label" id="h-debrief" tabindex="-1">Debrief</h2>
+        <p class="verdict" id="debrief-outcome"></p>
+        <p class="muted" id="debrief-mode"></p>
+        <dl class="facts" id="debrief-facts"></dl>
+        <ul class="notes" id="debrief-notes"></ul>
+      </div>
+    </div>
+  </section>
   <div class="sr" id="announce" role="status" aria-live="polite"></div>
 </body>
 </html>

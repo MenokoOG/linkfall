@@ -37,7 +37,7 @@ You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents pr
 
 Accepting a truce needs your signature in every zone and both modes.
 
-**Status:** in progress (milestone M1). Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel and the "Needs your word" tray. Not built yet: the console's event log and replay view, the Whisper duel (M2) and the training range (M3). A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+**Status:** in progress (milestone M1). Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check and a debrief. Not built yet: the Docker setup, the Whisper duel (M2) and the training range (M3). A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
 
 ## Screenshots
 
