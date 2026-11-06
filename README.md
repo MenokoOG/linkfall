@@ -79,7 +79,7 @@ scripts/fetch_model.sh
 docker compose up -d --build
 ```
 
-The first start loads the model in about a minute. Then open http://127.0.0.1:8000/. The `model` container sits on an internal network with no route out, and the only published port is the console on `127.0.0.1`. To check that claim on your machine:
+The first start loads the model in about a minute, and the first turn after a cold start can take about a minute too. Later turns take 20 to 30 s on a 6-thread laptop CPU. Then open http://127.0.0.1:8000/. The `model` container sits on an internal network with no route out, and the only published port is the console on `127.0.0.1`. To check that claim on your machine:
 
 ```bash
 scripts/smoke.sh

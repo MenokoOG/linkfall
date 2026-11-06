@@ -84,6 +84,7 @@ def play(base: str, seed: int, timeout_s: float, sample_mem: Callable[[], None])
             {"turn": turn, "link": LINK, "choice": "lodestar"},
         )
         times.append(time.monotonic() - started)
+        say(f"  seed {seed} turn {turn}: {times[-1]:.1f} s", sys.stderr)
         sample_mem()
         if result.get("state", {}).get("over"):
             break
