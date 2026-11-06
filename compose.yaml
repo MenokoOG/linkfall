@@ -1,0 +1,69 @@
+# One command: docker compose up. Fetch the weights first: scripts/fetch_model.sh (ADR 0004, 0010).
+name: linkfall
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: linkfall-api:dev
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      LINKFALL_MODEL_URL: "http://model:8090"
+    volumes:
+      - linkfall-data:/data
+    networks: [backend, edge]
+    depends_on:
+      model:
+        condition: service_healthy
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  model:
+    build:
+      context: .
+      dockerfile: Dockerfile.model
+    image: linkfall-model:dev
+    command:
+      - --model
+      - /models/Qwen3-4B-Instruct-2507-Q4_K_M.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8090"
+      - --threads
+      - "6"
+      - --ctx-size
+      - "4096"
+      - --parallel
+      - "1"
+    volumes:
+      - ./models:/models:ro
+    networks: [backend]
+    mem_limit: 6g
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test:
+        - CMD
+        - bash
+        - -c
+        - exec 3<>/dev/tcp/127.0.0.1/8090 && printf 'GET /health HTTP/1.0\r\n\r\n' >&3 && head -1 <&3 | grep -q ' 200 '
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 240s
+    restart: unless-stopped
+
+networks:
+  backend:
+    internal: true
+  edge: {}
+
+volumes:
+  linkfall-data: {}

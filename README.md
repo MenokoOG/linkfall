@@ -68,7 +68,24 @@ Pending: a replay view with the fingerprint check, which comes with the next con
 
 ## Design goals
 
-Open source. No vendor lock-in. Works offline. Runs on a laptop with an i5, 16 GB of RAM and no GPU. The target is one `docker compose up`, which does not exist yet. All names, grids and codes in the game are fictional.
+Open source. No vendor lock-in. Works offline. Runs on a laptop with an i5, 16 GB of RAM and no GPU. Two containers run it with `docker compose up` (see [Run with Docker](#run-with-docker)). All names, grids and codes in the game are fictional.
+
+## Run with Docker
+
+Needs Docker with Compose, about 3 GB of disk for the weights and 6 GB of free RAM. The weights are not in the images. Fetch them once (the script checks the SHA-256 pinned in ADR 0010):
+
+```bash
+scripts/fetch_model.sh
+docker compose up -d --build
+```
+
+The first start loads the model in about a minute. Then open http://127.0.0.1:8000/. The `model` container sits on an internal network with no route out, and the only published port is the console on `127.0.0.1`. To check that claim on your machine:
+
+```bash
+scripts/smoke.sh
+```
+
+`docker compose down` stops it. Run history lives in the `linkfall-data` volume.
 
 ## Development
 

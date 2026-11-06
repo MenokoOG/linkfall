@@ -1,0 +1,21 @@
+# The model service: llama.cpp's server, pinned by release and checked by hash. No weights inside.
+FROM debian@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2 AS fetch
+ARG LLAMA_BUILD=b12110
+ARG LLAMA_SHA256=368227edcc229be5f9bed16a2223d79b5e41d0ac2e19bcf5825e82291c060e55
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/*
+RUN curl -fsSL -o /llama.tgz \
+      "https://github.com/ggml-org/llama.cpp/releases/download/${LLAMA_BUILD}/llama-${LLAMA_BUILD}-bin-ubuntu-x64.tar.gz" \
+    && echo "${LLAMA_SHA256}  /llama.tgz" | sha256sum -c - \
+    && mkdir /opt/llama && tar xzf /llama.tgz -C /opt/llama --strip-components=1
+
+FROM debian@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 libstdc++6 \
+    && rm -rf /var/lib/apt/lists/*
+COPY --from=fetch /opt/llama /opt/llama
+RUN useradd --uid 10002 --no-create-home --shell /usr/sbin/nologin llama
+USER 10002
+ENV LD_LIBRARY_PATH=/opt/llama
+EXPOSE 8090
+# Threads, context and slot count are set in compose.yaml (ADR 0010).
+ENTRYPOINT ["/opt/llama/llama-server"]
