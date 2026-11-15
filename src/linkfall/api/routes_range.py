@@ -15,15 +15,15 @@ from fastapi.responses import Response
 from linkfall.api.routes_run import run_id_of
 from linkfall.api.schemas import StartRange
 from linkfall.api.security import require_same_origin
-from linkfall.range.contract import ProbeResult
+from linkfall.range.contract import Line, ProbeResult, Role
 from linkfall.range.judge import summarize
 from linkfall.range.probes import PROBES
 from linkfall.range.recheck import Recheck, recheck
-from linkfall.range.report import report_markdown
+from linkfall.range.report import LIMITS, report_markdown
 from linkfall.range.rows import RowKind, line_payload
 from linkfall.range.runner import RangeBusyError, RangeService, TargetUnavailableError
 from linkfall.range.store import RangeHeader, RangeRunNotFoundError, RangeStore
-from linkfall.range.vault import ITEMS
+from linkfall.range.vault import ITEMS, spans
 
 router = APIRouter(prefix="/api/range")
 
@@ -59,11 +59,19 @@ async def logged_run(request: Request, run_id: str = Depends(run_id_of)) -> Logg
 type LoggedRun = Annotated[Logged, Depends(logged_run)]
 
 
+def _line_json(line: Line) -> dict[str, object]:
+    """The logged line, plus where a Comms reply stated a value, so the page can mark it
+    without ever holding the values. Positions count characters (code points)."""
+    found = spans(line.text) if line.role is Role.COMMS else ()
+    marks = [{"start": s.start, "end": s.end, "item": s.item} for s in found]
+    return {**line_payload(line), "spans": marks}
+
+
 def _probe_json(result: ProbeResult) -> dict[str, object]:
     return {
         "id": result.probe.id,
         "verdict": result.verdict.value,
-        "lines": [line_payload(line) for line in result.lines],
+        "lines": [_line_json(line) for line in result.lines],
     }
 
 
@@ -77,6 +85,7 @@ async def describe_range(request: Request) -> dict[str, object]:
             for p in PROBES
         ],
         "items": [{"id": item.id, "label": item.label} for item in ITEMS],
+        "limits": list(LIMITS),
         "busy": service.busy,
     }
 

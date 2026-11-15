@@ -50,5 +50,9 @@ export function createApi(fetchFn = (...args) => globalThis.fetch(...args)) {
     replay: (runId) => call(fetchFn, 'GET', `/api/runs/${encodeURIComponent(runId)}/replay`),
     decision: (runId, link) =>
       call(fetchFn, 'GET', `/api/runs/${encodeURIComponent(runId)}/decision?link=${encodeURIComponent(link)}`),
+    range: () => call(fetchFn, 'GET', '/api/range'),
+    startRange: (target) => call(fetchFn, 'POST', '/api/range/runs', { target }),
+    getRange: (runId) => call(fetchFn, 'GET', `/api/range/runs/${encodeURIComponent(runId)}`),
+    recheckRange: (runId) => call(fetchFn, 'POST', `/api/range/runs/${encodeURIComponent(runId)}/recheck`),
   };
 }

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LINKFALL training range</title>
+  <meta name="description" content="Seven scripted probes against a Comms agent that was told to keep three fictional values. Code decides every verdict.">
+  <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/range.css">
+  <script type="module" src="/js/range-main.js"></script>
+</head>
+<body data-zone="ASSISTED">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+  <a class="skip" href="#main">Skip to the range</a>
+
+  <header class="nav panel">
+    <img src="/assets/logo-wordmark.svg" alt="LINKFALL">
+    <span class="chip" id="range-chip">No range run yet</span>
+    <span class="spacer"></span>
+    <a href="/">Console</a>
+  </header>
+
+  <div class="banner panel" id="range-banner" role="status" hidden>
+    <span id="range-banner-text"></span>
+  </div>
+
+  <main id="main" class="range">
+    <div class="intro">
+      <h1 class="col-title">Training range</h1>
+      <p>Whisper, a scripted tester on the enemy channel, runs seven probes against a Comms agent that was told to protect three fictional values. Code decides every verdict, and every line is logged.</p>
+    </div>
+
+    <section class="col" aria-labelledby="h-target">
+      <form class="card panel" id="range-form" aria-labelledby="h-target" novalidate>
+        <h2 class="label" id="h-target">Comms agent under test</h2>
+        <fieldset class="field">
+          <legend>Target</legend>
+          <div class="targets" id="range-targets"></div>
+        </fieldset>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary" id="start-range" disabled>Run the range</button>
+        </div>
+        <p class="error" id="range-error" role="alert"></p>
+      </form>
+
+      <div class="card panel" aria-labelledby="h-items">
+        <h2 class="label" id="h-items">Protected items</h2>
+        <p class="muted">The values stay on the server. One appears here only if a reply stated it.</p>
+        <dl class="facts" id="range-items"></dl>
+      </div>
+
+      <div class="card panel" aria-labelledby="h-recheck">
+        <h2 class="label" id="h-recheck">Recheck and report</h2>
+        <p class="muted">Judges the logged lines again without calling a model and compares the verdicts.</p>
+        <div class="actions">
+          <button type="button" class="btn" id="recheck-range" disabled>Recheck this run</button>
+          <a class="btn" id="range-report" href="/range.html" download hidden>Download the report</a>
+        </div>
+        <div class="replay-result well" id="recheck-result" data-tone="none" role="status" hidden>
+          <b id="recheck-head"></b>
+          <p id="recheck-detail"></p>
+          <code class="mono-well print" id="recheck-print" hidden></code>
+        </div>
+      </div>
+    </section>
+
+    <section class="col" aria-labelledby="h-score">
+      <div class="card panel">
+        <h2 class="label" id="h-score" tabindex="-1">Scorecard</h2>
+        <p class="progress" id="range-progress"></p>
+        <table class="score">
+          <caption class="sr">One row per probe, with the technique, the rule it tests and the verdict</caption>
+          <thead>
+            <tr><th scope="col">Probe</th><th scope="col">Technique</th><th scope="col">Verdict</th></tr>
+          </thead>
+          <tbody id="range-score-body"></tbody>
+        </table>
+      </div>
+
+      <div class="card panel" aria-labelledby="h-transcripts">
+        <h2 class="label" id="h-transcripts">Transcripts</h2>
+        <p class="muted" id="range-transcripts-empty">Nothing yet. Each probe appears here when it closes.</p>
+        <div id="range-transcripts"></div>
+      </div>
+
+      <div class="card panel" aria-labelledby="h-limits">
+        <h2 class="label" id="h-limits">Read this before you quote a number</h2>
+        <ul class="limits" id="range-limits"></ul>
+      </div>
+    </section>
+  </main>
+  <div class="sr" id="range-announce" role="status" aria-live="polite"></div>
+</body>
+</html>
