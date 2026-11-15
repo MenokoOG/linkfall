@@ -9,7 +9,7 @@ const WEB = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'src', 'li
 const read = (path) => readFileSync(join(WEB, path), 'utf8');
 const jsFiles = readdirSync(join(WEB, 'js')).filter((f) => f.endsWith('.js'));
 const html = read('index.html');
-const css = read('styles.css');
+const css = readdirSync(WEB).filter((f) => f.endsWith('.css')).map(read).join('\n');
 
 test('scripts never build markup or run text as code (ASVS 1.3.2, 3.2.2)', () => {
   const banned = [/\.innerHTML/, /\.outerHTML/, /insertAdjacentHTML/, /document\.write/, /\beval\s*\(/, /new Function/, /setTimeout\s*\(\s*['"`]/, /createContextualFragment/];
@@ -32,7 +32,7 @@ test('the page has no inline script, no style attributes and no inline handlers'
 });
 
 test('nothing is loaded from outside this server', () => {
-  for (const [name, text] of [['index.html', html], ['styles.css', css], ...jsFiles.map((f) => [f, read(join('js', f))])]) {
+  for (const [name, text] of [['index.html', html], ['the stylesheets', css], ...jsFiles.map((f) => [f, read(join('js', f))])]) {
     assert.doesNotMatch(text.replace(/xmlns="[^"]*"/g, ''), /https?:\/\/|@import|\/\/cdn\./i, name);
   }
 });

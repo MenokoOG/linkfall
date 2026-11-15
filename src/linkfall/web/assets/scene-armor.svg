@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" width="160" height="180" stroke-linejoin="round" stroke-linecap="round">
+<defs>
+<linearGradient id="hull" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A45A0"/><stop offset=".55" stop-color="#1B2260"/><stop offset="1" stop-color="#0C1036"/></linearGradient>
+<linearGradient id="leg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#232B74"/><stop offset="1" stop-color="#0A0D2C"/></linearGradient>
+<linearGradient id="visor" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#37D6F5"/><stop offset="1" stop-color="#BDF3FF"/></linearGradient>
+</defs>
+<ellipse cx="80" cy="176" rx="62" ry="4" fill="#000" opacity=".5"/>
+<!-- far leg -->
+<path d="M70 104 L52 128 L62 152 L50 174 L78 174 L80 152 L72 130 L88 110 Z" fill="#0C1036" stroke="#4E58B0" stroke-width="1"/>
+<!-- near leg -->
+<path d="M84 102 L104 126 L92 150 L98 168 L88 174 L126 174 L124 166 L112 152 L124 124 L108 100 Z" fill="url(#leg)" stroke="#8E98D6" stroke-width="1.2"/>
+<circle cx="110" cy="126" r="6" fill="#141A4A" stroke="#8E98D6" stroke-width="1.2"/>
+<!-- hip and torso -->
+<path d="M58 92 L112 92 L118 106 L54 106 Z" fill="#141A4A" stroke="#8E98D6" stroke-width="1.2"/>
+<path d="M44 44 L64 26 L112 24 L134 44 L130 80 L112 94 L58 94 L42 78 Z" fill="url(#hull)" stroke="#AEB8F0" stroke-width="1.4"/>
+<path d="M64 26 L112 24 L134 44" fill="none" stroke="#FFF4E6" stroke-opacity=".75" stroke-width="1.4"/>
+<path d="M58 60 L100 58 M58 70 L92 69" stroke="#4E58B0" stroke-width="1.2" fill="none"/>
+<rect x="48" y="50" width="8" height="22" rx="2" fill="#0A0D2C" stroke="#4E58B0" stroke-width="1"/>
+<!-- cockpit visor -->
+<path d="M104 38 L128 46 L126 58 L102 54 Z" fill="url(#visor)" stroke="#BDF3FF" stroke-width="1"/>
+<!-- shoulder cannon -->
+<path d="M72 14 L118 12 L120 22 L72 26 Z" fill="#1B2260" stroke="#8E98D6" stroke-width="1.2"/>
+<rect x="118" y="14" width="36" height="6" rx="1.5" fill="#0C1036" stroke="#8E98D6" stroke-width="1.2"/>
+<rect x="150" y="12.5" width="6" height="9" rx="1.5" fill="#141A4A" stroke="#AEB8F0" stroke-width="1"/>
+<!-- arm and hand gun -->
+<path d="M96 66 L122 76 L140 74 L142 82 L120 88 L92 78 Z" fill="#232B74" stroke="#8E98D6" stroke-width="1.2"/>
+<!-- link antenna -->
+<path d="M60 28 L52 4" stroke="#AEB8F0" stroke-width="1.6" fill="none"/>
+<circle cx="52" cy="4" r="2.6" fill="#FFF4E6"/>
+<!-- back vents -->
+<path d="M42 52 L34 56 L34 74 L42 78" fill="#0A0D2C" stroke="#4E58B0" stroke-width="1"/>
+</svg>

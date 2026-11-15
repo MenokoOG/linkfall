@@ -16,6 +16,7 @@ screen reader was used. The checks marked "not tested" need a person with assist
 | Knob by pointer | pass | Dragging to the lower left gave 15, Manual |
 | Range input fallback | pass | Native range input in the tab order; setting 85 moved the knob and the zone |
 | Roles and names | pass | `role="slider"` with a label, `aria-valuenow` and `aria-valuetext` ("70, Delegated"); radios are native inputs in a fieldset with a legend |
+| Battlefield view | pass | The art is `aria-hidden` and adds no facts: a text caption under it repeats the counts and shield state, which are also on the gauges. The caption is not a live region, so it is never re-read. Every animation stops under reduced motion. No sideways scroll at 390 px (headless Chromium, 2026-11-15). Caption contrast not measured |
 | Live updates | partial | The banner has `role="status"` and form errors `role="alert"`. The event log is `role="log"` (polite) and only appends new lines, so nothing is re-read. Built in slice 3; not yet checked in a browser or with a screen reader |
 | Focus visible | pass | 2 px cyan ring with a 3 px offset on every control |
 | Target size | pass | Every button, radio label and field measured 44 px high or more; the knob is 178 px |

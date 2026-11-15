@@ -9,6 +9,8 @@ import { openEvents } from './events.js';
 import { attachKnob } from './knob.js';
 import { addRow } from './log-model.js';
 import { renderDebrief, renderLog, renderReplay } from './log-view.js';
+import { sceneModel } from './scene-model.js';
+import { renderScene } from './scene-view.js';
 import { createStore } from './store.js';
 import { createTurnController } from './turn-controller.js';
 import { emptyTurn } from './turn-model.js';
@@ -82,6 +84,7 @@ function render(state) {
   renderLink(state.link);
   renderMission(state.run);
   renderGauges(state.run?.state ?? null);
+  renderScene(sceneModel(state.run, state.link));
   renderBanner(state.health, state.reachable);
   renderForm(state);
   renderLog(state.lines);
