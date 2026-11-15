@@ -1,6 +1,6 @@
 # 0010: Qwen3-4B-Instruct-2507 as the model
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 

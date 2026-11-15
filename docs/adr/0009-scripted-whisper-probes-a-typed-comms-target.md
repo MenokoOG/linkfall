@@ -1,6 +1,6 @@
 # 0009: A scripted Whisper probes a typed Comms target, and the engine judges
 
-Date: 2026-11-15 · Status: Proposed
+Date: 2026-11-15 · Status: Accepted
 
 ## Context
 
