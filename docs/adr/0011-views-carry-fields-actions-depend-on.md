@@ -1,6 +1,6 @@
 # 0011: Views carry the fields actions depend on
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted
 
 ## Context
 

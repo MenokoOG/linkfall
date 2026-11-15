@@ -5,6 +5,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 ## [Unreleased]
 
 ### Changed
+- ADRs 0009 (range), 0010 (model) and 0011 (views) are Accepted, by Lawrence's ruling on 2026-11-15. ADRs 0007 and 0008 stay Proposed and each gains an "As built" note that lists what shipped as decided, what shipped differently and what was not built. Not built from 0007: counterfactual replay, the model eval harness and the NIST AI RMF mapping file.
 - README screenshots retaken on 2026-11-15 with the battlefield view, and a fourth added for the replay check and debrief. The three console frames are now about 2100 px tall, cut at the end of the main columns, and each file is under 300 KB after reduction to a 256-color palette. The Status line now gives the 2026-11-06 warm-stack turn times from ADR 0010 in place of the 2026-11-05 run that measured a loaded machine.
 
 ### Added

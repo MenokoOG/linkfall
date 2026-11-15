@@ -46,6 +46,24 @@ We will treat a run as its log and test it in five layers.
 
 OWASP Top 10 for LLM Applications 2025: LLM01 and LLM06 are tested by the injected-order logs in both modes. LLM05 is tested by the schema and precondition failures in the contract suite. LLM10 is tested by the benchmark and the timeout paths.
 
+## As built (2026-11-15)
+
+What shipped, checked against the code on this date. Where this note and the Decision differ, the note is the record.
+
+**Built as decided**
+- Replay (`eventlog/replay.py`). It re-runs the engine from the seed and the logged decisions, compares each engine event and the final fingerprint, and reports the first bad row. It never repairs a log.
+- Layers 1 to 3. Four golden logs sit in `tests/golden/` and CI replays each one to its recorded fingerprint (`tests/test_golden_replay.py`).
+- The leak check for the training range, with its limits stated on the page and in the report (ADR 0009).
+
+**Built differently**
+- Replay takes a store and a run id and nothing else, so it has no path to a model. The test double that raises on a model call (`NoModelClient`) exists and is used in one supervisor test. It is not wired into every replay test, because replay has no model seam to wire it to.
+- Layer 5. `scripts/benchmark.py` reports turn time, the model's thread count and the model container's peak memory. It does not report tokens per second or per-call latency. The 40 s budget is still proposed.
+
+**Not built**
+- Counterfactual replay. No code re-runs a logged run under the other mode.
+- Layer 4, the model eval harness. There is no injection set run against the live model in both modes, and no saved results with the model checksum and thread count. What exists instead: four integration tests that need a live server (`tests/test_integration_model.py`, run with `-m integration`), and one recorded training range run against the model on 2026-11-15.
+- The NIST AI RMF mapping file.
+
 ## Related
 
 0002 (engine and log), 0003 (supervisor), 0005 (agent contract), 0006 (policy), 0008 (UI), 0010 (model).

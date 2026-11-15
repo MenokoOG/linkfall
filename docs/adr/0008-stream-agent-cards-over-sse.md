@@ -37,6 +37,24 @@ We will push the event log to the browser over server-sent events and keep the b
 
 OWASP Top 10 for LLM Applications 2025: LLM05 is addressed by `textContent` and the CSP. ASVS level 1 requirement IDs for output encoding and headers are listed in the scaffold PR.
 
+## As built (2026-11-15)
+
+What shipped, checked against the code on this date. Where this note and the Decision differ, the note is the record.
+
+**Built as decided**
+- One event stream per run at `GET /api/runs/{id}/events`, with the row id as the SSE `id` and resume from `Last-Event-ID`.
+- Pilot actions by POST with allowlisted fields (`api/schemas.py`).
+- Card states, with a timed-out call shown as a card that gave no proposal.
+- Plain ES modules with no framework, build step or outside resource. Model and enemy text goes in as text nodes, and the CSP forbids inline script (`tests/web/static.test.mjs`).
+- The accessibility checklist (`docs/accessibility.md`).
+
+**Built differently**
+- The server polls the event log table on a short interval (`stream_poll_s`, 0.25 s by default). The in-process notify was not built.
+- A commit returns the turn's result in its response. The stream still carries every row.
+- The loading card reads "Waiting for the link to sync". It shows no elapsed seconds.
+- There is no replay view. The console has a replay check: a button that asks the server to replay the run and shows the fingerprint or the first bad row.
+- The training range page polls its run once a second. It has no card stream to resume, and one small JSON object is simpler (plan of 2026-11-15, section 5). The "revisit never" on polling applies to mission cards.
+
 ## Related
 
 0002 (log), 0004 (containers and bind), 0005 (proposals), 0006 (decisions), 0007 (replay).
