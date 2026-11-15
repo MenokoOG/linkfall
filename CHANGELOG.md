@@ -4,6 +4,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+### Fixed
+- `.dockerignore` excluded `.venv` and bytecode caches only at the repo root. A virtual environment left inside `src/` on a developer machine was copied into the api image (13 MB of the 15 MB under `/app` in the image built on 2026-11-15). The ignore file now excludes them at any depth, and `scripts/smoke.sh` checks the running image.
+
 ## [1.0.0] - 2026-11-15
 
 Version 1 is M1 (core loop and UI), M2 (Whisper duel) and M3 (training range with after-action report), by Lawrence's ruling of 2026-11-04. Everything below shipped before this first version number.

@@ -29,6 +29,7 @@ refuse "model cannot resolve a public name"       model getent hosts example.com
 check  "api runs as non-root"                     bash -c "[[ \"\$(docker compose exec -T api id -u)\" != 0 ]]"
 check  "model runs as non-root"                   bash -c "[[ \"\$(docker compose exec -T model id -u)\" != 0 ]]"
 refuse "api image has no .git metadata"       api sh -c "test -e /app/.git || find / -maxdepth 3 -name .git -not -path '/proc/*' | grep -q ."
+refuse "api image has no virtualenv or bytecode cache copied in" api sh -c "find /app/src \\( -name .venv -o -name pyvenv.cfg -o -name __pycache__ \\) | grep -q ."
 refuse "api root filesystem is read-only"         api touch /app/probe
 check  "api can write its data volume"            api sh -c "touch /data/.probe && rm /data/.probe"
 refuse "model mount is read-only"                 model touch /models/probe
