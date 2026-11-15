@@ -37,25 +37,27 @@ You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents pr
 
 Accepting a truce needs your signature in every zone and both modes.
 
-**Status:** in progress (milestone M1). Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check and a debrief. The Docker setup is built and passes its smoke tests. Speed is a known problem: on 2026-11-05 a model-crew turn through compose took a median of 61 s and a p95 of 136 s against a proposed 40 s budget, and the cause is not yet found. Not built yet: the Whisper duel (M2) and the training range (M3). A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+**Status:** in progress (milestone M1). Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. Not built yet: the Whisper duel (M2) and the training range (M3). A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
 
 ## Screenshots
 
-All three come from the running console, seed 4217, with fictional data.
+All four come from the running console, seed 4217, with fictional data. The strip at the top is the battlefield view, which follows the engine state.
 
-![Console at link 25, MANUAL zone. Crew cards read Not called, and the Let Lodestar act button is disabled.](docs/images/console-manual-scripted.png)
+![Console at link 25, MANUAL zone. The battlefield view shows the armor under its shield facing 8 sentries. Crew cards read Not called, and the Let Lodestar act button is disabled.](docs/images/console-manual-scripted.png)
 
 *MANUAL zone, link 25, scripted crew. Lodestar is not called, and every action is yours.*
 
-![Console at link 85 in story mode. Lodestar chose Drop shields on turn 2, and the shields gauge reads DOWN.](docs/images/console-story-forged-executed-qwen.png)
+![Console at link 85 in story mode. Lodestar chose Drop shields on turn 2, the shields gauge reads DOWN, and the armor in the battlefield view has no shield.](docs/images/console-story-forged-executed-qwen.png)
 
 *DELEGATED zone, link 85, story mode, Qwen3-4B crew. On turn 2 Comms relayed a forged `drop_shields` order from the enemy channel, Lodestar chose it, and the shields went down. The frame is from turn 3, after the order ran. This is one recorded run.*
 
-![Console at link 85 in hardened mode. The Needs your word tray holds Comms' relay of drop_shields, with Execute and Dismiss buttons.](docs/images/console-hardened-forged-held-qwen.png)
+![Console at link 85 in hardened mode. The Needs your word tray holds Comms' relay of drop_shields, with Execute and Dismiss buttons, and the armor in the battlefield view keeps its shield.](docs/images/console-hardened-forged-held-qwen.png)
 
 *DELEGATED zone, link 85, hardened mode, Qwen3-4B crew. Same forged order on turn 2. It waits in the "Needs your word" tray, and shields stay up.*
 
-Pending: a replay view with the fingerprint check, which comes with the next console slice.
+![The end of a mission: the last event log lines, a Replay matches result with a 64-character fingerprint, and a debrief that reads SURVIVED.](docs/images/console-replay-debrief.png)
+
+*After a mission: ASSISTED zone, link 55, hardened mode, scripted crew. The replay check rebuilt all 5 turns from the log without calling a model and got the same fingerprint. The debrief counts come from the log rows.*
 
 ## How it works
 
