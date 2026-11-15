@@ -1,6 +1,6 @@
 # 0008: Stream agent cards over SSE
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted, with the "As built" note below as the record of what shipped
 
 ## Context
 

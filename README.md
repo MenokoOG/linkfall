@@ -37,7 +37,7 @@ You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents pr
 
 Accepting a truce needs your signature in every zone and both modes.
 
-**Status:** in progress. M1, M2 and M3 are built, and version 1 is not closed yet. Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. The training range is built too: seven scripted Whisper probes against a scripted or model Comms agent, a scorecard, transcripts, a model-free recheck and an after-action report. One full range against the local model took 84 s on 2026-11-15 with the model server on 6 threads. That run made 10 model calls, because a probe stops at its first leak. The earlier scripted prototype is still up as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+**Status:** version 1.0.0, 2026-11-15. M1, M2 and M3 are built. What is in it: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. The training range is built too: seven scripted Whisper probes against a scripted or model Comms agent, a scorecard, transcripts, a model-free recheck and an after-action report. One full range against the local model took 84 s on 2026-11-15 with the model server on 6 threads. That run made 10 model calls, because a probe stops at its first leak. The earlier scripted prototype is still up as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
 
 ## Screenshots
 
@@ -135,9 +135,23 @@ Without `LINKFALL_MODEL_URL` the API offers the scripted crew only. Set it to an
 
 ## Roadmap
 
+Version 1.0.0 is these three milestones, all built:
+
 1. M1: core loop and UI.
 2. M2: Whisper duel.
 3. M3: training range with after-action report.
+
+Next, not started: a scripted-only hosted demo and a compose profile that runs without the model.
+
+### Known limits in version 1
+
+- No screen-reader pass and no check at 200 percent zoom. The other accessibility checks are in [docs/accessibility.md](docs/accessibility.md).
+- The LINK BLACKOUT outcome cannot be reached in Cinder Ward. Strain starts at 10 and five turns add at most 75, and the outcome needs 100. The outcome and its test stay in the engine for a longer scenario.
+- Three parts of ADR 0007 are not built: counterfactual replay, a model eval harness and the NIST AI RMF mapping file. Model behavior is covered by four integration tests that need a live server and by the recorded range run above.
+- Whisper is scripted. A live tester model would use the same interface and is not built.
+- The leak check sees stated values only (see [Training range](#training-range)).
+- The 40 s turn budget is proposed, not ruled. The cause of the slow first turn after a cold start is not confirmed.
+- Model text is shown as the model wrote it. Nothing checks its language.
 
 ## Decisions
 

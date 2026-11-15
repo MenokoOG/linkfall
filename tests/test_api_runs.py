@@ -1,6 +1,7 @@
 import asyncio
 from typing import Any
 
+import linkfall
 from api_support import FakeModel, create_run, make_app, play_turn, run, wait_for_phase
 from asgi import Client
 from linkfall.api.registry import Phase
@@ -11,7 +12,7 @@ from linkfall.eventlog.store import EventStore
 def test_health_reports_the_model_state() -> None:
     async def go() -> None:
         none = (await Client(make_app()).get("/api/health")).json()
-        assert none == {"status": "ok", "version": "0.0.0", "model": "not_configured"}
+        assert none == {"status": "ok", "version": linkfall.__version__, "model": "not_configured"}
         up = FakeModel()
         app = make_app(model=up, model_url="http://model.invalid")
         assert (await Client(app).get("/api/health")).json()["model"] == "up"

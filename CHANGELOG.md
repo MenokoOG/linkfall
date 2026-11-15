@@ -1,8 +1,17 @@
 # Changelog
 
-Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning will follow Semantic Versioning once there is a release.
+Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.0.0] - 2026-11-15
+
+Version 1 is M1 (core loop and UI), M2 (Whisper duel) and M3 (training range with after-action report), by Lawrence's ruling of 2026-11-04. Everything below shipped before this first version number.
+
+### Release
+- `linkfall.__version__` is 1.0.0, and `/api/health` reports it.
+- ADRs 0007 and 0008 are Accepted with their "As built" notes as the record of what shipped (Lawrence's ruling, 2026-11-15). All eleven ADRs are now Accepted.
+- README: status, roadmap and a "Known limits in version 1" list. LINK BLACKOUT stays in the engine and is listed as unreachable in Cinder Ward.
 
 ### Security
 - `opentelemetry-api` 1.45.1 to 1.45.2 in both hashed requirements files, for GHSA-mf5v-w3w3-f6cg (CVE-2026-126360, CWE-1333, medium, CVSS v3 5.3): quadratic-time parsing of a crafted `traceparent` value. It arrives through `fastapi`, and LINKFALL's own code never imports it. The advisory was published on 2026-11-13 and fixed here on 2026-11-15, inside the 30 days proposed for medium severity. The fixed release is from 2026-10-29, so it also clears the 14-day rule for new pins. No other pin changed.

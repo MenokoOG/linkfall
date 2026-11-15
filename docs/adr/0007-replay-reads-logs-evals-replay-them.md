@@ -1,6 +1,6 @@
 # 0007: Replay reads logs, evals replay them
 
-Date: 2026-11-04 · Status: Proposed
+Date: 2026-11-04 · Status: Accepted, with the "As built" note below as the record of what shipped
 
 ## Context
 
