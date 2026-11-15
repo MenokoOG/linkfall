@@ -67,7 +67,9 @@ Checked on 2026-11-15 in headless Chromium against the real app, at 1366 px and 
 
 ## Still to do in later slices
 
-The console's run chip uses the same dim color on the same bare background that failed on the range page at 390 px. It was not re-measured on the console.
+Nav text on the console, measured on 2026-11-15 the same way as the range page: at 390 px the run chip was 4.45:1 and the turn count 4.30:1 at worst, under the 4.5:1 that AA asks for. Both now use the light text color on both pages and measure 10.93:1 or better at 390 px and 12.69:1 or better at 1366 px.
+
+The truce look of the battlefield view was seen in a scripted run on 2026-11-15 (audit the channel on turn 2, sign the truce on turn 4): the beacon is lit, the shell flashes stop, the sentries leave and the caption reads "The truce with Ashgrove holds." With reduced motion set, the scene runs 0 animations in that state. The LINK BLACKOUT look was seen only by forcing the outcome in the page, because that outcome cannot be reached in Cinder Ward.
 
 
 Slice 3 shipped the log, the replay check and the debrief without a browser session. Still to do: check in a browser that streamed updates don't steal focus, and that the log, replay result and debrief meet the target size and contrast rows above. Re-measure reflow, target sizes and contrast on the finished page.
