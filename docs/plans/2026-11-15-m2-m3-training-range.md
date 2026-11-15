@@ -1,6 +1,6 @@
 # Plan: M2 Whisper duel and M3 training range
 
-Date: 2026-11-15 · Branch for this plan: menokog-agent/m2-m3-plan · Status: Draft, waiting for Lawrence
+Date: 2026-11-15 · Branch for this plan: menokog-agent/m2-m3-plan · Status: Built (PRs 24 to 26, merged 2026-11-15)
 
 ## 0. Classify
 
