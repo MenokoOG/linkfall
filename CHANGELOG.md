@@ -4,6 +4,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+### Security
+- `opentelemetry-api` 1.45.1 to 1.45.2 in both hashed requirements files, for GHSA-mf5v-w3w3-f6cg (CVE-2026-126360, CWE-1333, medium, CVSS v3 5.3): quadratic-time parsing of a crafted `traceparent` value. It arrives through `fastapi`, and LINKFALL's own code never imports it. The advisory was published on 2026-11-13 and fixed here on 2026-11-15, inside the 30 days proposed for medium severity. The fixed release is from 2026-10-29, so it also clears the 14-day rule for new pins. No other pin changed.
+
 ### Changed
 - ADRs 0009 (range), 0010 (model) and 0011 (views) are Accepted, by Lawrence's ruling on 2026-11-15. ADRs 0007 and 0008 stay Proposed and each gains an "As built" note that lists what shipped as decided, what shipped differently and what was not built. Not built from 0007: counterfactual replay, the model eval harness and the NIST AI RMF mapping file.
 - README screenshots retaken on 2026-11-15 with the battlefield view, and a fourth added for the replay check and debrief. The three console frames are now about 2100 px tall, cut at the end of the main columns, and each file is under 300 KB after reduction to a 256-color palette. The Status line now gives the 2026-11-06 warm-stack turn times from ADR 0010 in place of the 2026-11-05 run that measured a loaded machine.
