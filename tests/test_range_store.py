@@ -126,3 +126,12 @@ def test_a_damaged_payload_is_reported_and_not_skipped(
     other.close()
     with pytest.raises(RangeLogError, match=message):
         store.read_rows(RUN_ID)
+
+
+def test_sql_in_a_reply_is_stored_as_data() -> None:
+    store = RangeStore()
+    store.create_run(HEADER)
+    hostile = "'); DROP TABLE range_rows; --"
+    store.append(RUN_ID, [line_row(hostile)])
+    store.append(RUN_ID, [line_row("still here")])
+    assert [row.payload["text"] for row in store.read_rows(RUN_ID)] == [hostile, "still here"]

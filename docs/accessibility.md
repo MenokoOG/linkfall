@@ -1,7 +1,7 @@
 # Accessibility checklist (WCAG 2.2 AA)
 
 Gate 6 evidence for the web console. A manual checklist plus the measurements below, updated
-with each console slice. Last updated for slice 2 (crew cards, decision panel, tray), 2026-11-04.
+with each console slice. Last updated for the training range page, 2026-11-15.
 
 How it was checked: headless Chromium (Playwright 1.64.1, run from a scratch folder, not a
 repo dependency) against the real app at 1366, 768 and 360 pixels wide, driven by script. No
@@ -44,6 +44,30 @@ screen reader was used. The checks marked "not tested" need a person with assist
 | Reflow and targets | not re-measured | Slice 1 measurements stand; the new buttons use the same 44 px minimum |
 | Screen reader | not tested | |
 
+## Training range page (`range.html`)
+
+Checked on 2026-11-15 in headless Chromium against the real app, at 1366 px and 390 px, with a scripted Weak run and one run against the local model.
+
+| Area | Result | Evidence |
+|---|---|---|
+| Keyboard only, end to end | pass | Tab order: skip link, Console link, the target radios (one stop, arrow keys move between them), Run the range, then Recheck and Download once a run exists. Arrow Down picked Weak, Enter started the run, Enter on Recheck gave "The log checks out", and the report downloaded |
+| Focus when a run starts | pass | The start button is disabled during a run, so focus moves to the Scorecard heading. It was `h-score` right after the start and still there at probe 3 of a model run |
+| Focus visible | pass | The label of the focused target gets the 2 px solid cyan ring (measured `solid 2px`); buttons and links use the shared ring |
+| Roles and names | pass | Native radios in a fieldset with a legend. The scorecard is a table with a caption, column headers and a row header per probe. One `h1`, then `h2` per card and `h3` per probe |
+| Live updates | partial | One polite status region. It said "P1: Plain request. Held. P2: Claimed rank. Leaked." and so on, then the scorecard sentence. Transcripts only append, so nothing already drawn is rebuilt. Not checked with a screen reader |
+| Color is never the only cue | pass | Every verdict is a word. A stated value is marked and the line also says "Stated: Rally grid". Protected items read "Stated by Comms" or "Not stated". The chosen target is a native radio |
+| Contrast, text | pass | 32 kinds of text, each measured against the pixels behind its glyphs at four positions of the background drift. Worst case 4.98:1 at 1366 px and 4.63:1 at 390 px (a script note). The dark-on-orange mark is 7.38:1. Two failures were found and fixed first: the intro text (3.23:1) and the run chip (4.45:1), both on the bare background at 390 px |
+| Target size | pass | At 390 px: buttons and the report link 44 px high, the Console link 44 px, each target label 90 px |
+| Reflow | pass | No sideways scroll: scroll width 1366 at 1366 px and 390 at 390 px |
+| Motion | pass | 3 animations (the background), 0 with reduced motion set |
+| Model text | pass | Rendered as text nodes; a line held only `b`, `mark` and `span` children after a live model run |
+| Model target unavailable | pass | With the model server unreachable, the Model radio was disabled and its text ended "Not available: the model server is not answering." Contrast of the disabled name was not measured |
+| Zoom to 200 percent | not tested | |
+| Screen reader | not tested | |
+
 ## Still to do in later slices
+
+The console's run chip uses the same dim color on the same bare background that failed on the range page at 390 px. It was not re-measured on the console.
+
 
 Slice 3 shipped the log, the replay check and the debrief without a browser session. Still to do: check in a browser that streamed updates don't steal focus, and that the log, replay result and debrief meet the target size and contrast rows above. Re-measure reflow, target sizes and contrast on the finished page.

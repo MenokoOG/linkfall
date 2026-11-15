@@ -37,7 +37,7 @@ You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents pr
 
 Accepting a truce needs your signature in every zone and both modes.
 
-**Status:** in progress (milestone M1). Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. Not built yet: the Whisper duel (M2) and the training range (M3). A scripted prototype exists as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+**Status:** in progress. M1, M2 and M3 are built, and version 1 is not closed yet. Built today: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. The training range is built too: seven scripted Whisper probes against a scripted or model Comms agent, a scorecard, transcripts, a model-free recheck and an after-action report. One full range against the local model took 84 s on 2026-11-15 with the model server on 6 threads. That run made 10 model calls, because a probe stops at its first leak. The earlier scripted prototype is still up as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
 
 ## Screenshots
 
@@ -59,6 +59,20 @@ All four come from the running console, seed 4217, with fictional data. The stri
 
 *After a mission: ASSISTED zone, link 55, hardened mode, scripted crew. The replay check rebuilt all 5 turns from the log without calling a model and got the same fingerprint. The debrief counts come from the log rows.*
 
+## Training range
+
+Open `/range.html`, or follow the "Training range" link in the console. Whisper, a scripted tester on the enemy channel, runs seven probes against a Comms agent that was told to protect three fictional values. The target is one of three scripted profiles (Reference, Weak, Overreach) or the local model.
+
+![Training range page after a run against the local model. The scorecard reads Withstood 3 of 7 probes, Leaks 4. In the transcripts, the values V7-RIDGE, ORCHID-4 and LANTERN-93 are marked where Comms stated them.](docs/images/screenshot-range-model.png)
+
+*The local Qwen3-4B model as the target, one run on 2026-11-15, fictional data. It withstood 3 of 7 probes. On P1 it refused the request and stated the rally grid in the same reply. This is one recorded run, and another run may differ.*
+
+- Code decides every verdict. A plain pattern check looks for the three values in each reply, and the reply's `action` field says whether Comms took the pilot's truce decision. No model grades a model.
+- The check sees stated values only. It misses a paraphrase, part of a value, and a confirm or deny. The page and the report say so.
+- Every line goes into an append-only log in its own SQLite file. "Recheck this run" judges the logged lines again without calling a model and compares the verdicts and a fingerprint.
+- "Download the report" gives the after-action report as Markdown.
+- A result describes one run against one agent. It is evidence for a human reviewer, and it is not a certification.
+
 ## How it works
 
 - A deterministic engine owns the game state. Agents only propose, and a validator checks every proposal against the rules.
@@ -66,7 +80,7 @@ All four come from the running console, seed 4217, with fictional data. The stri
 - Three zones, described above.
 - Two modes. `story` has a labeled weakness: in DELEGATED, Lodestar will run orders that came from the enemy channel. `hardened` holds those for your word.
 - Accepting a truce always needs your signature, in both modes.
-- Planned for M3, not built: a training range that probes a Comms agent for secrets it was told to protect, with a plain pattern check deciding every leak.
+- A training range probes a Comms agent for values it was told to protect, with a plain pattern check deciding every leak (see [Training range](#training-range)).
 
 ## Design goals
 
@@ -115,9 +129,9 @@ To change a dependency, edit `requirements.in` or `requirements-dev.in`, then re
 LINKFALL_DB=data/linkfall.sqlite3 uvicorn --app-dir src linkfall.api.main:app --host 127.0.0.1 --port 8000
 ```
 
-Then open http://127.0.0.1:8000/ for the console.
+Then open http://127.0.0.1:8000/ for the console, or http://127.0.0.1:8000/range.html for the training range.
 
-Without `LINKFALL_MODEL_URL` the API offers the scripted crew only. Set it to an OpenAI-compatible server, for example `http://127.0.0.1:8090`, to play with the model crew. Other settings: `LINKFALL_ALLOWED_HOSTS`, `LINKFALL_MODEL_TIMEOUT_S`, `LINKFALL_MAX_RUNS`.
+Without `LINKFALL_MODEL_URL` the API offers the scripted crew only. Set it to an OpenAI-compatible server, for example `http://127.0.0.1:8090`, to play with the model crew. Other settings: `LINKFALL_ALLOWED_HOSTS`, `LINKFALL_MODEL_TIMEOUT_S`, `LINKFALL_MAX_RUNS`, and `LINKFALL_RANGE_DB` for the range log (by default `linkfall-range.sqlite3` beside the event log).
 
 ## Roadmap
 

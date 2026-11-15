@@ -52,6 +52,23 @@ test('a network failure is an ApiError with status 0', async () => {
   await assert.rejects(api.health(), (e) => e instanceof ApiError && e.status === 0);
 });
 
+test('the range calls use the right methods and paths', async () => {
+  const calls = [];
+  const api = createApi(fakeFetch(200, {}, calls));
+  await api.range();
+  await api.startRange('weak');
+  await api.getRange('a/b');
+  await api.recheckRange('a/b');
+  assert.deepEqual(calls.map((c) => [c.init.method, c.path]), [
+    ['GET', '/api/range'],
+    ['POST', '/api/range/runs'],
+    ['GET', '/api/range/runs/a%2Fb'],
+    ['POST', '/api/range/runs/a%2Fb/recheck'],
+  ]);
+  assert.equal(calls[1].init.body, '{"target":"weak"}');
+  assert.equal(calls[3].init.headers[CSRF_HEADER], '1');
+});
+
 test('replay is a GET on the run', async () => {
   const calls = [];
   const api = createApi(fakeFetch(200, { ok: true, turns: 5, fingerprint: 'f', failure: null }, calls));

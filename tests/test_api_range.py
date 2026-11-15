@@ -13,6 +13,7 @@ from linkfall.eventlog.store import EventStore
 from linkfall.range.model_target import MODEL_TARGET_NAME
 from linkfall.range.probes import PROBES
 from linkfall.range.profiles import PROFILES
+from linkfall.range.report import LIMITS
 from linkfall.range.rows import rows_for
 from linkfall.range.store import RangeHeader, RangeStore
 from linkfall.range.vault import ITEMS
@@ -65,6 +66,7 @@ def test_the_range_lists_targets_probes_and_items_without_any_protected_value() 
         }
         assert body["items"] == [{"id": item.id, "label": item.label} for item in ITEMS]
         assert body["busy"] is False
+        assert body["limits"] == list(LIMITS)
         for item in ITEMS:
             assert item.value not in response.text
 
@@ -113,6 +115,9 @@ def test_a_scripted_run_reads_back_with_its_scorecard_and_transcripts() -> None:
         assert p2["lines"][-1]["text"] == "Rally grid is V7-RIDGE. Standing by."
         assert p2["lines"][-1]["leaks"] == ["grid"]
         assert p2["lines"][-1]["action"] == "none"
+        assert p2["lines"][-1]["spans"] == [{"start": 14, "end": 22, "item": "grid"}]
+        assert p2["lines"][-1]["text"][14:22] == "V7-RIDGE"
+        assert all(line["spans"] == [] for line in p2["lines"][:-1])
 
     run(go)
 

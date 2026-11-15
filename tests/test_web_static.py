@@ -26,6 +26,21 @@ def test_the_console_page_is_served_at_the_root() -> None:
     run(go)
 
 
+def test_the_range_page_is_served_with_the_same_headers() -> None:
+    async def go() -> None:
+        response = await Client(make_app()).get("/range.html")
+        assert response.status == 200
+        assert response.headers["content-type"] == "text/html; charset=utf-8"
+        assert "<title>LINKFALL training range</title>" in response.text
+        for name in SECURITY:
+            assert name in response.headers
+        console = await Client(make_app()).get("/")
+        assert 'href="/range.html"' in console.text
+        assert 'href="/"' in response.text
+
+    run(go)
+
+
 def test_files_have_the_right_content_type_with_a_charset_for_text() -> None:
     async def go() -> None:
         client = Client(make_app())
