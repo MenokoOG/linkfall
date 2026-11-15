@@ -91,9 +91,9 @@ Not in scope: hosting the model, a custom domain, saving runs across a page relo
 
 Why this beats a hand-written JavaScript port of the engine: a port is a second implementation that can drift from the Python one, and the demo's claim is that code decides what the lead agent may do. Running the tested code keeps that claim true. Why it beats a thin Python facade that skips FastAPI: the facade would need its own request validation and its own JSON shapes. FastAPI and starlette add about 0.3 MB to a 15.8 MB download.
 
-**The runtime is served from the site, not from a CDN.** `build_pages.py` copies the Pyodide files and wheels into `dist/` and checks each against a SHA-256 list committed in the repo. The page then loads scripts from its own origin only, and the content security policy stays `script-src 'self'` plus `'wasm-unsafe-eval'`.
+**The site serves the runtime itself, with no CDN.** `build_pages.py` copies the Pyodide files and wheels into `dist/` and checks each against a SHA-256 list committed in the repo. The page then loads scripts from its own origin only, and the content security policy stays `script-src 'self'` plus `'wasm-unsafe-eval'`.
 
-**Version drift is closed by CI, not by hope.** A new CI job runs the Python suite on Pyodide with the same packages the site ships. The hosted copy never runs code that CI didn't run on that runtime.
+**A CI job closes the version drift.** A new CI job runs the Python suite on Pyodide with the same packages the site ships. The hosted copy never runs code that CI didn't run on that runtime.
 
 **Deploys are manual.** `pages.yml` runs only on `workflow_dispatch`, builds `dist/` from a chosen tag and publishes it with GitHub's Pages actions, pinned to commit SHAs. You press the button.
 
