@@ -149,4 +149,6 @@ See [SECURITY.md](SECURITY.md).
 
 ## License
 
-Not chosen yet.
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+The model is fetched at setup and is not part of this repository. Qwen3-4B-Instruct-2507 is Apache-2.0 by its model card (see ADR 0010). The Python dependencies are under MIT, BSD-3-Clause, PSF-2.0 and Apache-2.0, read from the installed package metadata on 2026-11-15.
