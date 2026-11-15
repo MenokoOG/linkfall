@@ -38,7 +38,19 @@ Sources: docs.github.com (Pages limits, What is GitHub Pages), render.com/docs/f
 | What had to change? | Two patches at startup, because a browser tab has no threads: `asyncio.to_thread` and `anyio.to_thread.run_sync` run their function inline. No file under `src/` was edited |
 | How big is the download? | 15.8 MB raw, 8.6 MB gzipped, for the runtime and wheels. Start-up took 4.0 s in Node with files on disk |
 
-Not yet tested: a real browser, the load time over a network, and the page under a `<meta>` content security policy. Step 2 below tests all three before anything else is built.
+**Browser proof, run 2026-11-15 in headless Chromium (Playwright build 1255) against a static page served from a `/linkfall/` subpath with gzip on.**
+
+| Question | Result |
+|---|---|
+| Does it run in a real browser? | Yes. A scripted mission played all 5 turns with 65 event-stream rows, and the range ran 7 of 7 probes with a clean recheck |
+| Does the `<meta>` policy hold? | Yes. 0 policy violations and 0 console errors under `script-src 'self' 'wasm-unsafe-eval'` |
+| How long until the app is ready? | 3.3 s unthrottled, 6.8 s at 20 Mbps, 17.4 s at 5 Mbps |
+| How much is transferred? | 8.94 MB in 23 requests (16.0 MB on disk) |
+| Does the page stay responsive? | The longest gap between frames while playing was 93 ms |
+
+One finding changed the design: Pyodide's own anyio and typing-extensions are older than fastapi 0.156.4 and anyio 4.15.1 need. The site ships every pure-Python package at the repo's pin and takes only the compiled ones (Python, pydantic, pydantic-core) from Pyodide.
+
+Not yet tested: Firefox and Safari, and whether GitHub Pages compresses `.wasm` and `.whl` files.
 
 ## 3. Discovery
 
@@ -148,7 +160,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 ## 11. Steps
 
 1. ADR 0012 as Proposed, for your ruling.
-2. Browser proof before any feature work: serve a minimal `dist/` locally, open it in headless Chromium under the meta policy, record load time and whether the page stays responsive. If this fails, stop and report.
+2. Browser proof before any feature work. Done 2026-11-15, passed; results in section 2.
 3. PR 1: `compose.scripted.yaml`, wording, smoke flag, README.
 4. PR 2: `browser/bridge.py`, `local-backend.js`, `backend.js`, with tests.
 5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README.
