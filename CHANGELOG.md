@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ### Changed
 - `SECURITY.md` described a repo with no code. It now covers version 1.0.0: what is supported, how to report while private vulnerability reporting is off, the training range in scope, and the checks that back the design stance.
+- `SECURITY.md` now sends reports to the Security tab. Private vulnerability reporting, secret scanning, push protection and protection on `main` (pull request required, `gates` and `containers` must pass, no force pushes) were turned on in the GitHub settings on 2026-11-15.
 
 ### Fixed
 - `.dockerignore` excluded `.venv` and bytecode caches only at the repo root. A virtual environment left inside `src/` on a developer machine was copied into the api image (13 MB of the 15 MB under `/app` in the image built on 2026-11-15). The ignore file now excludes them at any depth, and `scripts/smoke.sh` checks the running image.
