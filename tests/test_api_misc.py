@@ -15,6 +15,7 @@ from linkfall.api.app import create_app
 from linkfall.api.config import ConfigError, load_config
 from linkfall.api.logs import JsonFormatter, configure_logging, request_id
 from linkfall.eventlog.store import EventStore
+from linkfall.range.store import RangeStore
 
 
 def test_config_defaults_and_overrides() -> None:
@@ -22,6 +23,7 @@ def test_config_defaults_and_overrides() -> None:
     assert default.model_url is None
     assert default.allowed_hosts == ("localhost", "127.0.0.1", "[::1]")
     assert default.max_runs == 20
+    assert default.range_db_path == Path("data/linkfall-range.sqlite3")
     custom = load_config(
         {
             "LINKFALL_DB": "/data/x.sqlite3",
@@ -32,6 +34,9 @@ def test_config_defaults_and_overrides() -> None:
         }
     )
     assert custom.db_path == Path("/data/x.sqlite3")
+    assert custom.range_db_path == Path("/data/linkfall-range.sqlite3")  # beside the event log
+    moved = load_config({"LINKFALL_DB": "/data/x.sqlite3", "LINKFALL_RANGE_DB": "/logs/r.sqlite3"})
+    assert moved.range_db_path == Path("/logs/r.sqlite3")
     assert custom.model_url == "http://model:8080"
     assert custom.allowed_hosts == ("localhost", "example.test")
     assert custom.budgets.timeout_s == 30.0
@@ -118,7 +123,8 @@ def test_configure_logging_installs_one_json_handler() -> None:
 
 @pytest.fixture
 def live_server() -> Iterator[int]:
-    app = create_app(config(allowed_hosts=("127.0.0.1", "localhost")), store=EventStore())
+    settings = config(allowed_hosts=("127.0.0.1", "localhost"))
+    app = create_app(settings, store=EventStore(), range_store=RangeStore())
     server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=0, log_level="warning"))
     thread = threading.Thread(target=server.run, daemon=True)
     thread.start()

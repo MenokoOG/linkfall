@@ -11,6 +11,7 @@
 | choice   | lodestar, manual or sign                                    |
 | action   | one engine action (manual only)                             |
 | agent    | tactical, systems, comms or vitals (sign and dismiss only)  |
+| target   | reference, weak, overreach or model (training range)        |
 """
 
 from dataclasses import asdict
@@ -97,6 +98,12 @@ class Dismiss(BaseModel):
     model_config = _STRICT
 
     agent: EnumText[AgentName]
+
+
+class StartRange(BaseModel):
+    model_config = _STRICT
+
+    target: Literal["reference", "weak", "overreach", "model"]
 
 
 def channel_json(state: State) -> dict[str, object]:

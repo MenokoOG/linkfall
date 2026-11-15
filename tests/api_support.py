@@ -10,6 +10,7 @@ from asgi import Client
 from linkfall.api.app import create_app
 from linkfall.api.config import DEFAULT_HOSTS, ApiConfig
 from linkfall.eventlog.store import EventStore
+from linkfall.range.store import RangeStore
 from linkfall.supervisor.fake_client import FakeClient
 from linkfall.supervisor.modelclient import ModelRequest, ModelResponse
 
@@ -38,9 +39,18 @@ def config(**overrides: Any) -> ApiConfig:
 
 
 def make_app(
-    store: EventStore | None = None, model: FakeModel | None = None, **overrides: Any
+    store: EventStore | None = None,
+    model: FakeModel | None = None,
+    range_store: RangeStore | None = None,
+    **overrides: Any,
 ) -> FastAPI:
-    return create_app(config(**overrides), store=store or EventStore(), model_client=model)
+    """Both logs are in memory unless a test passes its own, so nothing lands under data/."""
+    return create_app(
+        config(**overrides),
+        store=store or EventStore(),
+        model_client=model,
+        range_store=range_store or RangeStore(),
+    )
 
 
 def run(test: Callable[[], Coroutine[Any, Any, None]]) -> None:
