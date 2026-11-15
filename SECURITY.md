@@ -4,7 +4,7 @@ LINKFALL is a local demo. Version 1.0.0 is the only version, and fixes go to `ma
 
 ## Reporting a problem
 
-If the Security tab shows "Report a vulnerability", use it. That is GitHub's private vulnerability reporting, and it was not enabled when this file was last checked on 2026-11-15. If the button is not there, open an issue that says you have a security report and leave out the details. I'll reply with a private channel.
+Use "Report a vulnerability" on the Security tab. That is GitHub's private vulnerability reporting, and it has been on since 2026-11-15. If the button is missing, open an issue that says you have a security report and leave out the details. I'll reply with a private channel.
 
 Please include what you found, the steps to reproduce it, and the version or commit. I'll aim to answer within 7 days. That's a goal, not a promise.
 
