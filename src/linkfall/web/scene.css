@@ -14,8 +14,9 @@
 .scene[data-phase="battle"] .scene-flash:nth-child(3){animation-duration:13s;animation-delay:-9s}
 @keyframes shell{0%,100%{opacity:0}2%{opacity:.9}5%{opacity:.25}7%{opacity:.6}14%{opacity:0}}
 
-/* truce beacon: one steady warm-white light over the ridge */
-.scene-beacon{left:72%;bottom:24%;width:10px;height:10px;border-radius:50%;background:var(--ink);box-shadow:0 0 18px 6px rgba(255,244,230,.7),0 0 70px 30px rgba(255,244,230,.25);opacity:0;transition:opacity .6s}
+/* truce beacon: one steady warm-white light over the ridge. It sits left of where the visitors
+   stand and above the units, so nothing on the ground hides it. */
+.scene-beacon{left:55%;bottom:42%;width:10px;height:10px;border-radius:50%;background:var(--ink);box-shadow:0 0 18px 6px rgba(255,244,230,.7),0 0 70px 30px rgba(255,244,230,.25);opacity:0;transition:opacity .6s}
 .scene[data-phase="truce"] .scene-beacon{opacity:1;animation:pulse 3.2s ease-in-out infinite}
 
 /* the visitors' ship */

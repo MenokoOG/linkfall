@@ -3,8 +3,6 @@ main.range{grid-template-columns:minmax(300px,380px) minmax(0,1fr)}
 .intro{grid-column:1/-1;display:flex;flex-direction:column;gap:8px;max-width:70ch}
 .intro p{font-size:15px}
 .nav a{padding:10px 4px}
-/* these two sit on the bare, drifting background, where the dim color can fall under 4.5:1 */
-.nav .chip{color:var(--ink)}
 .card .label + .muted{margin-top:6px}
 
 /* target picker: native radios, so the checked state is never color alone */
