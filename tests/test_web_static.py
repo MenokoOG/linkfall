@@ -31,6 +31,8 @@ def test_files_have_the_right_content_type_with_a_charset_for_text() -> None:
         client = Client(make_app())
         expected = {
             "/styles.css": "text/css; charset=utf-8",
+            "/scene.css": "text/css; charset=utf-8",
+            "/assets/scene-cinder-ward.svg": "image/svg+xml",
             "/js/main.js": "text/javascript; charset=utf-8",
             "/assets/mark.svg": "image/svg+xml",
         }

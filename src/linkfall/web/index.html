@@ -7,6 +7,7 @@
   <meta name="description" content="Set how far a lead agent may act without you, then watch what a crew of AI agents does with it.">
   <link rel="icon" href="/assets/mark.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/scene.css">
   <script type="module" src="/js/main.js"></script>
 </head>
 <body data-zone="ASSISTED">
@@ -23,6 +24,26 @@
   <div class="banner panel" id="banner" role="status" hidden>
     <span id="banner-text"></span>
   </div>
+
+  <figure class="scene panel" id="scene" data-phase="idle" data-shields="true" data-damage="0">
+    <div class="scene-art" aria-hidden="true">
+      <i class="scene-flash"></i><i class="scene-flash"></i><i class="scene-flash"></i>
+      <i class="scene-beacon"></i>
+      <i class="scene-dropship"></i>
+      <div class="scene-units" id="scene-units"></div>
+      <b class="scene-tracer"></b><b class="scene-tracer" data-from="enemy"></b><b class="scene-tracer"></b><b class="scene-tracer" data-from="enemy"></b>
+      <div class="scene-armor">
+        <i class="scene-smoke"></i><i class="scene-smoke"></i>
+        <i class="scene-vent"></i>
+        <img src="/assets/scene-armor.svg" alt="">
+        <i class="scene-link"></i>
+        <i class="scene-shield"></i>
+      </div>
+      <i class="scene-haze"></i>
+      <i class="scene-jam"></i>
+    </div>
+    <figcaption id="scene-caption">Cinder Ward. Standing by for a run.</figcaption>
+  </figure>
 
   <main id="main">
     <section class="col" aria-labelledby="h-link">
