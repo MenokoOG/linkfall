@@ -1,6 +1,6 @@
 # Direct development dependencies. Newest release at least 14 days old on 2026-11-04.
 -r requirements.in
 pytest==9.1.1
-coverage==7.16.2
+coverage==7.17.3
 ruff==0.17.1
 mypy==2.4.0
