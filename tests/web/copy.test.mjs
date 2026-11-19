@@ -4,7 +4,7 @@ import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import {
-  ACTION_LABELS, AGENTS, REASON_TEXT, SIGNATURE_NORMAL, STATUS, VERDICT_COPY, WEAKNESS_TEXT, actionLabel, describeAction,
+  ACTION_LABELS, AGENTS, CREW_HELP, REASON_TEXT, SIGNATURE_NORMAL, STATUS, VERDICT_COPY, WEAKNESS_TEXT, actionLabel, crewHelp, describeAction,
 } from '../../src/linkfall/web/js/copy.js';
 
 const ASSETS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'src', 'linkfall', 'web', 'assets');
@@ -39,4 +39,12 @@ test('copy says what the server decided, in plain words, and never "autonomous"'
   assert.doesNotMatch(all, /autonom/i);
   assert.doesNotMatch(all, /—/);
   assert.equal(SIGNATURE_NORMAL, 0.94);
+});
+
+test('crew help follows the model field of the health answer', () => {
+  assert.equal(crewHelp('up'), CREW_HELP.up);
+  assert.equal(crewHelp('not_configured'), CREW_HELP.not_configured);
+  assert.equal(crewHelp('down'), CREW_HELP.down);
+  assert.equal(crewHelp(undefined), CREW_HELP.down); // no answer yet: say only what the scripted crew can do
+  for (const line of Object.values(CREW_HELP)) assert.doesNotMatch(line, /autonomous/i);
 });

@@ -103,6 +103,17 @@ scripts/smoke.sh
 
 `docker compose down` stops it. Run history lives in the `linkfall-data` volume.
 
+### Scripted crew only, no model
+
+No weights and no model container. The api container used 40 MB of RAM idle on 2026-11-19. The console offers the scripted crew, and the range offers the three scripted targets.
+
+```bash
+docker compose -f compose.scripted.yaml up -d --build
+scripts/smoke.sh --scripted
+```
+
+It uses the same api image and hardening as the full stack, and keeps its runs in a separate `linkfall-scripted_linkfall-data` volume. Both stacks publish `127.0.0.1:8000`, so stop one before starting the other. `docker compose -f compose.scripted.yaml down` stops it.
+
 ## Development
 
 Needs Python 3.13. Pinned, hashed dependencies are in `requirements-dev.txt`.
@@ -141,7 +152,7 @@ Version 1.0.0 is these three milestones, all built:
 2. M2: Whisper duel.
 3. M3: training range with after-action report.
 
-Next, not started: a scripted-only hosted demo and a compose profile that runs without the model.
+Next: a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack is built; the browser copy is not.
 
 ### Known limits in version 1
 
