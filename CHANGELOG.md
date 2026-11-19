@@ -11,6 +11,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 - Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
 
 ### Changed
+- ADR 0012 is Accepted (Lawrence's ruling, 2026-11-19).
 - The help line under the crew choice now tells "no model set up" apart from "model server not answering". Both used to read "The model crew needs a running model server."
 - `SECURITY.md` described a repo with no code. It now covers version 1.0.0: what is supported, how to report while private vulnerability reporting is off, the training range in scope, and the checks that back the design stance.
 - `SECURITY.md` now sends reports to the Security tab. Private vulnerability reporting, secret scanning, push protection and protection on `main` (pull request required, `gates` and `containers` must pass, no force pushes) were turned on in the GitHub settings on 2026-11-15.
