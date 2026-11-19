@@ -1,4 +1,5 @@
 // Draws the page from state. Every string goes in as text.
+import { crewHelp } from './copy.js';
 import { byId, clear, h, setText } from './dom.js';
 import { forceRows, gaugeRows } from './gauges-model.js';
 import { linkToAngle, tickStates } from './knob-math.js';
@@ -89,7 +90,7 @@ export function renderBanner(health, reachable) {
 export function renderForm(state) {
   const modelUp = state.health?.model === 'up';
   setText(byId('mode-help'), MODE_HELP[state.mode]);
-  setText(byId('crew-help'), modelUp ? 'The model crew runs Tactical, Comms and Lodestar on a local model.' : 'The model crew needs a running model server.');
+  setText(byId('crew-help'), crewHelp(state.health?.model));
   document.querySelector('input[name="crew"][value="model"]').disabled = !modelUp;
   for (const radio of document.querySelectorAll('input[name="mode"]')) radio.checked = radio.value === state.mode;
   for (const radio of document.querySelectorAll('input[name="crew"]')) radio.checked = radio.value === state.crew;

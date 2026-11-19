@@ -7,7 +7,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 ### Added
 - ADR 0012 (Proposed) and a plan for a scripted-only hosted demo on GitHub Pages, with the Python engine running in the visitor's browser on Pyodide. Docs only; nothing is built. A spike passed 530 of the Python tests on Pyodide and played a mission and a range run in headless Chromium with no server.
 
+- `compose.scripted.yaml` runs the api alone, with the scripted crew and no model: `docker compose -f compose.scripted.yaml up`. It extends the `api` service from `compose.yaml`, so the image and hardening stay in one place, and resets the model URL, the dependency on `model` and the backend network. `scripts/smoke.sh --scripted` skips the 6 model checks and confirms `/api/health` reports `not_configured`.
+- Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
+
 ### Changed
+- ADR 0012 is Accepted (Lawrence's ruling, 2026-11-19).
+- The help line under the crew choice now tells "no model set up" apart from "model server not answering". Both used to read "The model crew needs a running model server."
 - `SECURITY.md` described a repo with no code. It now covers version 1.0.0: what is supported, how to report while private vulnerability reporting is off, the training range in scope, and the checks that back the design stance.
 - `SECURITY.md` now sends reports to the Security tab. Private vulnerability reporting, secret scanning, push protection and protection on `main` (pull request required, `gates` and `containers` must pass, no force pushes) were turned on in the GitHub settings on 2026-11-15.
 

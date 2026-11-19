@@ -31,6 +31,17 @@ export function describeAction(action, order) {
   return actionLabel(action);
 }
 
+// The help line under the crew choice, from the health answer's model field.
+export const CREW_HELP = Object.freeze({
+  up: 'The model crew runs Tactical, Comms and Lodestar on a local model.',
+  down: 'The model server is not answering. The scripted crew still works.',
+  not_configured: 'This copy has no model set up, so it runs the scripted crew only.',
+});
+
+export function crewHelp(model) {
+  return CREW_HELP[model] ?? CREW_HELP.down;
+}
+
 export const REASON_TEXT = Object.freeze({
   HUMAN_AUTHORITY: "Only you can accept a truce, whatever the link says.",
   EXTERNAL_ORIGIN: 'It came from the enemy channel, so Lodestar will not run it alone.',

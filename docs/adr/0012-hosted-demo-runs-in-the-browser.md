@@ -1,6 +1,6 @@
 # 0012: The hosted demo runs the engine in the browser
 
-Date: 2026-11-15 · Status: Proposed
+Date: 2026-11-15 · Status: Accepted
 
 ## Context
 

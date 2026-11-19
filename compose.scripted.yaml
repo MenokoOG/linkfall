@@ -1,0 +1,19 @@
+# Scripted crew only, no model: docker compose -f compose.scripted.yaml up (ADR 0012).
+# The api block comes from compose.yaml, so the image and its hardening stay in one place.
+# Only the model wiring is removed. Stop the default stack first: both publish 127.0.0.1:8000.
+name: linkfall-scripted
+
+services:
+  api:
+    extends:
+      file: compose.yaml
+      service: api
+    environment: !reset {}
+    depends_on: !reset {}
+    networks: !override [edge]
+
+networks:
+  edge: {}
+
+volumes:
+  linkfall-data: {}
