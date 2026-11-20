@@ -60,6 +60,12 @@ OWASP Top 10 for LLM Applications 2025: not in play for the hosted copy. It make
 
 Not verified: Firefox and Safari, whether GitHub Pages compresses `.wasm` and `.whl` files, and the "Enforce HTTPS" default for the site. Each is a check in the build plan.
 
+## As built so far (2026-11-20)
+
+- The in-browser backend shipped in MenokoOG/linkfall#42: `linkfall.browser.bridge` (Python) and `local-backend.js` (the only JavaScript that knows about Pyodide). A page uses it only when it carries `<meta name="linkfall-backend" content="browser">`, so the server's pages are unchanged.
+- A browser check on a scratch build under `/linkfall/` played a mission and a range run with 0 console errors and 0 policy violations.
+- Not built yet: the site build, the CI job on Pyodide and the deploy workflow (plan, PR 3).
+
 ## Related
 
 0004 (two containers on localhost; the hosted copy is a second way to run, and the local stack stays the reference), 0008 (the event stream, now also delivered in-process), 0010 (the model stays local only). Plan: `docs/plans/2026-11-15-hosted-scripted-demo.md`.

@@ -65,6 +65,18 @@ Checked on 2026-11-15 in headless Chromium against the real app, at 1366 px and 
 | Zoom to 200 percent | not tested | |
 | Screen reader | not tested | |
 
+## Hosted copy start-up status (`runtime-view.js`)
+
+Added 2026-11-20 for the hosted build only; the server's pages never show it. Built in code, not yet checked by a person.
+
+| Area | Result | Evidence |
+|---|---|---|
+| Roles and names | pass (code) | A `role="status"` region at the top of `main` reads each start-up step, then "Running in your browser with the scripted crew. A run lasts until you reload the page." On failure it switches to `role="alert"` and adds a native "Try again" button |
+| Seen in a browser | pass | Headless Chromium on a scratch build showed the ready text on both pages, 2026-11-20 |
+| Keyboard and focus on failure | not tested | Focus stays where it was; the button is in the tab order. Whether focus should move to it is open |
+| Contrast | not measured | Uses the existing `.banner` styles |
+| Screen reader | not tested | |
+
 ## Still to do in later slices
 
 Nav text on the console, measured on 2026-11-15 the same way as the range page: at 390 px the run chip was 4.45:1 and the turn count 4.30:1 at worst, under the 4.5:1 that AA asks for. Both now use the light text color on both pages and measure 10.93:1 or better at 390 px and 12.69:1 or better at 1366 px.

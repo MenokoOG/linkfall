@@ -13,6 +13,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 - Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
 
 ### Changed
+- The hosted demo docs say where things stand: the plan's status, steps and a progress section with what PR 1 and PR 2 found, an "As built so far" note in ADR 0012, the README roadmap line, and the new start-up status in `docs/accessibility.md`. The plan's asset-path step now covers stylesheets and scripts, because `zones.js` and `cards-view.js` build `/assets/` paths.
 - ADR 0012 is Accepted (Lawrence's ruling, 2026-11-19).
 - The help line under the crew choice now tells "no model set up" apart from "model server not answering". Both used to read "The model crew needs a running model server."
 - `SECURITY.md` described a repo with no code. It now covers version 1.0.0: what is supported, how to report while private vulnerability reporting is off, the training range in scope, and the checks that back the design stance.

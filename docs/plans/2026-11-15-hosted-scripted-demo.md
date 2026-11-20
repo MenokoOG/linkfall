@@ -1,6 +1,6 @@
 # Plan: hosted scripted demo on GitHub Pages, and a no-model compose file
 
-Date: 2026-11-15 · Branch for this plan: menokog-agent/hosted-demo-plan · Status: Proposed, nothing built
+Date: 2026-11-15 · Branch for this plan: menokog-agent/hosted-demo-plan · Status: Accepted (ADR 0012, 2026-11-19). PR 1 and PR 2 merged; PR 3 in progress
 
 Serves the agentic architect goal: a link a reviewer can open without cloning anything.
 
@@ -109,7 +109,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 
 **Deploys are manual.** `pages.yml` runs only on `workflow_dispatch`, builds `dist/` from a chosen tag and publishes it with GitHub's Pages actions, pinned to commit SHAs. You press the button.
 
-**Asset paths.** `build_pages.py` rewrites the leading `/` in the two HTML files to relative paths, and a test asserts no absolute path is left in `dist/`.
+**Asset paths.** `build_pages.py` rewrites the leading `/` to relative paths in the two HTML files, the stylesheets (`url(/assets/...)`) and the scripts (`'/assets/...'` and `` `/assets/...` `` in `zones.js` and `cards-view.js`), and a test asserts no absolute path is left in `dist/`.
 
 **Local half.** A second compose file with `api` only: same image, same hardening, same loopback port, no `LINKFALL_MODEL_URL`, no `depends_on`. Command: `docker compose -f compose.scripted.yaml up`. A Compose profile would change what plain `docker compose up` does and break the README's one command and the 18-check smoke run, so the model stack stays the default.
 
@@ -141,7 +141,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 
 ## 9. Edge cases
 
-1. **Site lives under `/linkfall/`.** Relative paths after the build; a test fails on any absolute one.
+1. **Site lives under `/linkfall/`.** Relative paths after the build, in HTML, CSS and JavaScript; a test fails on any absolute one.
 2. **Report download.** No server route exists, so the page fetches the text from the in-page app and saves it as a file. The text is still never rendered by the page.
 3. **Event stream on one thread.** The stream polls with `asyncio.sleep`, which yields to the browser. The spike showed rows arriving while turns were posted. The browser test in step 2 confirms the page stays responsive.
 4. **A slow phone.** 8.6 MB and a few seconds of start-up. The loading state shows progress, and the budget is set from step 2's numbers.
@@ -161,11 +161,24 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 
 1. ADR 0012 as Proposed, for your ruling.
 2. Browser proof before any feature work. Done 2026-11-15, passed; results in section 2.
-3. PR 1: `compose.scripted.yaml`, wording, smoke flag, README.
-4. PR 2: `browser/bridge.py`, `local-backend.js`, `backend.js`, with tests.
-5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README.
+3. PR 1: `compose.scripted.yaml`, wording, smoke flag, README. Merged 2026-11-19 (MenokoOG/linkfall#41).
+4. PR 2: `browser/bridge.py`, `local-backend.js`, `backend.js`, with tests. Merged 2026-11-20 (MenokoOG/linkfall#42).
+5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README. In progress on `menokog-agent/pages-build`. ADR 0012 already exists (Accepted 2026-11-19), so PR 3 doesn't add it.
 6. You turn on Pages for the repo (source: GitHub Actions) and run the workflow. I run the browser check against the live URL and report.
 7. Run the gates on every PR: `ruff`, `mypy`, `coverage run -m pytest -m "not integration" && coverage report`, `node --test tests/web/*.test.mjs`, `docker compose config -q` for both files.
+
+## Progress and findings
+
+**PR 1 (2026-11-19).** `compose.scripted.yaml` needed `!reset` for `environment` and `depends_on` and `!override` for `networks`: plain `extends` carries `depends_on` over and fails (Compose v5.5.1). `range-model.js` needed no change; with no model set up, the server leaves the model target out of the catalog.
+
+**PR 2 (2026-11-20).** As built, and what PR 3 builds on:
+- The switch is `<meta name="linkfall-backend" content="browser">` in the page. Without it, `backend.js` returns the server backend and never loads the Pyodide files.
+- The page loads from `runtime/` beside it: `manifest.json` (`packages` for Pyodide's `loadPackage`, `wheels` to unpack into site-packages, `app`, the zip of `src/linkfall`), the wheels, and `pyodide/`. `build_pages.py` writes that layout.
+- `bridge.start_page()` is the page's one Python call. It patches the two thread hand-offs and builds the app with both logs in memory.
+- Pyodide 314 turns JavaScript `null` into `JsNull`, not `None`. The page passes `undefined` for absent values.
+- `tests/web/static.test.mjs` now follows dynamic imports, a fourth changed file in PR 2.
+- Browser check on a scratch build under `/linkfall/`: ready in 4.5 to 6 s unthrottled, a mission to SURVIVED with 55 streamed rows, replay and recheck pass, the report downloads, 0 console errors, 0 policy violations. The server build passed the same flow.
+- Found: `zones.js` and `cards-view.js` build `/assets/` paths, so the build rewrites scripts and stylesheets as well as pages (section 6).
 
 ## 12. Production DoD plan
 
