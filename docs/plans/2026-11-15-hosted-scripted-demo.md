@@ -210,7 +210,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 
 1. **Go or no-go on this design.** It is my recommendation and the spike backs it.
 2. **Turning on GitHub Pages** is a repo setting, so it is yours, at step 6.
-3. **README wording** for the link. It has to say: scripted crew only, runs in your browser, and runs last until you reload.
+3. **README wording** for the link. It has to say: scripted crew only, runs in your browser, and runs last until you reload. Ruled 2026-11-20: the README section uses the approved draft.
 
 ## Self-check
 
