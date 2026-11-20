@@ -8,6 +8,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 - ADR 0012 (Proposed) and a plan for a scripted-only hosted demo on GitHub Pages, with the Python engine running in the visitor's browser on Pyodide. Docs only; nothing is built. A spike passed 530 of the Python tests on Pyodide and played a mission and a range run in headless Chromium with no server.
 
 - `compose.scripted.yaml` runs the api alone, with the scripted crew and no model: `docker compose -f compose.scripted.yaml up`. It extends the `api` service from `compose.yaml`, so the image and hardening stay in one place, and resets the model URL, the dependency on `model` and the backend network. `scripts/smoke.sh --scripted` skips the 6 model checks and confirms `/api/health` reports `not_configured`.
+- `linkfall.browser.bridge` calls the API app in-process, for the hosted demo (ADR 0012). It sends each request and event stream through the full ASGI app, so routes, checks and error shapes match the server, and it makes the app's two thread hand-offs run inline for Pyodide's single thread. The server never imports it. Nothing in the page uses it yet.
 - Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
 
 ### Changed
