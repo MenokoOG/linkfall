@@ -12,6 +12,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 - The pages can run against that bridge in the tab. `backend.js` picks the browser backend only when a page carries `<meta name="linkfall-backend" content="browser">`, which the hosted build will add; without it nothing changes. `local-backend.js` loads Pyodide and the app from `runtime/` beside the page and gives `api.js` and `events.js` a `fetch` and an `EventSource` in the same shapes. Start-up shows its progress, then a note that a run lasts until reload, or an error with a retry and the command to run it locally. On the range page the report downloads as a file made in the page.
 - Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
 
+- `scripts/build_pages.py` builds the hosted demo site into `dist/`: the pages with relative paths, a meta policy taken from the server's and the browser-backend switch, Pyodide 314.0.7 checked against the hashes in `pages/runtime.json`, the pure wheels checked against `requirements.txt`, and `linkfall.zip`. A failed hash stops the build before anything is written. Nothing deploys it yet.
+
 ### Changed
 - The hosted demo docs say where things stand: the plan's status, steps and a progress section with what PR 1 and PR 2 found, an "As built so far" note in ADR 0012, the README roadmap line, and the new start-up status in `docs/accessibility.md`. The plan's asset-path step now covers stylesheets and scripts, because `zones.js` and `cards-view.js` build `/assets/` paths.
 - ADR 0012 is Accepted (Lawrence's ruling, 2026-11-19).

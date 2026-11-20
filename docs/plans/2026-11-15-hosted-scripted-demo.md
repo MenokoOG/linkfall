@@ -126,7 +126,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 
 **ASVS.** Level 1 still. Rows to update in `docs/security/asvs-l1.md`, each with a "hosted copy" note: v5.0.0-3.2.1 (headers: meta policy only), v5.0.0-3.4.2 and v5.0.0-3.5.1 (no cross-origin surface: no server), v5.0.0-12.1.1, v5.0.0-12.2.1, v5.0.0-12.2.2 (TLS is GitHub's). Next check: that "Enforce HTTPS" is on for the site; the Pages pages I read don't state the default.
 
-**Dependencies.** No Python package added. Pyodide 314.0.8 is a new runtime artifact, pinned by hash. Advisory status: unknown, to be checked in PR 3.
+**Dependencies.** No Python package added. Pyodide 314.0.7 is a new runtime artifact, pinned by hash in `pages/runtime.json`. 314.0.8 (published 2026-11-13) was too new for the 14-day rule on 2026-11-20; its changes are bug fixes, its `pyodide-lock.json` is byte-identical to 314.0.7's, and moving to it is a small PR after 2026-11-27. Advisory status, checked 2026-11-20: none for Pyodide in its repo's advisories or in GitHub's advisory database (npm and pip).
 
 ## 8. Failure behavior
 
@@ -179,6 +179,12 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 - `tests/web/static.test.mjs` now follows dynamic imports, a fourth changed file in PR 2.
 - Browser check on a scratch build under `/linkfall/`: ready in 4.5 to 6 s unthrottled, a mission to SURVIVED with 55 streamed rows, replay and recheck pass, the report downloads, 0 console errors, 0 policy violations. The server build passed the same flow.
 - Found: `zones.js` and `cards-view.js` build `/assets/` paths, so the build rewrites scripts and stylesheets as well as pages (section 6).
+
+**PR 3 (in progress).**
+- `scripts/build_pages.py` builds `dist/` (or `--out`). Pyodide's files come from jsDelivr and are checked against `pages/runtime.json`; each hash there matched both the npm package and the jsDelivr copy, and the wheel hashes match `pyodide-lock.json`. The pure wheels come from PyPI at the versions in `requirements.txt` and must match one of its hashes, so Dependabot's bumps reach the site. Downloads are cached in `.cache/pages/` by hash and checked again on use. The build refuses to write into the repo root, `src/` or a folder it didn't make.
+- The meta policy is the server's policy with `frame-ancestors` dropped and `'wasm-unsafe-eval'` added to `script-src`, read from `api/security.py` so the two can't drift.
+- `.gitignore` gains `/dist/` and `/.cache/`, a fifth existing file in PR 3.
+- Browser check on the real build, 2026-11-20, Pyodide 314.0.7: ready in 4.9 s (console) and 6.5 s (range) unthrottled, the same mission, replay, range, download and recheck results as PR 2, 0 console errors, 0 policy violations.
 
 ## 12. Production DoD plan
 
