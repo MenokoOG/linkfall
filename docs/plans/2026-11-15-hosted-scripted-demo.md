@@ -163,7 +163,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 2. Browser proof before any feature work. Done 2026-11-15, passed; results in section 2.
 3. PR 1: `compose.scripted.yaml`, wording, smoke flag, README. Merged 2026-11-19 (MenokoOG/linkfall#41).
 4. PR 2: `browser/bridge.py`, `local-backend.js`, `backend.js`, with tests. Merged 2026-11-20 (MenokoOG/linkfall#42).
-5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README. In progress on `menokog-agent/pages-build`. ADR 0012 already exists (Accepted 2026-11-19), so PR 3 doesn't add it.
+5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README. Build and CI job merged 2026-11-20 (MenokoOG/linkfall#43); the rest on `menokog-agent/pages-deploy`. ADR 0012 already exists (Accepted 2026-11-19), so PR 3 doesn't add it.
 6. You turn on Pages for the repo (source: GitHub Actions) and run the workflow. I run the browser check against the live URL and report.
 7. Run the gates on every PR: `ruff`, `mypy`, `coverage run -m pytest -m "not integration" && coverage report`, `node --test tests/web/*.test.mjs`, `docker compose config -q` for both files.
 
@@ -180,7 +180,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 - Browser check on a scratch build under `/linkfall/`: ready in 4.5 to 6 s unthrottled, a mission to SURVIVED with 55 streamed rows, replay and recheck pass, the report downloads, 0 console errors, 0 policy violations. The server build passed the same flow.
 - Found: `zones.js` and `cards-view.js` build `/assets/` paths, so the build rewrites scripts and stylesheets as well as pages (section 6).
 
-**PR 3 (in progress).**
+**PR 3.** Merged in two parts. MenokoOG/linkfall#43 (2026-11-20, at 5a39dc4) holds the docs catch-up, the site build and the `pyodide` CI job. `pages.yml`, the ASVS notes, the runbook and the README section were pushed after that merge, so they follow on `menokog-agent/pages-deploy`.
 - `scripts/build_pages.py` builds `dist/` (or `--out`). Pyodide's files come from jsDelivr and are checked against `pages/runtime.json`; each hash there matched both the npm package and the jsDelivr copy, and the wheel hashes match `pyodide-lock.json`. The pure wheels come from PyPI at the versions in `requirements.txt` and must match one of its hashes, so Dependabot's bumps reach the site. Downloads are cached in `.cache/pages/` by hash and checked again on use. The build refuses to write into the repo root, `src/` or a folder it didn't make.
 - The meta policy is the server's policy with `frame-ancestors` dropped and `'wasm-unsafe-eval'` added to `script-src`, read from `api/security.py` so the two can't drift.
 - `.gitignore` gains `/dist/` and `/.cache/`, a fifth existing file in PR 3.
