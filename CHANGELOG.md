@@ -13,6 +13,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 - Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
 
 - `scripts/build_pages.py` builds the hosted demo site into `dist/`: the pages with relative paths, a meta policy taken from the server's and the browser-backend switch, Pyodide 314.0.7 checked against the hashes in `pages/runtime.json`, the pure wheels checked against `requirements.txt`, and `linkfall.zip`. A failed hash stops the build before anything is written. Nothing deploys it yet.
+- A CI job, `pyodide`, runs the Python suite on Pyodide with exactly the files the site ships, so the hosted copy never runs code CI didn't run on that runtime. pytest comes in hash-checked from `requirements-dev.txt`. Four test files or tests that need sockets, threads, a subprocess or the server's static files are left out, each with its reason. 540 pass.
 
 ### Changed
 - The hosted demo docs say where things stand: the plan's status, steps and a progress section with what PR 1 and PR 2 found, an "As built so far" note in ADR 0012, the README roadmap line, and the new start-up status in `docs/accessibility.md`. The plan's asset-path step now covers stylesheets and scripts, because `zones.js` and `cards-view.js` build `/assets/` paths.

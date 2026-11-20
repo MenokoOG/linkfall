@@ -2,6 +2,7 @@ import hashlib
 import importlib.util
 import json
 import re
+import sys
 import zipfile
 from pathlib import Path
 from types import ModuleType
@@ -254,3 +255,20 @@ def test_requirement_pins_reads_a_hashed_file() -> None:
     pins = bp.requirement_pins(text)
     assert pins["a-b"] == ("1.2", frozenset({"a" * 64, "b" * 64}))
     assert pins["c"] == ("3", frozenset())
+
+
+def test_the_pyodide_test_wheels_are_hash_pinned_in_the_dev_lockfile() -> None:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        spec = importlib.util.spec_from_file_location(
+            "fetch_test_wheels", ROOT / "scripts" / "fetch_test_wheels.py"
+        )
+        assert spec is not None
+        assert spec.loader is not None
+        ftw = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(ftw)
+    finally:
+        sys.path.remove(str(ROOT / "scripts"))
+    pins = bp.requirement_pins((ROOT / "requirements-dev.txt").read_text())
+    for name in ftw.TEST_WHEELS:
+        assert pins[bp.normalize(name)][1], name
