@@ -152,7 +152,7 @@ Version 1.0.0 is these three milestones, all built:
 2. M2: Whisper duel.
 3. M3: training range with after-action report.
 
-Next: a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack is built; the browser copy is not.
+Next: a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack and the in-browser backend are built; the site build and the deploy to GitHub Pages are not.
 
 ### Known limits in version 1
 

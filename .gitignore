@@ -13,3 +13,7 @@ __pycache__/
 # runtime data and model weights (never committed)
 /data/
 /models/
+
+# hosted demo build output and its download cache (scripts/build_pages.py)
+/dist/
+/.cache/
