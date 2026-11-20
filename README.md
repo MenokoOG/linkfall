@@ -86,6 +86,10 @@ Open `/range.html`, or follow the "Training range" link in the console. Whisper,
 
 Open source. No vendor lock-in. Works offline. Runs on a laptop with an i5, 16 GB of RAM and no GPU. Two containers run it with `docker compose up` (see [Run with Docker](#run-with-docker)). All names, grids and codes in the game are fictional.
 
+## Try it in your browser
+
+https://menokoog.github.io/linkfall/ runs the scripted crew in your browser. Nothing to install, and no model is called. The Python engine runs in your tab on Pyodide; the first load is about 9 MB. A run lasts until you reload the page. GitHub logs visitor addresses as it does for any Pages site. The hosted copy shows behavior; the local stack, with its hash-checked log, is the evidence.
+
 ## Run with Docker
 
 Needs Docker with Compose, about 3 GB of disk for the weights and 6 GB of free RAM. The weights are not in the images. Fetch them once (the script checks the SHA-256 pinned in ADR 0010):
@@ -152,7 +156,7 @@ Version 1.0.0 is these three milestones, all built:
 2. M2: Whisper duel.
 3. M3: training range with after-action report.
 
-Next: a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack and the in-browser backend are built; the site build and the deploy to GitHub Pages are not.
+Next: a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack, the in-browser backend, the site build and the deploy workflow are built. The site goes live once the repo is public; the steps are in [docs/runbooks/hosted-demo.md](docs/runbooks/hosted-demo.md).
 
 ### Known limits in version 1
 

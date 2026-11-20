@@ -163,7 +163,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 2. Browser proof before any feature work. Done 2026-11-15, passed; results in section 2.
 3. PR 1: `compose.scripted.yaml`, wording, smoke flag, README. Merged 2026-11-19 (MenokoOG/linkfall#41).
 4. PR 2: `browser/bridge.py`, `local-backend.js`, `backend.js`, with tests. Merged 2026-11-20 (MenokoOG/linkfall#42).
-5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README. In progress on `menokog-agent/pages-build`. ADR 0012 already exists (Accepted 2026-11-19), so PR 3 doesn't add it.
+5. PR 3: `build_pages.py`, the CI job, `pages.yml`, ASVS rows, runbook, README. Build and CI job merged 2026-11-20 (MenokoOG/linkfall#43); the rest on `menokog-agent/pages-deploy`. ADR 0012 already exists (Accepted 2026-11-19), so PR 3 doesn't add it.
 6. You turn on Pages for the repo (source: GitHub Actions) and run the workflow. I run the browser check against the live URL and report.
 7. Run the gates on every PR: `ruff`, `mypy`, `coverage run -m pytest -m "not integration" && coverage report`, `node --test tests/web/*.test.mjs`, `docker compose config -q` for both files.
 
@@ -180,11 +180,14 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 - Browser check on a scratch build under `/linkfall/`: ready in 4.5 to 6 s unthrottled, a mission to SURVIVED with 55 streamed rows, replay and recheck pass, the report downloads, 0 console errors, 0 policy violations. The server build passed the same flow.
 - Found: `zones.js` and `cards-view.js` build `/assets/` paths, so the build rewrites scripts and stylesheets as well as pages (section 6).
 
-**PR 3 (in progress).**
+**PR 3.** Merged in two parts. MenokoOG/linkfall#43 (2026-11-20, at 5a39dc4) holds the docs catch-up, the site build and the `pyodide` CI job. `pages.yml`, the ASVS notes, the runbook and the README section were pushed after that merge, so they follow on `menokog-agent/pages-deploy`.
 - `scripts/build_pages.py` builds `dist/` (or `--out`). Pyodide's files come from jsDelivr and are checked against `pages/runtime.json`; each hash there matched both the npm package and the jsDelivr copy, and the wheel hashes match `pyodide-lock.json`. The pure wheels come from PyPI at the versions in `requirements.txt` and must match one of its hashes, so Dependabot's bumps reach the site. Downloads are cached in `.cache/pages/` by hash and checked again on use. The build refuses to write into the repo root, `src/` or a folder it didn't make.
 - The meta policy is the server's policy with `frame-ancestors` dropped and `'wasm-unsafe-eval'` added to `script-src`, read from `api/security.py` so the two can't drift.
 - `.gitignore` gains `/dist/` and `/.cache/`, a fifth existing file in PR 3.
 - CI job `pyodide` (`.github/workflows/ci.yml`): builds the site, fetches pytest and its four dependencies hash-checked from `requirements-dev.txt` (`scripts/fetch_test_wheels.py`), and runs the suite on Pyodide with exactly the shipped files (`scripts/test_pyodide.mjs`). It checks that `linkfall` loads from the shipped zip, not `src/`. Locally on 2026-11-20: 540 passed under Python 3.14.2 and pydantic 2.12.5. Left out, each with its reason in the script: `test_api_misc.py` (uvicorn and a real socket), `test_supervisor_http_client.py` (socket server on a thread), one replay test (a subprocess), and `test_web_static.py` (the server serving `web/`, which the hosted copy leaves to Pages). The job runs on Node 24, the version it was checked on; `gates` stays on Node 22. Making `pyodide` a required check is a repo setting, so it's yours.
+- CI on PR 43, 2026-11-20: `gates`, `pyodide` (27 s) and `containers` passed. The first run of the network build and the hash checks on a GitHub runner.
+- `pages.yml`: manual only (`workflow_dispatch`), takes a release tag (checked against `v1.2.3` form before checkout), builds with every hash checked, runs the suite on Pyodide with the files about to ship, then uploads with `actions/upload-pages-artifact` v5.0.0 and deploys with `actions/deploy-pages` v5.0.1, both pinned to commit SHAs and over 14 days old. No permissions at the top level; `contents: read` to build, `pages: write` and `id-token: write` to deploy. The upload skips dotfiles, so `.nojekyll` and the build marker don't ship; a deploy through Actions doesn't run Jekyll. Not run: Pages can't be turned on while the repo is private, and `v1.0.0` predates these files, so the first deploy needs a new tag (yours). actionlint was not run; the workflows were parsed and checked for pins, permissions and input use instead.
+- ASVS: a hosted-copy section in `docs/security/asvs-l1.md` covers the rows in section 7 plus 1.3.2, 13.4.1 and 15.2.1. Runbook: `docs/runbooks/hosted-demo.md`. The local check in it uses `python3 -m http.server` under `/linkfall/`; a full browser run passed that way on 2026-11-20.
 - Browser check on the real build, 2026-11-20, Pyodide 314.0.7: ready in 4.9 s (console) and 6.5 s (range) unthrottled, the same mission, replay, range, download and recheck results as PR 2, 0 console errors, 0 policy violations.
 
 ## 12. Production DoD plan
@@ -207,7 +210,7 @@ Why this beats a hand-written JavaScript port of the engine: a port is a second 
 
 1. **Go or no-go on this design.** It is my recommendation and the spike backs it.
 2. **Turning on GitHub Pages** is a repo setting, so it is yours, at step 6.
-3. **README wording** for the link. It has to say: scripted crew only, runs in your browser, and runs last until you reload.
+3. **README wording** for the link. It has to say: scripted crew only, runs in your browser, and runs last until you reload. Ruled 2026-11-20: the README section uses the approved draft.
 
 ## Self-check
 

@@ -36,12 +36,28 @@ Status is **planned** until a step ships the control with a test. Update this fi
 | 6.x, 7.x, 9.x, 10.x | No accounts, sessions, tokens or OAuth |
 | 8.1.1, 8.2.1, 8.3.1 | One local pilot, no roles. Any local process can call the API on 127.0.0.1; accepted for a localhost demo, and the bind is tested |
 | 5.x | No file uploads. The model path comes from deployment config, not from a request |
-| 12.1.1, 12.2.1, 12.2.2 | The `api` binds to 127.0.0.1 over HTTP and is not external facing. Revisit before any hosted release |
+| 12.1.1, 12.2.1, 12.2.2 | The `api` binds to 127.0.0.1 over HTTP and is not external facing. For the hosted copy see the section below |
 | 3.3.1, 3.4.1 | No cookies; no TLS, so no HSTS |
 | 1.2.2, 1.2.5, 1.3.1, 1.5.1 | No dynamic URLs from untrusted data, no OS command built from input, no WYSIWYG, no XML |
 | 11.3.1, 11.3.2 | No encryption in the application |
 | 14.3.1 | No authenticated client data |
 | 4.4.1 | No WebSocket (ADR 0008 uses SSE) |
+
+## Hosted copy (ADR 0012)
+
+The hosted demo runs the same app inside the visitor's tab on Pyodide, served as static files by GitHub Pages. There is no server, no shared state and no model call. These rows say what changes for that copy; every other row above holds as written, because the tab runs the same routes and the same web code. Still level 1.
+
+| ID | Hosted copy | Status |
+|---|---|---|
+| v5.0.0-1.3.2 | The page policy adds `'wasm-unsafe-eval'` so Pyodide can compile WebAssembly. That allows no JavaScript `eval`. The Python it runs comes from `linkfall.zip`, built from this repo and loaded from the same origin | **done** (`scripts/build_pages.py`, `tests/test_build_pages.py`) |
+| v5.0.0-3.2.1 | Pages can't send headers, so the policy is a `<meta>` tag: the server's policy with `frame-ancestors` dropped (a meta tag can't carry it) and `'wasm-unsafe-eval'` added, read from `api/security.py` so the two can't drift. `nosniff`, `Referrer-Policy`, `X-Frame-Options` and the cross-origin policies don't apply. Framing is accepted: the page holds no session, secret or user data (ADR 0012). The range report is saved as a file made in the page and never rendered | **done** for the meta policy; header loss **accepted** |
+| v5.0.0-3.4.2 | No server, so no CORS surface | **n/a** |
+| v5.0.0-3.5.1 | No server state another origin could change. The in-tab app still runs the same check: the bridge passes the page's headers through and fixes Host, so a POST without `X-Linkfall-Request` gets 403 (`tests/test_browser_bridge.py`) | **done** |
+| v5.0.0-12.1.1, 12.2.1, 12.2.2 | TLS is GitHub's. "Enforce HTTPS" has to be on for the site; its default isn't stated in the Pages docs read for the plan. Checked in the runbook after Pages is turned on | **planned** |
+| v5.0.0-13.4.1 | The site is built only from `src/linkfall/web/` and the hash-checked runtime; the Pages upload skips dotfiles. No `.git` or source tree is published | **done** by construction (`scripts/build_pages.py`) |
+| v5.0.0-15.2.1 | The pure wheels follow `requirements.txt`, so Dependabot covers them. Pyodide and its compiled packages are pinned in `pages/runtime.json`, which Dependabot doesn't watch: check advisories by hand at each Pyodide bump (runbook). None found on 2026-11-20 for 314.0.7 | **done** at pin time |
+
+Supply chain, beyond the level 1 rows: every runtime file is checked against a committed SHA-256 before use, and a mismatch stops the build. The deploy workflow's actions are pinned to commit SHAs, with no permissions at the top level. The CI job `pyodide` runs the suite on the exact files that ship (`.github/workflows/ci.yml`, `.github/workflows/pages.yml`).
 
 ## Vulnerable component time frames (v5.0.0-15.1.1)
 
