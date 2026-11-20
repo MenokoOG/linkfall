@@ -38,7 +38,8 @@ test('nothing is loaded from outside this server', () => {
   }
 });
 
-// The scripts a page loads: its entry script and everything that imports from there.
+// The scripts a page loads: its entry script and everything it imports from there, dynamic
+// imports included (backend.js loads the browser backend only in the hosted build).
 function scriptsOf(page) {
   const found = new Set();
   const queue = [...read(page).matchAll(/<script\b[^>]*\bsrc="\/js\/([^"]+)"/g)].map((m) => m[1]);
@@ -46,7 +47,7 @@ function scriptsOf(page) {
     const file = queue.pop();
     if (found.has(file)) continue;
     found.add(file);
-    for (const [, spec] of read(join('js', file)).matchAll(/from '\.\/([^']+)'/g)) queue.push(spec);
+    for (const [, spec] of read(join('js', file)).matchAll(/(?:from |import\()'\.\/([^']+)'/g)) queue.push(spec);
   }
   return found;
 }

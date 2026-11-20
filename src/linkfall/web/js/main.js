@@ -1,5 +1,6 @@
 // Wires the page together: health, the link knob, starting a run, and the turn loop.
 import { ApiError, createApi } from './api.js';
+import { pickBackend } from './backend.js';
 import { renderCards, renderChannel } from './cards-view.js';
 import { renderDecision } from './decision-view.js';
 import { byId, setText } from './dom.js';
@@ -18,7 +19,8 @@ import { buildKnobTicks, renderBanner, renderForm, renderGauges, renderLink, ren
 import { snapLink } from './zones.js';
 
 const SEED_MAX = 4294967295;
-const api = createApi();
+const backend = await pickBackend();
+const api = createApi(backend.fetchFn);
 const store = createStore({
   link: 55, mode: 'story', crew: 'scripted', seed: 4217,
   run: null, health: null, reachable: true, busy: false, error: '',
@@ -50,7 +52,7 @@ async function startRun(event) {
     stream?.close();
     controller.reset();
     store.set({ run, rows: [], lines: [], replay: null, replayBusy: false });
-    stream = openEvents(run.run_id, { onRow, onStatus: () => {} });
+    stream = openEvents(run.run_id, { onRow, onStatus: () => {}, EventSourceCtor: backend.EventSourceCtor });
     await controller.startTurn();
   } catch (error) {
     store.set({ error: describeError(error) });

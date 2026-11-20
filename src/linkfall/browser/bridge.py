@@ -193,3 +193,36 @@ def open_events(
 ) -> EventStream:
     """Start an event stream on the running loop and return it, so the page can close it."""
     return EventStream(app, path, on_start, on_chunk, on_end, last_event_id).start()
+
+
+class PageBridge:
+    """What the page holds: the app and the two calls, in shapes JavaScript can pass in."""
+
+    def __init__(self, app: FastAPI) -> None:
+        self.app = app
+
+    async def request(
+        self, method: str, path: str, body: str | None, headers_json: str | None
+    ) -> str:
+        headers = json.loads(headers_json) if headers_json else {}
+        if not isinstance(headers, dict):
+            raise TypeError("headers must be a JSON object")
+        return await request(
+            self.app, method, path, body, {str(k): str(v) for k, v in headers.items()}
+        )
+
+    def open_events(
+        self,
+        path: str,
+        last_event_id: str | None,
+        on_start: Callable[[int], object],
+        on_chunk: Callable[[str], object],
+        on_end: Callable[[], object],
+    ) -> EventStream:
+        return open_events(self.app, path, on_start, on_chunk, on_end, last_event_id)
+
+
+def start_page() -> PageBridge:
+    """The page's one Python call at start-up: patch the thread hand-offs, then build the app."""
+    install_thread_patches()
+    return PageBridge(build_app())

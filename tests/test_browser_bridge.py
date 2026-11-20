@@ -215,3 +215,30 @@ def test_thread_patches_run_inline(monkeypatch: pytest.MonkeyPatch) -> None:
 
     run(go)
     assert seen == [threading.get_ident()] * 2  # both ran on this thread
+
+
+def test_start_page_patches_and_serves_json_headers(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(asyncio, "to_thread", asyncio.to_thread)
+    monkeypatch.setattr(anyio.to_thread, "run_sync", anyio.to_thread.run_sync)
+    page = bridge.start_page()
+    assert asyncio.to_thread is bridge._inline_to_thread
+
+    async def go() -> None:
+        create = json.dumps({"seed": 4217, "mode": "story", "scenario": "cinder-ward"})
+        made = json.loads(await page.request("POST", "/api/runs", create, json.dumps(POST_HEADERS)))
+        assert made["status"] == 201
+        run_id = json.loads(made["body"])["run_id"]
+        health = json.loads(await page.request("GET", "/api/health", None, None))
+        assert health["status"] == 200
+        with pytest.raises(TypeError, match="JSON object"):
+            await page.request("GET", "/api/health", None, "[1]")
+
+        rec = Recorder()
+        page.open_events(
+            f"/api/runs/{run_id}/events?follow=false", None, rec.on_start, rec.on_chunk, rec.on_end
+        )
+        await asyncio.wait_for(rec.done.wait(), timeout=5)
+        assert rec.status == [200]
+        assert rec.ids()
+
+    run(go)

@@ -23,6 +23,11 @@ export function reportPath(runId) {
   return `/api/range/runs/${encodeURIComponent(runId)}/report.md`;
 }
 
+// The server's Content-Disposition name, so both builds save the same file.
+export function reportFileName(runId) {
+  return `linkfall-range-${runId}.md`;
+}
+
 export function targetOptions(catalog) {
   return (catalog?.targets ?? []).map((target) => ({
     name: target.name,
