@@ -4,6 +4,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+### Changed
+- The hosted demo is live at https://menokoog.github.io/linkfall/, deployed from `v1.1.0` on 2026-11-25. The live check in the runbook passed in headless Chromium: the console page was ready in 6.8 s and a mission played to SURVIVED with "Replay matches"; the range page was ready in 5.6 s, withstood 7 of 7 probes, downloaded its report and said "The log checks out". No console errors or policy violations. README, the ASVS TLS row (now done), the runbook and ADR 0012 say so.
+
 ## [1.1.0] - 2026-11-25
 
 Version 1.1 adds the hosted demo build (ADR 0012): the scripted crew running in the browser on Pyodide, and a manual deploy to GitHub Pages. The site is not live yet; it needs the repo public and a deploy from this tag.
