@@ -1,5 +1,5 @@
 {
-  "note": "Pinned runtime for the hosted demo (ADR 0012). Each SHA-256 was checked on 2026-11-25 against the npm package pyodide@314.0.8 and the jsDelivr copy; wheel hashes also match pyodide-lock.json. Pure wheels come from requirements.txt at its pins and hashes.",
+  "note": "Pinned runtime for the hosted demo (ADR 0012). Each SHA-256 was checked on 2026-11-25 against the npm package pyodide@314.0.8 and the jsDelivr copy; wheel hashes also match pyodide-lock.json. Pinned at 12 days old, an exception to the 14-day rule by Lawrence's ruling of 2026-11-25. Pure wheels come from requirements.txt at its pins and hashes.",
   "pyodide": {
     "version": "314.0.8",
     "base_url": "https://cdn.jsdelivr.net/pyodide/v314.0.8/full/",

@@ -63,7 +63,7 @@ Run the workflow again with the previous tag. A failed hash check or a failed te
 
 ## Upgrade Pyodide
 
-New pins must be at least 14 days old. The pinned version is 314.0.8, published 2026-11-13.
+New pins must be at least 14 days old. The pinned version is 314.0.8, published 2026-11-13 and pinned at 12 days by Lawrence's ruling of 2026-11-25, an exception to the rule.
 
 1. Read the release's changelog and check advisories for Pyodide (its repo's Security tab and the GitHub Advisory Database). Dependabot doesn't watch `pages/runtime.json`.
 2. Get the new SHA-256 of each file in `pages/runtime.json` from two sources: the npm package (`npm pack pyodide@<version>`) and the jsDelivr copy (`https://cdn.jsdelivr.net/pyodide/v<version>/full/`). Both must agree. The wheel hashes must also match the new `pyodide-lock.json`.
