@@ -48,7 +48,7 @@ Actions > pages > Run workflow, then type the tag, for example `v1.1.0`. The wor
 
 ## Check the live site
 
-The workflow run prints the URL. Expected: https://menokoog.github.io/linkfall/ and https://menokoog.github.io/linkfall/range.html (not confirmed until the first deploy). On both pages:
+The workflow run prints the URL. Expected: https://menokoog.github.io/linkfall/ and https://menokoog.github.io/linkfall/range.html (confirmed by the first deploy, 2026-11-25). On both pages:
 
 - The banner reaches "Running in your browser with the scripted crew."
 - A mission plays to an outcome, the log fills, and Replay says "Replay matches".

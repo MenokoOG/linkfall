@@ -58,7 +58,7 @@ Threats (STRIDE): tampering with the runtime files is bounded by the hash list a
 
 OWASP Top 10 for LLM Applications 2025: not in play for the hosted copy. It makes no model call.
 
-Not verified: Firefox and Safari, whether GitHub Pages compresses `.wasm` and `.whl` files, and the "Enforce HTTPS" default for the site. Each is a check in the build plan.
+Not verified: Firefox and Safari. Checked on the live site on 2026-11-25: Pages serves `.wasm` and `.whl` files gzip-compressed, and "Enforce HTTPS" is on.
 
 ## As built so far (2026-11-20)
 
