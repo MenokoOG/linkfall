@@ -4,15 +4,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-25
+
+Version 1.1 adds the hosted demo build (ADR 0012): the scripted crew running in the browser on Pyodide, and a manual deploy to GitHub Pages. The site is not live yet; it needs the repo public and a deploy from this tag.
+
+### Release
+- `linkfall.__version__` is 1.1.0, and `/api/health` reports it.
+- `v1.1.0` is the first tag that contains `scripts/build_pages.py`, so it is the first tag `pages.yml` can deploy.
+- README status and roadmap, and the supported version in `SECURITY.md`, say 1.1.0.
+
 ### Added
-- ADR 0012 (Proposed) and a plan for a scripted-only hosted demo on GitHub Pages, with the Python engine running in the visitor's browser on Pyodide. Docs only; nothing is built. A spike passed 530 of the Python tests on Pyodide and played a mission and a range run in headless Chromium with no server.
+- ADR 0012 (Proposed) and a plan for a scripted-only hosted demo on GitHub Pages, with the Python engine running in the visitor's browser on Pyodide. A spike passed 530 of the Python tests on Pyodide and played a mission and a range run in headless Chromium with no server.
 
 - `compose.scripted.yaml` runs the api alone, with the scripted crew and no model: `docker compose -f compose.scripted.yaml up`. It extends the `api` service from `compose.yaml`, so the image and hardening stay in one place, and resets the model URL, the dependency on `model` and the backend network. `scripts/smoke.sh --scripted` skips the 6 model checks and confirms `/api/health` reports `not_configured`.
 - `linkfall.browser.bridge` calls the API app in-process, for the hosted demo (ADR 0012). It sends each request and event stream through the full ASGI app, so routes, checks and error shapes match the server, and it makes the app's two thread hand-offs run inline for Pyodide's single thread. The server never imports it.
 - The pages can run against that bridge in the tab. `backend.js` picks the browser backend only when a page carries `<meta name="linkfall-backend" content="browser">`, which the hosted build will add; without it nothing changes. `local-backend.js` loads Pyodide and the app from `runtime/` beside the page and gives `api.js` and `events.js` a `fetch` and an `EventSource` in the same shapes. Start-up shows its progress, then a note that a run lasts until reload, or an error with a retry and the command to run it locally. On the range page the report downloads as a file made in the page.
 - Dependabot waits 14 days after a release before it opens a pip or Actions pull request, so the 14-day rule for new pins holds without a manual check.
 
-- `scripts/build_pages.py` builds the hosted demo site into `dist/`: the pages with relative paths, a meta policy taken from the server's and the browser-backend switch, Pyodide 314.0.7 checked against the hashes in `pages/runtime.json`, the pure wheels checked against `requirements.txt`, and `linkfall.zip`. A failed hash stops the build before anything is written. Nothing deploys it yet.
+- `scripts/build_pages.py` builds the hosted demo site into `dist/`: the pages with relative paths, a meta policy taken from the server's and the browser-backend switch, Pyodide 314.0.7 checked against the hashes in `pages/runtime.json`, the pure wheels checked against `requirements.txt`, and `linkfall.zip`. A failed hash stops the build before anything is written.
 - A CI job, `pyodide`, runs the Python suite on Pyodide with exactly the files the site ships, so the hosted copy never runs code CI didn't run on that runtime. pytest comes in hash-checked from `requirements-dev.txt`. Four test files or tests that need sockets, threads, a subprocess or the server's static files are left out, each with its reason. 540 pass.
 - `.github/workflows/pages.yml` deploys the hosted demo to GitHub Pages from a release tag, by hand only. It builds with every hash checked and runs the suite on Pyodide with the files about to ship before it uploads. Not run yet: Pages needs the repo public.
 - README: a "Try it in your browser" section for the hosted demo, in Lawrence's approved wording (2026-11-20). The link works after the first deploy.
