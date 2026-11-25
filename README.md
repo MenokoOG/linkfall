@@ -37,7 +37,7 @@ You are a pilot linked to armor. A lead agent, Lodestar, and four crew agents pr
 
 Accepting a truce needs your signature in every zone and both modes.
 
-**Status:** version 1.0.0, 2026-11-15. M1, M2 and M3 are built. What is in it: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. The training range is built too: seven scripted Whisper probes against a scripted or model Comms agent, a scorecard, transcripts, a model-free recheck and an after-action report. One full range against the local model took 84 s on 2026-11-15 with the model server on 6 threads. That run made 10 model calls, because a probe stops at its first leak. The earlier scripted prototype is still up as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
+**Status:** version 1.1.0, 2026-11-25. M1, M2 and M3 are built, and so are the hosted demo build and its deploy workflow. The hosted site is not live yet. What is in it: the deterministic engine, an append-only event log with model-free replay, the validator, the policy zones, scripted and model-backed crews, an HTTP API with live event streaming, and a web console with the link knob, crew cards, decision panel, the "Needs your word" tray, an event log, a replay check, a debrief and a battlefield view that follows the engine state. The Docker setup is built and passes its smoke tests. Speed, measured on 2026-11-06 on a quiet 6-thread laptop CPU: 15 model-crew turns on a warm stack took a median of 22.8 s and a p95 of 24.9 s against a proposed 40 s budget. The first turn after a cold start took 63 s, and that cause is not confirmed. The training range is built too: seven scripted Whisper probes against a scripted or model Comms agent, a scorecard, transcripts, a model-free recheck and an after-action report. One full range against the local model took 84 s on 2026-11-15 with the model server on 6 threads. That run made 10 model calls, because a probe stops at its first leak. The earlier scripted prototype is still up as a [demo page](https://claude.ai/artifact/RYFsV3DCr5cW8e5c5aUmca).
 
 ## Screenshots
 
@@ -150,13 +150,13 @@ Without `LINKFALL_MODEL_URL` the API offers the scripted crew only. Set it to an
 
 ## Roadmap
 
-Version 1.0.0 is these three milestones, all built:
+Version 1.0.0 was these three milestones, all built:
 
 1. M1: core loop and UI.
 2. M2: Whisper duel.
 3. M3: training range with after-action report.
 
-Next: a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack, the in-browser backend, the site build and the deploy workflow are built. The site goes live once the repo is public; the steps are in [docs/runbooks/hosted-demo.md](docs/runbooks/hosted-demo.md).
+Version 1.1.0 adds a scripted-only hosted demo that runs in the browser (ADR 0012). The local scripted stack, the in-browser backend, the site build and the deploy workflow are built. The site goes live once the repo is public; the steps are in [docs/runbooks/hosted-demo.md](docs/runbooks/hosted-demo.md).
 
 ### Known limits in version 1
 

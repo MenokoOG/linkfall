@@ -1,6 +1,6 @@
 # Security policy
 
-LINKFALL is a local demo. Version 1.0.0 is the only version, and fixes go to `main`. It has no accounts, holds no user data, and binds to `127.0.0.1`. It is not hardened for hosting on the internet.
+LINKFALL is a local demo. Version 1.1.0 is the supported version, and fixes go to `main`. It has no accounts, holds no user data, and binds to `127.0.0.1`. It is not hardened for hosting on the internet.
 
 ## Reporting a problem
 
